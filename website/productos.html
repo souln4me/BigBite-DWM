@@ -51,6 +51,25 @@
       transition: opacity 0.3s ease;
     }
 
+    .ingredients-overlay h6 {
+      font-size: 1.1rem;
+      font-style: italic;
+      margin-bottom: 10px;
+    }
+
+    .ingredients-overlay .ingredients-list {
+      font-size: 0.95rem;
+      font-style: italic;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .ingredients-overlay .view-product {
+      font-weight: bold;
+      font-size: 1rem;
+      margin-top: 10px;
+    }
+
     .image-container:hover .ingredients-overlay {
       display: flex;
       opacity: 1;
@@ -76,6 +95,11 @@
 
     .unavailable-product .ingredients-overlay{
       display: none !important;
+    }
+
+    .modal-content {
+      border-radius: 30px;
+      overflow: hidden;
     }
   </style>
 </head>
@@ -132,14 +156,10 @@
           <!-- Overlay de ingredientes (solo en la imagen) -->
           <div class="ingredients-overlay">
             <h6>Ingredientes:</h6>
-            <ul class="list-unstyled small">
-              <li>• Pan brioche artesanal</li>
-              <li>• Carne de res 150g</li>
-              <li>• Queso cheddar</li>
-              <li>• Lechuga fresca</li>
-              <li>• Tomate</li>
-              <li>• Salsa Big Bite</li>
-            </ul>
+            <div class="ingredients-list">
+              Pan brioche artesanal, Carne de res 150g, Queso cheddar, Lechuga fresca, Tomate, Salsa Big Bite
+            </div>
+            <div class="view-product">Ver producto</div>
           </div>
         </div>
         <div class="card-body">
@@ -157,11 +177,10 @@
           <!-- Overlay de ingredientes (solo en la imagen) -->
           <div class="ingredients-overlay">
             <h6>Ingredientes:</h6>
-            <ul class="list-unstyled small">
-              <li>• Papas seleccionadas</li>
-              <li>• Aceite vegetal premium</li>
-              <li>• Sal marina</li>
-            </ul>
+            <div class="ingredients-list">
+              Papas seleccionadas, Aceite vegetal premium, Sal marina
+            </div>
+            <div class="view-product">Ver producto</div>
           </div>
         </div>
         <div class="card-body">
@@ -180,12 +199,10 @@
           <!-- Overlay de ingredientes (solo en la imagen) -->
           <div class="ingredients-overlay">
             <h6>Combo incluye:</h6>
-            <ul class="list-unstyled small">
-              <li>• 4 Hamburguesas Clásicas</li>
-              <li>• 2 Papas Fritas Grandes</li>
-              <li>• 4 Bebidas 350cc</li>
-              <li>• 4 Postres de la casa</li>
-            </ul>
+            <div class="ingredients-list">
+              4 Hamburguesas Clásicas, 2 Papas Fritas Grandes, 4 Bebidas 350cc, 4 Postres de la casa
+            </div>
+            <div class="view-product">Ver producto</div>
           </div>
         </div>
         <div class="card-body">
@@ -202,11 +219,10 @@
           <img src="productos\CocaCola350cc.jpeg" class="card-img-top" alt="Coca Cola Original 350cc">
           <div class="ingredients-overlay">
             <h6>Información:</h6>
-            <ul class="list-unstyled small">
-              <li>• Refresco de cola</li>
-              <li>• Presentación: 350ml</li>
-              <li>• Servida bien fría</li>
-            </ul>
+            <div class="ingredients-list">
+              Refresco de cola, Presentación: 350ml, Servida bien fría
+            </div>
+            <div class="view-product">Ver producto</div>
           </div>
         </div>
         <div class="card-body">
@@ -223,12 +239,10 @@
           <img src="productos\SpriteZero350cc.jpeg" class="card-img-top" alt="Sprite Zero 350cc">
           <div class="ingredients-overlay">
             <h6>Información:</h6>
-            <ul class="list-unstyled small">
-              <li>• Refresco de lima-limón</li>
-              <li>• Cero azúcar</li>
-              <li>• Presentación: 350ml</li>
-              <li>• Servida bien fría</li>
-            </ul>
+            <div class="ingredients-list">
+              Refresco de lima-limón, Cero azúcar, Presentación: 350ml, Servida bien fría
+            </div>
+            <div class="view-product">Ver producto</div>
           </div>
         </div>
         <div class="card-body">
@@ -245,15 +259,10 @@
           <img src="productos\Hamburguesa Italiana Gourmet.jpeg" class="card-img-top" alt="Hamburguesa Italiana Gourmet">
           <div class="ingredients-overlay">
             <h6>Ingredientes:</h6>
-            <ul class="list-unstyled small">
-              <li>• Pan de hamburguesa</li>
-              <li>• Carne picada de ternera 600g</li>
-              <li>• Queso Mozzarella</li>
-              <li>• Tomate</li>
-              <li>• Albahaca</li>
-              <li>• Tapenade</li>
-              <li>• Rúcula</li>
-            </ul>
+            <div class="ingredients-list">
+              Pan de hamburguesa, Carne picada de ternera 600g, Queso Mozzarella, Tomate, Albahaca, Tapenade, Rúcula
+            </div>
+            <div class="view-product">Ver producto</div>
           </div>  
         </div>
         <div class="card-body">
@@ -264,6 +273,32 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="productModal">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <div class="row">
+          <!-- Imagen grande a la izquierda -->
+          <div class="col-md-6">
+            <img id="modalImage" src="" class="img-fluid" alt="">
+          </div>
+          <!-- Información a la derecha -->
+          <div class="col-md-6 p-4">
+            <button type="button" class="btn-close float-end" data-bs-dismiss="modal"></button>
+            <h3 id="modalTitle"></h3>
+            <h4 id="modalPrice" class="text-primary"></h4>
+            <p id="modalIngredients"></p>
+            <!-- Aquí van los extras -->
+            <div id="modalExtras"></div>
+            <button class="btn btn-primary w-100 mt-3">Agregar al carrito</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- Script del filtrado (igual que antes) -->
 <script>
@@ -300,6 +335,49 @@
         noProductsMessage.classList.add('hidden');
         productsContainer.classList.remove('hidden');
       }
+    });
+  });
+
+  productCards.forEach(card => {
+    card.addEventListener('click', function() {
+      if (this.classList.contains('unavailable-product')) return;
+      
+      const title = this.querySelector('.card-title').textContent;
+      const price = this.querySelector('.card-text').textContent;
+      const image = this.querySelector('.card-img-top').src;
+      const ingredientsOverlay = this.querySelector('.ingredients-overlay');
+      const ingredientsHTML = ingredientsOverlay.innerHTML;
+      // Quitar 'Ver producto'
+      const ingredients = ingredientsHTML.replace('<div class="view-product">Ver producto</div>', '');
+
+      // Llenar el modal con los datos
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalPrice').textContent = price;
+      document.getElementById('modalImage').src = image;
+      document.getElementById('modalIngredients').innerHTML = ingredients;
+
+      // Extras
+      if (this.classList.contains('hamburguesas')) {
+        document.getElementById('modalExtras').innerHTML = `
+        <div class="mb-3">
+          <h6>Extras disponibles:</h6>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="extraQueso">
+            <label class="form-check-label" for="extraQueso">Queso extra (+$1.000)</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="extraTocino">
+            <label class="form-check-label" for="extraTocino">Tocino extra (+$1.800)</label>
+          </div>
+        </div>
+        `;
+      } else {
+      document.getElementById('modalExtras').innerHTML = '';
+      }
+
+      // Mostrar el modal
+      const modal = new bootstrap.Modal(document.getElementById('productModal'));
+      modal.show();
     });
   });
 </script>
