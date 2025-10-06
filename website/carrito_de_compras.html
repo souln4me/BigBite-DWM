@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big Bite - Carrito de compras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .success { background-color: #f0fff0; border-color: #4CAF50; }
+        .error { background-color: #fff0f0; border-color: #f44336; }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .pay-btn { background-color: #4CAF50; color: white; }
+        .disabled { background-color: #cccccc; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <h1>Carrito de Compras - Big Bite</h1>
+
+    <!-- Escenario: Producto disponible -->
+    <div class="container success">
+        <h2>✅ Producto Disponible</h2>
+        <div class="cart">
+            <p><strong>Hamburguesa Clásica</strong> - $8.990 (Stock: 5)</p>
+            <button class="pay-btn" onclick="processPayment(true)">Proceder al Pago</button>
+        </div>
+    </div>
+
+    <!-- Escenario: Producto sin stock -->
+    <div class="container error">
+        <h2>❌ Producto Sin Stock</h2>
+        <div class="cart">
+            <p><strong>Combo Familiar</strong> - $29.990 (Stock: 0)</p>
+            <button class="pay-btn disabled" onclick="processPayment(false)">Proceder al Pago</button>
+        </div>
+    </div>
+
+    <!-- Mensaje de resultado -->
+    <div id="message" style="display: none; padding: 15px; margin-top: 20px; border-radius: 4px;"></div>
+
+    <script>
+        function processPayment(isAvailable) {
+            const messageDiv = document.getElementById('message');
+            
+            if (isAvailable) {
+                messageDiv.style.display = 'block';
+                messageDiv.style.backgroundColor = '#d4edda';
+                messageDiv.style.color = '#155724';
+                messageDiv.innerHTML = '✅ Redirigiendo al flujo de pago...';
+                
+                // Simular redirección
+                setTimeout(() => {
+                    messageDiv.innerHTML += '<br>🔄 Pago procesado exitosamente';
+                }, 1000);
+                
+            } else {
+                messageDiv.style.display = 'block';
+                messageDiv.style.backgroundColor = '#f8d7da';
+                messageDiv.style.color = '#721c24';
+                messageDiv.innerHTML = '❌ Producto sin stock<br>No se puede continuar con el pago';
+            }
+        }
+    </script>
+</body>
+</html>
