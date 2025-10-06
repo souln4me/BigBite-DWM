@@ -105,6 +105,23 @@
             border-radius: 30px;
             overflow: hidden;
         }
+
+        #products-container {
+          margin-bottom: 80px;
+        }
+
+        /* Barra de resumen de pedido */
+        #order-summary-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 2px solid #007bff;
+            padding: 15px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
@@ -287,6 +304,22 @@
         </div>
     </div>
 
+    <!-- Barra de Resumen de Pedido -->
+    <div id="order-summary-bar" class="hidden">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <!-- Aquí se mostrarán los productos -->
+                </div>
+                <div class="col-md-4 text-end">
+                    <button id="go-to-cart-btn" class="btn btn-success btn-lg">
+                        Ir al Carrito
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal -->
     <div class="modal fade" id="productModal">
         <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -394,6 +427,192 @@
                 // Mostrar el modal
                 const modal = new bootstrap.Modal(document.getElementById('productModal'));
                 modal.show();
+            });
+        });
+
+                // Carrito simple
+        let cart = [];
+
+        // Función para parsear precios
+        function parsePrice(priceString) {
+            return parseInt(priceString.replace('$', '').replace('.', '').replace(',', ''));
+        }
+
+        // Función para formatear precios
+        function formatPrice(price) {
+            return '$' + price.toLocaleString('es-CL');
+        }
+
+        // Función para agregar producto al carrito
+        // Función para agregar producto al carrito
+        function addToCart(productName, productPrice) {
+            // Cerrar el modal
+            const modalElement = document.getElementById('productModal');
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            
+            if (modal) {
+                modal.hide();
+            }
+
+            // Limpiar TODO manualmente
+            const cleanUpModal = () => {
+                // Remover backdrop
+                const backdrops = document.querySelectorAll('.modal-backdrop');
+                backdrops.forEach(backdrop => backdrop.remove());
+                
+                // Restaurar el body completamente
+                document.body.classList.remove('modal-open');
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+                
+                // Forzar reflow
+                document.body.style.display = 'none';
+                document.body.offsetHeight; // Trigger reflow
+                document.body.style.display = '';
+            };
+
+            // Ejecutar la limpieza inmediatamente y después de un delay
+            cleanUpModal();
+            setTimeout(cleanUpModal, 150);
+            setTimeout(cleanUpModal, 300);
+
+            // Agregar producto al carrito
+            cart.push({
+                name: productName,
+                price: productPrice
+            });
+
+            updateOrderSummary();
+        }
+
+        // Función para actualizar el resumen
+        function updateOrderSummary() {
+            const orderBar = document.getElementById('order-summary-bar');
+            const leftColumn = orderBar.querySelector('.col-md-8');
+            
+            if (cart.length === 0) {
+                orderBar.classList.add('hidden');
+                return;
+            }
+
+            // Calcular subtotal y contar productos por tipo
+            let subtotal = 0;
+            const productCount = {};
+            
+            cart.forEach(item => {
+                subtotal += item.price;
+                productCount[item.name] = (productCount[item.name] || 0) + 1;
+            });
+
+            // Crear texto con los productos
+            let productsText = '';
+            for (const [productName, quantity] of Object.entries(productCount)) {
+                productsText += `${quantity}x ${productName}, `;
+            }
+            // Quitar la última coma
+            productsText = productsText.slice(0, -2);
+
+            // Mostrar productos en el lado izquierdo
+            leftColumn.innerHTML = `<strong>${productsText}</strong> | Subtotal: ${formatPrice(subtotal)}`;
+            
+            orderBar.classList.remove('hidden');
+        }
+
+        // Función para ir al carrito
+        document.getElementById('go-to-cart-btn').addEventListener('click', function() {
+            alert(`Redirigiendo al carrito con ${cart.length} productos`);
+            console.log('Productos en el carrito:', cart);
+        });
+
+        // Configurar el modal para todos los productos
+        productCards.forEach(card => {
+            card.addEventListener('click', function() {
+                if (this.classList.contains('unavailable-product')) return;
+                
+                const title = this.querySelector('.card-title').textContent;
+                const price = this.querySelector('.card-text').textContent;
+                const image = this.querySelector('.card-img-top').src;
+                const ingredientsOverlay = this.querySelector('.ingredients-overlay');
+                const ingredientsHTML = ingredientsOverlay.innerHTML;
+                
+                // Quitar 'Ver producto'
+                const ingredients = ingredientsHTML.replace('<div class="view-product">Ver producto</div>', '');
+
+                // Llenar el modal con los datos
+                document.getElementById('modalTitle').textContent = title;
+                document.getElementById('modalPrice').textContent = price;
+                document.getElementById('modalImage').src = image;
+                document.getElementById('modalIngredients').innerHTML = ingredients;
+
+                // Extras
+                if (this.classList.contains('hamburguesas')) {
+                    document.getElementById('modalExtras').innerHTML = `
+                        <div class="mb-3">
+                            <h6>Extras disponibles:</h6>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="extraQueso">
+                                <label class="form-check-label" for="extraQueso">Queso extra (+$1.000)</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="extraTocino">
+                                <label class="form-check-label" for="extraTocino">Tocino extra (+$1.800)</label>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('modalExtras').innerHTML = '';
+                }
+
+                // Configurar el botón de agregar al carrito
+                const modalBody = document.querySelector('#productModal .modal-body');
+                let addToCartBtn = modalBody.querySelector('.btn-primary');
+                
+                if (!addToCartBtn) {
+                    addToCartBtn = document.createElement('button');
+                    addToCartBtn.className = 'btn btn-primary w-100 mt-3';
+                    modalBody.querySelector('.col-md-6').appendChild(addToCartBtn);
+                }
+                
+                addToCartBtn.textContent = 'Agregar al carrito';
+                addToCartBtn.onclick = function() {
+                    addToCart(title, parsePrice(price));
+                };
+
+                // Mostrar el modal
+                const modal = new bootstrap.Modal(document.getElementById('productModal'));
+                modal.show();
+            });
+        });
+
+        // Filtrado de productos (mantener este código al final)
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const category = button.getAttribute('data-category');
+
+                // Cambiar el botón activo
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                let visibleProducts = 0;
+
+                // Mostrar/ocultar productos
+                productCards.forEach(card => {
+                    if (category === 'todos' || card.classList.contains(category)) {
+                        card.classList.remove('hidden');
+                        visibleProducts++;
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+
+                // Mostrar u ocultar el mensaje según si hay productos visibles
+                if (visibleProducts === 0) {
+                    noProductsMessage.classList.remove('hidden');
+                    productsContainer.classList.add('hidden');
+                } else {
+                    noProductsMessage.classList.add('hidden');
+                    productsContainer.classList.remove('hidden');
+                }
             });
         });
     </script>
