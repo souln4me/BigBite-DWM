@@ -138,7 +138,7 @@
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Inicio</a>
+                        <a class="nav-link" href="menu_navegacion.html">Inicio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="#">Productos</a>
@@ -348,274 +348,194 @@
 
     <!-- Scripts -->
     <script>
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        const productCards = document.querySelectorAll('.product-card');
-        const noProductsMessage = document.getElementById('no-products-message');
-        const productsContainer = document.getElementById('products-container');
+    document.addEventListener('DOMContentLoaded', function () {
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      const productCards = document.querySelectorAll('.product-card');
+      const noProductsMessage = document.getElementById('no-products-message');
+      const productsContainer = document.getElementById('products-container');
+      const modalElement = document.getElementById('productModal');
+      const bsModal = new bootstrap.Modal(modalElement);
+      const goToCartBtn = document.getElementById('go-to-cart-btn');
 
-        // Filtrado de productos
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const category = button.getAttribute('data-category');
+      let cart = [];
+      let scrollPosition = 0;
+      let lastFocusedElement = null;
 
-                // Cambiar el botón activo
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
+      /* ---------------- FILTRADO ---------------- */
+      filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const category = button.getAttribute('data-category');
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          button.classList.add('active');
 
-                let visibleProducts = 0;
-
-                // Mostrar/ocultar productos
-                productCards.forEach(card => {
-                    if (category === 'todos' || card.classList.contains(category)) {
-                        card.classList.remove('hidden');
-                        visibleProducts++;
-                    } else {
-                        card.classList.add('hidden');
-                    }
-                });
-
-                // Mostrar u ocultar el mensaje según si hay productos visibles
-                if (visibleProducts === 0) {
-                    noProductsMessage.classList.remove('hidden');
-                    productsContainer.classList.add('hidden');
-                } else {
-                    noProductsMessage.classList.add('hidden');
-                    productsContainer.classList.remove('hidden');
-                }
-            });
-        });
-
-        // Modal de productos
-        productCards.forEach(card => {
-            card.addEventListener('click', function() {
-                if (this.classList.contains('unavailable-product')) return;
-                
-                const title = this.querySelector('.card-title').textContent;
-                const price = this.querySelector('.card-text').textContent;
-                const image = this.querySelector('.card-img-top').src;
-                const ingredientsOverlay = this.querySelector('.ingredients-overlay');
-                const ingredientsHTML = ingredientsOverlay.innerHTML;
-                
-                // Quitar 'Ver producto'
-                const ingredients = ingredientsHTML.replace('<div class="view-product">Ver producto</div>', '');
-
-                // Llenar el modal con los datos
-                document.getElementById('modalTitle').textContent = title;
-                document.getElementById('modalPrice').textContent = price;
-                document.getElementById('modalImage').src = image;
-                document.getElementById('modalIngredients').innerHTML = ingredients;
-
-                // Extras
-                if (this.classList.contains('hamburguesas')) {
-                    document.getElementById('modalExtras').innerHTML = `
-                        <div class="mb-3">
-                            <h6>Extras disponibles:</h6>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="extraQueso">
-                                <label class="form-check-label" for="extraQueso">Queso extra (+$1.000)</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="extraTocino">
-                                <label class="form-check-label" for="extraTocino">Tocino extra (+$1.800)</label>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    document.getElementById('modalExtras').innerHTML = '';
-                }
-
-                // Mostrar el modal
-                const modal = new bootstrap.Modal(document.getElementById('productModal'));
-                modal.show();
-            });
-        });
-
-                // Carrito simple
-        let cart = [];
-
-        // Función para parsear precios
-        function parsePrice(priceString) {
-            return parseInt(priceString.replace('$', '').replace('.', '').replace(',', ''));
-        }
-
-        // Función para formatear precios
-        function formatPrice(price) {
-            return '$' + price.toLocaleString('es-CL');
-        }
-
-        // Función para agregar producto al carrito
-        // Función para agregar producto al carrito
-        function addToCart(productName, productPrice) {
-            // Cerrar el modal
-            const modalElement = document.getElementById('productModal');
-            const modal = bootstrap.Modal.getInstance(modalElement);
-            
-            if (modal) {
-                modal.hide();
+          let visibleProducts = 0;
+          productCards.forEach(card => {
+            if (category === 'todos' || card.classList.contains(category)) {
+              card.classList.remove('hidden');
+              visibleProducts++;
+            } else {
+              card.classList.add('hidden');
             }
+          });
 
-            // Limpiar TODO manualmente
-            const cleanUpModal = () => {
-                // Remover backdrop
-                const backdrops = document.querySelectorAll('.modal-backdrop');
-                backdrops.forEach(backdrop => backdrop.remove());
-                
-                // Restaurar el body completamente
-                document.body.classList.remove('modal-open');
-                document.body.style.overflow = '';
-                document.body.style.paddingRight = '';
-                
-                // Forzar reflow
-                document.body.style.display = 'none';
-                document.body.offsetHeight; // Trigger reflow
-                document.body.style.display = '';
+          if (visibleProducts === 0) {
+            noProductsMessage.classList.remove('hidden');
+            productsContainer.classList.add('hidden');
+          } else {
+            noProductsMessage.classList.add('hidden');
+            productsContainer.classList.remove('hidden');
+          }
+        });
+      });
+
+      /* ---------- GUARDAR / RESTAURAR SCROLL Y FOCO ---------- */
+      function saveScrollPosition() {
+        scrollPosition = window.pageYOffset || document.documentElement.scrollTop || 0;
+      }
+      function restoreScrollPosition() {
+        window.scrollTo(0, scrollPosition);
+      }
+
+      modalElement.addEventListener('show.bs.modal', function () {
+        // guardar el elemento con foco antes de abrir (para devolverle foco después)
+        lastFocusedElement = document.activeElement;
+        saveScrollPosition();
+      });
+
+      modalElement.addEventListener('hidden.bs.modal', function () {
+        // Limpiar posibles backdrops sobrantes y clases (sin manipular display)
+        const backdrops = document.querySelectorAll('.modal-backdrop');
+        backdrops.forEach(b => b.remove());
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+
+        // Restaurar scroll
+        restoreScrollPosition();
+
+        // Devolver foco al elemento que abrió el modal (si es posible)
+        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+          try {
+            lastFocusedElement.focus({ preventScroll: true });
+          } catch (e) {
+            // navegadores antiguos ignoran preventScroll
+            lastFocusedElement.focus();
+          }
+        }
+      });
+
+      /* ----------------- PRECIOS ----------------- */
+      function parsePrice(priceString) {
+        const digits = priceString.replace(/\D/g, ''); // quita todo lo que no sea número
+        return digits ? parseInt(digits, 10) : 0;
+      }
+      function formatPrice(price) {
+        return '$' + price.toLocaleString('es-CL');
+      }
+
+      /* --------------- CARRITO Y RESUMEN --------------- */
+      function updateOrderSummary() {
+        const orderBar = document.getElementById('order-summary-bar');
+        const leftColumn = orderBar.querySelector('.col-md-8');
+
+        if (cart.length === 0) {
+          orderBar.classList.add('hidden');
+          return;
+        }
+
+        let subtotal = 0;
+        const productCount = {};
+        cart.forEach(item => {
+          subtotal += item.price;
+          productCount[item.name] = (productCount[item.name] || 0) + 1;
+        });
+
+        let productsText = '';
+        for (const [productName, quantity] of Object.entries(productCount)) {
+          productsText += `${quantity}x ${productName}, `;
+        }
+        productsText = productsText.slice(0, -2);
+
+        leftColumn.innerHTML = `<strong>${productsText}</strong> | Subtotal: ${formatPrice(subtotal)}`;
+        orderBar.classList.remove('hidden');
+      }
+
+      function addToCart(productName, productPrice) {
+        const instance = bootstrap.Modal.getInstance(modalElement);
+        if (instance) instance.hide();
+        cart.push({ name: productName, price: productPrice });
+        updateOrderSummary();
+      }
+
+      /* --------------- ABRIR EL MODAL DESDE LA CARD --------------- */
+      productCards.forEach(card => {
+        // Hacer focusable la card si no lo es (recomendado: también agrega tabindex="0" en el HTML)
+        if (!card.hasAttribute('tabindex')) {
+          card.setAttribute('tabindex', '0');
+        }
+
+        card.addEventListener('click', function () {
+          if (this.classList.contains('unavailable-product')) return;
+
+          lastFocusedElement = this; // para devolver el foco a la card
+          const title = this.querySelector('.card-title').textContent;
+          const price = this.querySelector('.card-text').textContent;
+          const image = this.querySelector('.card-img-top').src;
+          const ingredientsOverlay = this.querySelector('.ingredients-overlay');
+          const ingredientsHTML = ingredientsOverlay ? ingredientsOverlay.innerHTML : '';
+          const ingredients = ingredientsHTML.replace('<div class="view-product">Ver producto</div>', '');
+
+          document.getElementById('modalTitle').textContent = title;
+          document.getElementById('modalPrice').textContent = price;
+          document.getElementById('modalImage').src = image;
+          document.getElementById('modalIngredients').innerHTML = ingredients;
+
+          // extras condicionales
+          if (this.classList.contains('hamburguesas')) {
+            document.getElementById('modalExtras').innerHTML = `
+              <div class="mb-3">
+                <h6>Extras disponibles:</h6>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="extraQueso">
+                  <label class="form-check-label" for="extraQueso">Queso extra (+$1.000)</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="extraTocino">
+                  <label class="form-check-label" for="extraTocino">Tocino extra (+$1.800)</label>
+                </div>
+              </div>
+            `;
+          } else {
+            document.getElementById('modalExtras').innerHTML = '';
+          }
+
+          // configurar botón de agregar (sobrescribe onclick para evitar múltiples handlers)
+          const addToCartBtn = modalElement.querySelector('.btn-primary');
+          if (addToCartBtn) {
+            addToCartBtn.onclick = function () {
+              addToCart(title, parsePrice(price));
             };
+          }
 
-            // Ejecutar la limpieza inmediatamente y después de un delay
-            cleanUpModal();
-            setTimeout(cleanUpModal, 150);
-            setTimeout(cleanUpModal, 300);
-
-            // Agregar producto al carrito
-            cart.push({
-                name: productName,
-                price: productPrice
-            });
-
-            updateOrderSummary();
-        }
-
-        // Función para actualizar el resumen
-        function updateOrderSummary() {
-            const orderBar = document.getElementById('order-summary-bar');
-            const leftColumn = orderBar.querySelector('.col-md-8');
-            
-            if (cart.length === 0) {
-                orderBar.classList.add('hidden');
-                return;
-            }
-
-            // Calcular subtotal y contar productos por tipo
-            let subtotal = 0;
-            const productCount = {};
-            
-            cart.forEach(item => {
-                subtotal += item.price;
-                productCount[item.name] = (productCount[item.name] || 0) + 1;
-            });
-
-            // Crear texto con los productos
-            let productsText = '';
-            for (const [productName, quantity] of Object.entries(productCount)) {
-                productsText += `${quantity}x ${productName}, `;
-            }
-            // Quitar la última coma
-            productsText = productsText.slice(0, -2);
-
-            // Mostrar productos en el lado izquierdo
-            leftColumn.innerHTML = `<strong>${productsText}</strong> | Subtotal: ${formatPrice(subtotal)}`;
-            
-            orderBar.classList.remove('hidden');
-        }
-
-        // Función para ir al carrito
-        document.getElementById('go-to-cart-btn').addEventListener('click', function() {
-            alert(`Redirigiendo al carrito con ${cart.length} productos`);
-            console.log('Productos en el carrito:', cart);
+          bsModal.show();
         });
 
-        // Configurar el modal para todos los productos
-        productCards.forEach(card => {
-            card.addEventListener('click', function() {
-                if (this.classList.contains('unavailable-product')) return;
-                
-                const title = this.querySelector('.card-title').textContent;
-                const price = this.querySelector('.card-text').textContent;
-                const image = this.querySelector('.card-img-top').src;
-                const ingredientsOverlay = this.querySelector('.ingredients-overlay');
-                const ingredientsHTML = ingredientsOverlay.innerHTML;
-                
-                // Quitar 'Ver producto'
-                const ingredients = ingredientsHTML.replace('<div class="view-product">Ver producto</div>', '');
-
-                // Llenar el modal con los datos
-                document.getElementById('modalTitle').textContent = title;
-                document.getElementById('modalPrice').textContent = price;
-                document.getElementById('modalImage').src = image;
-                document.getElementById('modalIngredients').innerHTML = ingredients;
-
-                // Extras
-                if (this.classList.contains('hamburguesas')) {
-                    document.getElementById('modalExtras').innerHTML = `
-                        <div class="mb-3">
-                            <h6>Extras disponibles:</h6>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="extraQueso">
-                                <label class="form-check-label" for="extraQueso">Queso extra (+$1.000)</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="extraTocino">
-                                <label class="form-check-label" for="extraTocino">Tocino extra (+$1.800)</label>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    document.getElementById('modalExtras').innerHTML = '';
-                }
-
-                // Configurar el botón de agregar al carrito
-                const modalBody = document.querySelector('#productModal .modal-body');
-                let addToCartBtn = modalBody.querySelector('.btn-primary');
-                
-                if (!addToCartBtn) {
-                    addToCartBtn = document.createElement('button');
-                    addToCartBtn.className = 'btn btn-primary w-100 mt-3';
-                    modalBody.querySelector('.col-md-6').appendChild(addToCartBtn);
-                }
-                
-                addToCartBtn.textContent = 'Agregar al carrito';
-                addToCartBtn.onclick = function() {
-                    addToCart(title, parsePrice(price));
-                };
-
-                // Mostrar el modal
-                const modal = new bootstrap.Modal(document.getElementById('productModal'));
-                modal.show();
-            });
+        // también permitir abrir con tecla Enter (accesibilidad)
+        card.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.click();
+          }
         });
+      });
 
-        // Filtrado de productos (mantener este código al final)
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const category = button.getAttribute('data-category');
+      /* --------------- BOTÓN IR AL CARRITO --------------- */
+      goToCartBtn.addEventListener('click', function () {
+        alert(`Redirigiendo al carrito con ${cart.length} productos`);
+        console.log('Productos en el carrito:', cart);
+      });
 
-                // Cambiar el botón activo
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-
-                let visibleProducts = 0;
-
-                // Mostrar/ocultar productos
-                productCards.forEach(card => {
-                    if (category === 'todos' || card.classList.contains(category)) {
-                        card.classList.remove('hidden');
-                        visibleProducts++;
-                    } else {
-                        card.classList.add('hidden');
-                    }
-                });
-
-                // Mostrar u ocultar el mensaje según si hay productos visibles
-                if (visibleProducts === 0) {
-                    noProductsMessage.classList.remove('hidden');
-                    productsContainer.classList.add('hidden');
-                } else {
-                    noProductsMessage.classList.add('hidden');
-                    productsContainer.classList.remove('hidden');
-                }
-            });
-        });
+    }); // DOMContentLoaded
     </script>
-
 </body>
 </html>
