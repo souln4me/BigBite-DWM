@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Big Bite - Iniciar Sesión</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+        .logo {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+        }
+        .btn-login:hover {
+            opacity: 0.9;
+            color: white;
+        }
+        .dashboard-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .feature-card {
+            border: none;
+            border-radius: 10px;
+            transition: transform 0.2s;
+            height: 100%;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        .feature-admin {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+        }
+        .feature-manager {
+            background: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%);
+            color: black;
+        }
+        .feature-employee {
+            background: linear-gradient(135deg, #48dbfb 0%, #0abde3 100%);
+            color: white;
+        }
+        .feature-cook {
+            background: linear-gradient(135deg, #1dd1a1 0%, #10ac84 100%);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Página de Login -->
+    <div id="loginPage">
+        <div class="login-card p-4">
+            <div class="logo">
+                🍔
+            </div>
+            <h2 class="text-center mb-4">Big Bite</h2>
+            <h4 class="text-center mb-4 text-muted">Iniciar Sesión</h4>
+            <p class="text-center text-muted mb-4">Ingresa tus credenciales</p>
+            
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label class="form-label">Usuario</label>
+                    <input type="text" class="form-control" id="usuario" placeholder="ejemplo@bigbite.com" required>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-login w-100 mb-3">
+                    Iniciar Sesión
+                </button>
+            </form>
+            
+            <div class="text-center">
+                <small class="text-muted">Sistema de empleados</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Principal (Oculto inicialmente) -->
+    <div id="dashboardPage" class="container-fluid d-none">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 bg-dark text-white min-vh-100">
+                <div class="p-3">
+                    <h4 class="text-center mb-4">🍔 Big Bite</h4>
+                    <div class="text-center mb-4">
+                        <div class="bg-light rounded-circle mx-auto d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <span style="font-size: 1.5rem;">👤</span>
+                        </div>
+                        <h6 class="mt-2 mb-1" id="userName">Usuario</h6>
+                        <small class="text-muted" id="userRole">Rol</small>
+                    </div>
+                    
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#" onclick="mostrarDashboard()">
+                                📊 Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white-50" href="#" onclick="intentarAcceso('gestionPedidos')">
+                                ⏰ Gestionar Pedidos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white-50" href="#" onclick="intentarAcceso('gestionInventario')">
+                                📦 Gestionar Inventario
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white-50" href="#" onclick="intentarAcceso('verReportes')">
+                                📈 Ver Reportes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white-50" href="#" onclick="intentarAcceso('gestionEmpleados')">
+                                👥 Gestionar Empleados
+                            </a>
+                        </li>
+                        <li class="nav-item mt-4">
+                            <a class="nav-link text-warning" href="#" onclick="cerrarSesion()">
+                                🚪 Cerrar Sesión
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-10 bg-light min-vh-100 p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 id="dashboardTitle">Dashboard Principal</h3>
+                    <div class="text-end">
+                        <small class="text-muted" id="fechaHora"></small>
+                    </div>
+                </div>
+
+                <!-- Tarjetas de Funcionalidades -->
+                <div class="row" id="dashboardContent">
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card feature-card feature-admin">
+                            <div class="card-body text-center p-4">
+                                <div style="font-size: 3rem;">⏰</div>
+                                <h5>Gestionar Pedidos</h5>
+                                <p class="mb-0">Control de órdenes en tiempo real</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card feature-card feature-manager">
+                            <div class="card-body text-center p-4">
+                                <div style="font-size: 3rem;">📦</div>
+                                <h5>Gestionar Inventario</h5>
+                                <p class="mb-0">Control de stock y productos</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card feature-card feature-employee">
+                            <div class="card-body text-center p-4">
+                                <div style="font-size: 3rem;">📈</div>
+                                <h5>Ver Reportes</h5>
+                                <p class="mb-0">Reportes de ventas y métricas</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card feature-card feature-cook">
+                            <div class="card-body text-center p-4">
+                                <div style="font-size: 3rem;">👥</div>
+                                <h5>Gestionar Empleados</h5>
+                                <p class="mb-0">Administración de personal</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección de Pedidos del Día -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card dashboard-card">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">Pedidos del Día</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th># Pedido</th>
+                                                <th>Cliente</th>
+                                                <th>Estado</th>
+                                                <th>Total</th>
+                                                <th>Tiempo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>#BGT-789</td>
+                                                <td>Carlos López</td>
+                                                <td><span class="badge bg-warning">En preparación</span></td>
+                                                <td>$24,000</td>
+                                                <td>15 min</td>
+                                            </tr>
+                                            <tr>
+                                                <td>#BGT-788</td>
+                                                <td>Ana Silva</td>
+                                                <td><span class="badge bg-success">Listo</span></td>
+                                                <td>$18,000</td>
+                                                <td>5 min</td>
+                                            </tr>
+                                            <tr>
+                                                <td>#BGT-787</td>
+                                                <td>Roberto Sánchez</td>
+                                                <td><span class="badge bg-primary">En camino</span></td>
+                                                <td>$35,000</td>
+                                                <td>20 min</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modales de Alerta -->
+    <div class="modal fade" id="modalAlerta" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Inicio de sesión</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="mensajeAlerta"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let intentosFallidos = 0;
+        const MAX_INTENTOS = 3;
+        let usuarioBloqueado = false;
+
+        // Base de datos simulada de usuarios
+        const usuarios = {
+            'admin@bigbite.com': { password: 'admin123', rol: 'Administrador', nombre: 'María González' },
+            'cocina@bigbite.com': { password: 'cocina123', rol: 'Cocina', nombre: 'Carlos López' },
+            'mesero@bigbite.com': { password: 'mesero123', rol: 'Mesero', nombre: 'Ana Silva' },
+            'gerente@bigbite.com': { password: 'gerente123', rol: 'Gerente', nombre: 'Roberto Sánchez' }
+        };
+
+        // Permisos por rol
+        const permisos = {
+            'Administrador': ['gestionPedidos', 'gestionInventario', 'verReportes', 'gestionEmpleados'],
+            'Gerente': ['gestionPedidos', 'gestionInventario', 'verReportes'],
+            'Cocina': ['gestionPedidos'],
+            'Mesero': ['gestionPedidos']
+        };
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (usuarioBloqueado) {
+                mostrarAlerta('Usuario bloqueado temporalmente');
+                return;
+            }
+
+            const usuario = document.getElementById('usuario').value;
+            const password = document.getElementById('password').value;
+
+            // Escenario 1: Inicio de sesión exitoso
+            if (usuarios[usuario] && usuarios[usuario].password === password) {
+                intentosFallidos = 0;
+                iniciarSesion(usuario, usuarios[usuario]);
+            } 
+            // Escenario 2: Inicio de sesión fallido
+            else {
+                intentosFallidos++;
+                
+                // Escenario 4: Bloqueo temporal por múltiples intentos
+                if (intentosFallidos >= MAX_INTENTOS) {
+                    usuarioBloqueado = true;
+                    mostrarAlerta('Usuario bloqueado temporalmente');
+                } else {
+                    mostrarAlerta('Usuario o contraseña incorrectos');
+                }
+            }
+        });
+
+        function iniciarSesion(usuario, datosUsuario) {
+            document.getElementById('loginPage').classList.add('d-none');
+            document.getElementById('dashboardPage').classList.remove('d-none');
+            
+            document.getElementById('userName').textContent = datosUsuario.nombre;
+            document.getElementById('userRole').textContent = datosUsuario.rol;
+            document.getElementById('dashboardTitle').textContent = `Dashboard - ${datosUsuario.rol}`;
+            
+            actualizarFechaHora();
+            setInterval(actualizarFechaHora, 60000);
+        }
+
+        function intentarAcceso(funcionalidad) {
+            const usuarioActual = document.getElementById('userName').textContent;
+            const rolActual = document.getElementById('userRole').textContent;
+            
+            // Escenario 3: Acceso denegado a función fuera de rol
+            if (!permisos[rolActual] || !permisos[rolActual].includes(funcionalidad)) {
+                mostrarAlerta('Acceso denegado por rol');
+                return;
+            }
+            
+            // Aquí iría la lógica para acceder a la funcionalidad permitida
+            alert(`Accediendo a: ${funcionalidad} (Permitido para ${rolActual})`);
+        }
+
+        function mostrarAlerta(mensaje) {
+            document.getElementById('mensajeAlerta').textContent = mensaje;
+            const modal = new bootstrap.Modal(document.getElementById('modalAlerta'));
+            modal.show();
+        }
+
+        function cerrarSesion() {
+            document.getElementById('dashboardPage').classList.add('d-none');
+            document.getElementById('loginPage').classList.remove('d-none');
+            document.getElementById('loginForm').reset();
+            intentosFallidos = 0;
+            usuarioBloqueado = false;
+        }
+
+        function actualizarFechaHora() {
+            const ahora = new Date();
+            document.getElementById('fechaHora').textContent = 
+                ahora.toLocaleDateString('es-ES') + ' ' + 
+                ahora.toLocaleTimeString('es-ES');
+        }
+
+        function mostrarDashboard() {
+            // Lógica para mostrar el dashboard principal
+            alert('Mostrando dashboard principal');
+        }
+
+        // Simulación de escenarios Gherkin
+        function simularEscenarios() {
+            console.log('=== Escenarios Gherkin B-23 ===');
+            console.log('1. Inicio de sesión exitoso');
+            console.log('2. Inicio de sesión fallido');
+            console.log('3. Acceso denegado por rol');
+            console.log('4. Bloqueo temporal por intentos');
+        }
+
+        // Inicializar
+        simularEscenarios();
+    </script>
+</body>
+</html>
