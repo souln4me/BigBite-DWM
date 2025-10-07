@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Big Bite - Hamburguesas Gourmet</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="img\icon.png">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Work+Sans:400,600');
+
+    body {
+      margin: 0;
+      background: #f5f5f5;
+      font-family: 'Work Sans', sans-serif;
+      font-weight: 800;
+    }
+
+    /* NAVBAR */
+    nav {
+      width: 100%;
+      background-color: #222; /* fondo de la navbar */
+      height: 80px;
+    }
+
+    nav .container {
+      display: flex;
+      justify-content: space-between; /* logo a la izquierda, links a la derecha */
+      align-items: center;
+      padding: 0px 20px;
+      height: 100%;
+    }
+
+    /* Logo */
+    .logo a {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .logo img {
+      height: 80px; /* ajusta al alto del navbar */
+      object-fit: contain;
+      margin-right: 15px;
+      display: block;
+    }
+
+    .logo span {
+      font-size: 32px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Links */
+    nav ul {
+      display: flex;
+      gap: 50px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    nav li {
+      position: relative;
+    }
+
+    nav a.active {
+      color: #fff;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-size: 14px;
+      padding: 5px 0;
+      transition: color 0.2s;
+    }
+
+    nav a {
+      color: #bdbdbd;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-size: 14px;
+      padding: 5px 0;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: #fff;
+    }
+
+    nav a::before {
+      content: '';
+      display: block;
+      height: 3px;
+      background-color: #555;
+      position: absolute;
+      top: -5px;
+      width: 0%;
+      transition: width 0.25s ease-in-out;
+    }
+
+    nav a:hover::before {
+      width: 100%;
+    }
+
+    /* Opcional: responsive para móviles */
+    @media (max-width: 768px) {
+      nav .container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      nav ul {
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+      }
+      .logo a {
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="container">
+      <h1 class="logo">
+        <a href="inicio.html">
+          <img src="img\icon.png" alt="Logo Big Bite">
+          <span>BIG BITE</span>
+        </a>
+      </h1>
+      <ul>
+        <li><a href="inicio.html">Inicio</a></li>
+        <li><a href="productos.html">Productos</a></li>
+        <li><a href="contacto.html" class="active">Contacto</a></li>
+        <li><a href="perfil_usuario.html">Mi perfil</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="text-center" style="margin-top: 50px;">
+    <h1>Contacto</h1>
+  </div>
+
+</body>
+</html>
