@@ -104,3 +104,21 @@ nav a:hover::before {
     margin-bottom: 10px;
   }
 }
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999; /* se mantiene encima de todo */
+}
+
+body {
+    padding-top: 80px; /* espacio para la barra de navegación */
+}
+
+html {
+  overflow-y: scroll; /* Siempre mostrar la barra de desplazamiento vertical */
+}
+
+
