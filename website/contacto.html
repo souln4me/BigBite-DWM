@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,8 +17,62 @@
   <link rel="stylesheet" href="css/navbar.css">
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
   <div id="navbar-placeholder"></div>
+
+  <main class="flex-grow-1">
+    <h1 class="text-center mb-4 mt-4">Contacto</h1>
+    <hr class="mb-4">
+    <div class="container mt-5 mb-5">
+      <div class="row g-4">
+        <!-- Formulario -->
+        <div class="col-lg-7">
+          <div class="card p-4 shadow" style="border-radius: 40px; background-color: #fff9f2;">
+            <h5 class="mb-4">Envíanos un mensaje</h5>
+            <form>
+              <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre completo:</label>
+                <input type="text" class="form-control" id="nombre" placeholder="Tu nombre">
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Correo electrónico:</label>
+                <input type="email" class="form-control" id="email" placeholder="ejemplo@correo.com">
+              </div>
+              <div class="mb-3">
+                <label for="asunto" class="form-label">Asunto:</label>
+                <input type="text" class="form-control" id="asunto" placeholder="Motivo de tu mensaje">
+              </div>
+              <div class="mb-4">
+                <label for="mensaje" class="form-label">Mensaje:</label>
+                <textarea class="form-control" id="mensaje" rows="5"
+                  placeholder="Escribe tu mensaje aquí..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-perfil">Enviar mensaje</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Información de contacto -->
+        <div class="col-lg-5">
+          <div class="card p-4 shadow" style="border-radius: 40px; background-color: #fff9f2;">
+            <h5 class="mb-4">Nuestra información</h5>
+            <p><strong>Teléfono:</strong> +56 9 1234 5678</p>
+            <p><strong>Email:</strong> contacto@bigbite.cl</p>
+            <p><strong>Dirección:</strong> Calle Principal 123, Santiago, Chile</p>
+            <p><strong>Redes sociales:</strong></p>
+            <div class="d-flex gap-3">
+              <a href="#" class="btn btn-warning btn-sm">Facebook</a>
+              <a href="#" class="btn btn-warning btn-sm">Instagram</a>
+              <a href="#" class="btn btn-warning btn-sm">TikTok</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+  <div id="footer-placeholder"></div>
 
   <script>
     // Cargar navbar
@@ -36,7 +91,27 @@
             link.classList.add("active");
           }
         });
+        // Usuario registrado?
+        const perfilLink = document.getElementById('perfil-link');
+
+        perfilLink.addEventListener('click', (e) => {
+          const usuarioLogueado = localStorage.getItem('usuarioLogueado'); // ejemplo
+
+          if (!usuarioLogueado) {
+            // No está logueado → redirigir a registro
+            e.preventDefault();
+            window.location.href = 'register.html';
+          }
+          // Si está logueado, deja que vaya a perfil_usuario.html
+        });
+      });
+
+    fetch("components/footer.html")
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("footer-placeholder").innerHTML = data;
       });
   </script>
 </body>
+
 </html>

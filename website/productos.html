@@ -16,198 +16,307 @@
   <link rel="stylesheet" href="css/productos.css">
   <link rel="stylesheet" href="css/navbar.css">
 </head>
-<body>
-  <div id="navbar-placeholder"></div>
+<body class="d-flex flex-column min-vh-100">
+    <div id="navbar-placeholder"></div>
 
-    <!-- Contenido principal -->
-    <div class="container mt-4">
-        <h1 class="text-center mb-4">Nuestros Productos</h1>
+    <main class="flex-grow-1">
+        <!-- Contenido principal -->
+        <div class="container mt-4">
+            <h1 class="text-center mb-4">Nuestros Productos</h1>
 
-        <!-- Filtros -->
-        <div class="mb-4 text-center">
-            <h5 class="mb-3">Filtrar por categoría:</h5>
-            <div class="d-flex flex-wrap justify-content-center gap-2 mt-2">
-                <button class="btn btn-outline-dark filter-btn active" data-category="todos">Todos</button>
-                <button class="btn btn-outline-dark filter-btn" data-category="combos">Combos</button>
-                <button class="btn btn-outline-dark filter-btn" data-category="hamburguesas">Hamburguesas</button>
-                <button class="btn btn-outline-dark filter-btn" data-category="especialidades">Especialidades</button>
-                <button class="btn btn-outline-dark filter-btn" data-category="bebidas">Bebidas</button>
-                <button class="btn btn-outline-dark filter-btn" data-category="otros">Otros</button>
+            <!-- Filtros -->
+            <div class="mb-4 text-center">
+                <h5 class="mb-3">Filtrar por categoría:</h5>
+                <div class="d-flex flex-wrap justify-content-center gap-2 mt-2">
+                    <button class="btn btn-outline-dark filter-btn active" data-category="todos">Todos</button>
+                    <button class="btn btn-outline-dark filter-btn" data-category="combos">Combos</button>
+                    <button class="btn btn-outline-dark filter-btn" data-category="hamburguesas">Hamburguesas</button>
+                    <button class="btn btn-outline-dark filter-btn" data-category="especialidades">Especialidades</button>
+                    <button class="btn btn-outline-dark filter-btn" data-category="bebidas">Bebidas</button>
+                    <button class="btn btn-outline-dark filter-btn" data-category="otros">Otros</button>
+                </div>
+            </div>
+
+            <hr class="mb-4">
+
+            <div id="no-products-message" class="mt-5 text-center hidden">
+                <h4>No hay productos disponibles en esta categoría</h4>
+            </div>
+
+            <!-- Cards -->
+            <div class="row justify-content-center" id="products-container">
+                
+                <!-- Producto 1 -->
+                <div class="col-md-4 col-sm-6 mb-4 product-card hamburguesas">
+                    <div class="card h-100 text-center">
+                        <div class="image-container">
+                            <img src="img/productos/Hamburguesa Clásica.jpeg" class="card-img-top" alt="Hamburguesa Clásica">
+                            <!-- Overlay de ingredientes (solo en la imagen) -->
+                            <div class="ingredients-overlay">
+                                <h6>Ingredientes:</h6>
+                                <div class="ingredients-list">
+                                    Pan brioche artesanal, Carne de res 150g, Queso cheddar, Lechuga fresca, Tomate, Salsa Big Bite
+                                </div>
+                                <div class="view-product">Ver producto</div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Hamburguesa Clásica</h5>
+                            <p class="card-text">$8.990</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 2 -->
+                <div class="col-md-4 col-sm-6 mb-4 product-card otros">
+                    <div class="card h-100 text-center">
+                        <div class="image-container">
+                            <img src="img/productos/Papas Fritas Medianas.jpeg" class="card-img-top" alt="Papas Fritas Medianas">
+                            <!-- Overlay de ingredientes (solo en la imagen) -->
+                            <div class="ingredients-overlay">
+                                <h6>Ingredientes:</h6>
+                                <div class="ingredients-list">
+                                    Papas seleccionadas, Aceite vegetal premium, Sal marina
+                                </div>
+                                <div class="view-product">Ver producto</div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Papas Fritas Medianas</h5>
+                            <p class="card-text">$5.990</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 3 -->
+                <div class="col-md-4 col-sm-6 mb-4 product-card combos unavailable-product">
+                    <div class="card h-100 text-center">
+                        <div class="image-container">
+                            <img src="img/productos/Combo Familiar.jpeg" class="card-img-top" alt="Combo Familiar">
+                            <div class="unavailable-overlay">No disponible</div>
+                            <!-- Overlay de ingredientes (solo en la imagen) -->
+                            <div class="ingredients-overlay">
+                                <h6>Combo incluye:</h6>
+                                <div class="ingredients-list">
+                                    4 Hamburguesas Clásicas + 2 Papas Fritas Grandes + 4 Bebidas 350cc + 4 Postres de la casa
+                                </div>
+                                <div class="view-product">Ver producto</div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title text-danger">Combo Familiar</h5>
+                            <p class="card-text text-decoration-line-through">$29.990</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 4 -->
+                <div class="col-md-4 col-sm-6 mb-4 product-card bebidas">
+                    <div class="card h-100 text-center">
+                        <div class="image-container">
+                            <img src="img/productos/CocaCola350cc.jpeg" class="card-img-top" alt="Coca Cola Original 350cc">
+                            <div class="ingredients-overlay">
+                                <h6>Información:</h6>
+                                <div class="ingredients-list">
+                                    Refresco de cola, Presentación: 350ml, Servida bien fría
+                                </div>
+                                <div class="view-product">Ver producto</div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Coca Cola Original 350cc</h5>
+                            <p class="card-text">$1.990</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 5 -->
+                <div class="col-md-4 col-sm-6 mb-4 product-card bebidas">
+                    <div class="card h-100 text-center">
+                        <div class="image-container">
+                            <img src="img/productos/SpriteZero350cc.jpeg" class="card-img-top" alt="Sprite Zero 350cc">
+                            <div class="ingredients-overlay">
+                                <h6>Información:</h6>
+                                <div class="ingredients-list">
+                                    Refresco de lima-limón, Cero azúcar, Presentación: 350ml, Servida bien fría
+                                </div>
+                                <div class="view-product">Ver producto</div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Sprite Zero 350cc</h5>
+                            <p class="card-text">$1.990</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 6 -->
+                <div class="col-md-4 col-sm-6 mb-4 product-card hamburguesas">
+                    <div class="card h-100 text-center">
+                        <div class="image-container">
+                            <img src="img/productos/Hamburguesa Italiana Gourmet.jpeg" class="card-img-top" alt="Hamburguesa Italiana Gourmet">
+                            <div class="ingredients-overlay">
+                                <h6>Ingredientes:</h6>
+                                <div class="ingredients-list">
+                                    Pan de hamburguesa, Carne picada de ternera 600g, Queso Mozzarella, Tomate, Albahaca, Tapenade, Rúcula
+                                </div>
+                                <div class="view-product">Ver producto</div>
+                            </div>  
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Hamburguesa Italiana Gourmet</h5>
+                            <p class="card-text">$12.900</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 7 -->
+                <div class="col-md-4 col-sm-6 mb-4 product-card otros">
+                    <div class="card h-100 text-center">
+                        <div class="image-container">
+                            <img src="img/productos/Empanaditas de Queso.jpeg" class="card-img-top" alt="Empanaditas de Queso">
+                            <div class="ingredients-overlay">
+                                <h6>Ingredientes:</h6>
+                                <div class="ingredients-list">
+                                    Masa artesanal, queso mantecoso, sal, aceite vegetal
+                                </div>
+                                <div class="view-product">Ver producto</div>
+                            </div>  
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Empanaditas de Queso</h5>
+                            <p class="card-text">$4.990</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 8 -->
+                <div class="col-md-4 col-sm-6 mb-4 product-card otros">
+                    <div class="card h-100 text-center">
+                        <div class="image-container">
+                            <img src="img/productos/Papas Fritas Grandes.jpeg" class="card-img-top" alt="Papas Fritas Grandes">
+                            <div class="ingredients-overlay">
+                                <h6>Ingredientes:</h6>
+                                <div class="ingredients-list">
+                                    Papas seleccionadas, Aceite vegetal premium, Sal marina
+                                </div>
+                                <div class="view-product">Ver producto</div>
+                            </div>  
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Papas Fritas Grandes</h5>
+                            <p class="card-text">$7.990</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 9 -->
+                <div class="col-md-4 col-sm-6 mb-4 product-card combos">
+                    <div class="card h-100 text-center">
+                        <div class="image-container">
+                            <img src="img/productos/Combo Clásico.jpg" class="card-img-top" alt="Combo Clásico">
+                            <div class="ingredients-overlay">
+                                <h6>Combo incluye:</h6>
+                                <div class="ingredients-list">
+                                    Hamburguesa Clásica + Papas Fritas Medianas + Coca Cola Original 350cc
+                                </div>
+                                <div class="view-product">Ver producto</div>
+                            </div>  
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Combo Clásico</h5>
+                            <p class="card-text card-price">
+                            <span class="old-price">$14.990</span>
+                            <span class="new-price">$7.990</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 10 -->
+                <div class="col-md-4 col-sm-6 mb-4 product-card combos">
+                    <div class="card h-100 text-center">
+                        <div class="image-container">
+                            <img src="img/productos/Combo Papas Bebida.jpeg" class="card-img-top" alt="Combo Papas Bebida">
+                            <div class="ingredients-overlay">
+                                <h6>Combo incluye:</h6>
+                                <div class="ingredients-list">
+                                    Papas Fritas Medianas + Bebida 350cc a elección
+                                </div>
+                                <div class="view-product">Ver producto</div>
+                            </div>  
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Combo Papas + Bebida</h5>
+                            <p class="card-text">$8.990</p>
+                    </div>
+                </div>
+                </div>
+
+                <!-- Producto 11 -->
+                <div class="col-md-4 col-sm-6 mb-4 product-card combos">
+                    <div class="card h-100 text-center">
+                        <div class="image-container">
+                            <img src="img/productos/Combo BBQ.jpg" class="card-img-top" alt="Combo BBQ">
+                            <div class="ingredients-overlay">
+                                <h6>Combo incluye:</h6>
+                                <div class="ingredients-list">
+                                    Hamburguesa BBQ + Papas Fritas Medianas + Bebida 350cc a elección
+                                </div>
+                                <div class="view-product">Ver producto</div>
+                            </div>  
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Combo BBQ</h5>
+                            <p class="card-text">$15.290</p>
+                    </div>
+                </div>
+                </div>
+
+                <!-- Producto 12 -->
+                <div class="col-md-4 col-sm-6 mb-4 product-card combos">
+                    <div class="card h-100 text-center">
+                        <div class="image-container">
+                            <img src="img/productos/Combo Empanaditas Papas.jpg" class="card-img-top" alt="Combo Empanaditas Papas">
+                            <div class="ingredients-overlay">
+                                <h6>Combo incluye:</h6>
+                                <div class="ingredients-list">
+                                    Papas Fritas Grandes + Empanaditas de Queso
+                                </div>
+                                <div class="view-product">Ver producto</div>
+                            </div>  
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Combo Empanaditas + Papas</h5>
+                            <p class="card-text">$10.990</p>
+                    </div>
+                </div>
+                </div>
+
+                <!-- Producto 13 -->
+                <div class="col-md-4 col-sm-6 mb-4 product-card hamburguesas">
+                    <div class="card h-100 text-center">
+                        <div class="image-container">
+                            <img src="img/productos/Hamburguesa BBQ.jpeg" class="card-img-top" alt="Hamburguesa BBQ">
+                            <div class="ingredients-overlay">
+                                <h6>Ingredientes:</h6>
+                                <div class="ingredients-list">
+                                    Pan brioche artesanal, Carne de res 150g, Queso cheddar, Tomate, Salsa BBQ casera
+                                </div>
+                                <div class="view-product">Ver producto</div>
+                            </div>  
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Hamburguesa BBQ</h5>
+                            <p class="card-text">$8.990</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+    </main>
 
-        <div id="no-products-message" class="mt-5 text-center hidden">
-            <h4>No hay productos disponibles en esta categoría</h4>
-        </div>
-
-        <!-- Cards -->
-        <div class="row justify-content-center" id="products-container">
-            
-            <!-- Producto 1 -->
-            <div class="col-md-4 col-sm-6 mb-4 product-card hamburguesas">
-                <div class="card h-100 text-center">
-                    <div class="image-container">
-                        <img src="img/productos/Hamburguesa Clásica.jpeg" class="card-img-top" alt="Hamburguesa Clásica">
-                        <!-- Overlay de ingredientes (solo en la imagen) -->
-                        <div class="ingredients-overlay">
-                            <h6>Ingredientes:</h6>
-                            <div class="ingredients-list">
-                                Pan brioche artesanal, Carne de res 150g, Queso cheddar, Lechuga fresca, Tomate, Salsa Big Bite
-                            </div>
-                            <div class="view-product">Ver producto</div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Hamburguesa Clásica</h5>
-                        <p class="card-text">$8.990</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 2 -->
-            <div class="col-md-4 col-sm-6 mb-4 product-card otros">
-                <div class="card h-100 text-center">
-                    <div class="image-container">
-                        <img src="img/productos/Papas Fritas Medianas.jpeg" class="card-img-top" alt="Papas Fritas Medianas">
-                        <!-- Overlay de ingredientes (solo en la imagen) -->
-                        <div class="ingredients-overlay">
-                            <h6>Ingredientes:</h6>
-                            <div class="ingredients-list">
-                                Papas seleccionadas, Aceite vegetal premium, Sal marina
-                            </div>
-                            <div class="view-product">Ver producto</div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Papas Fritas Medianas</h5>
-                        <p class="card-text">$5.990</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 3 -->
-            <div class="col-md-4 col-sm-6 mb-4 product-card combos unavailable-product">
-                <div class="card h-100 text-center">
-                    <div class="image-container">
-                        <img src="img/productos/Combo Familiar.jpeg" class="card-img-top" alt="Combo Familiar">
-                        <div class="unavailable-overlay">No disponible</div>
-                        <!-- Overlay de ingredientes (solo en la imagen) -->
-                        <div class="ingredients-overlay">
-                            <h6>Combo incluye:</h6>
-                            <div class="ingredients-list">
-                                4 Hamburguesas Clásicas, 2 Papas Fritas Grandes, 4 Bebidas 350cc, 4 Postres de la casa
-                            </div>
-                            <div class="view-product">Ver producto</div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title text-danger">Combo Familiar</h5>
-                        <p class="card-text text-decoration-line-through">$29.990</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 4 -->
-            <div class="col-md-4 col-sm-6 mb-4 product-card bebidas">
-                <div class="card h-100 text-center">
-                    <div class="image-container">
-                        <img src="img/productos/CocaCola350cc.jpeg" class="card-img-top" alt="Coca Cola Original 350cc">
-                        <div class="ingredients-overlay">
-                            <h6>Información:</h6>
-                            <div class="ingredients-list">
-                                Refresco de cola, Presentación: 350ml, Servida bien fría
-                            </div>
-                            <div class="view-product">Ver producto</div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Coca Cola Original 350cc</h5>
-                        <p class="card-text">$1.990</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 5 -->
-            <div class="col-md-4 col-sm-6 mb-4 product-card bebidas">
-                <div class="card h-100 text-center">
-                    <div class="image-container">
-                        <img src="img/productos/SpriteZero350cc.jpeg" class="card-img-top" alt="Sprite Zero 350cc">
-                        <div class="ingredients-overlay">
-                            <h6>Información:</h6>
-                            <div class="ingredients-list">
-                                Refresco de lima-limón, Cero azúcar, Presentación: 350ml, Servida bien fría
-                            </div>
-                            <div class="view-product">Ver producto</div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Sprite Zero 350cc</h5>
-                        <p class="card-text">$1.990</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 6 -->
-            <div class="col-md-4 col-sm-6 mb-4 product-card hamburguesas">
-                <div class="card h-100 text-center">
-                    <div class="image-container">
-                        <img src="img/productos/Hamburguesa Italiana Gourmet.jpeg" class="card-img-top" alt="Hamburguesa Italiana Gourmet">
-                        <div class="ingredients-overlay">
-                            <h6>Ingredientes:</h6>
-                            <div class="ingredients-list">
-                                Pan de hamburguesa, Carne picada de ternera 600g, Queso Mozzarella, Tomate, Albahaca, Tapenade, Rúcula
-                            </div>
-                            <div class="view-product">Ver producto</div>
-                        </div>  
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Hamburguesa Italiana Gourmet</h5>
-                        <p class="card-text">$12.900</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 7 -->
-            <div class="col-md-4 col-sm-6 mb-4 product-card otros">
-                <div class="card h-100 text-center">
-                    <div class="image-container">
-                        <img src="img/productos/Empanaditas de Queso.jpeg" class="card-img-top" alt="Empanaditas de Queso">
-                        <div class="ingredients-overlay">
-                            <h6>Ingredientes:</h6>
-                            <div class="ingredients-list">
-                                Masa artesanal, queso mantecoso, sal, aceite vegetal
-                            </div>
-                            <div class="view-product">Ver producto</div>
-                        </div>  
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Empanaditas de Queso</h5>
-                        <p class="card-text">$4.990</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 8 -->
-            <div class="col-md-4 col-sm-6 mb-4 product-card otros">
-                <div class="card h-100 text-center">
-                    <div class="image-container">
-                        <img src="img/productos/Papas Fritas Grandes.jpeg" class="card-img-top" alt="Papas Fritas Grandes">
-                        <div class="ingredients-overlay">
-                            <h6>Ingredientes:</h6>
-                            <div class="ingredients-list">
-                                Papas seleccionadas, Aceite vegetal premium, Sal marina
-                            </div>
-                            <div class="view-product">Ver producto</div>
-                        </div>  
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Papas Fritas Grandes</h5>
-                        <p class="card-text">$7.990</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div id="footer-placeholder"></div>
 
     <!-- Barra de Resumen de Pedido -->
     <div id="order-summary-bar" class="hidden">
@@ -218,7 +327,7 @@
                 </div>
                 <div class="col-md-4 text-end">
                     <button id="go-to-cart-btn" class="btn btn-success btn-lg">
-                        Ir al Carrito
+                        🛒 Ir al Carrito
                     </button>
                 </div>
             </div>
@@ -239,18 +348,18 @@
                         <div class="col-md-6 p-4">
                             <button type="button" class="btn-close float-end" data-bs-dismiss="modal"></button>
                             <h3 id="modalTitle"></h3>
-                            <h4 id="modalPrice" class="text-primary"></h4>
+                            <h4 id="modalPrice" class="modal-price mb-2"></h4>
+                            <h6 class="availability mb-3">Disponible</h6>
                             <p id="modalIngredients"></p>
                             <!-- Aquí van los extras -->
                             <div id="modalExtras"></div>
-                            <button class="btn btn-primary w-100 mt-3">Agregar al carrito</button>
+                            <button class="btn btn-primary w-100 mt-3 cart-btn">Agregar al carrito</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Scripts -->
     <script>
     // Cargar navbar
@@ -269,7 +378,27 @@
             link.classList.add("active");
           }
         });
+        // Usuario registrado?
+        const perfilLink = document.getElementById('perfil-link');
+
+        perfilLink.addEventListener('click', (e) => {
+          const usuarioLogueado = localStorage.getItem('usuarioLogueado'); // ejemplo
+
+          if (!usuarioLogueado) {
+            // No está logueado → redirigir a registro
+            e.preventDefault();
+            window.location.href = 'register.html';
+          } 
+          // Si está logueado, deja que vaya a perfil_usuario.html
+        });
       });
+
+    fetch("components/footer.html")
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("footer-placeholder").innerHTML = data;
+     });
+
     document.addEventListener('DOMContentLoaded', function () {
       const filterButtons = document.querySelectorAll('.filter-btn');
       const productCards = document.querySelectorAll('.product-card');
@@ -401,7 +530,10 @@
 
           lastFocusedElement = this; // para devolver el foco a la card
           const title = this.querySelector('.card-title').textContent;
-          const price = this.querySelector('.card-text').textContent;
+          
+          const newPriceEl = this.querySelector('.new-price');
+          const price = newPriceEl ? newPriceEl.textContent : this.querySelector('.card-text').textContent;
+
           const image = this.querySelector('.card-img-top').src;
           const ingredientsOverlay = this.querySelector('.ingredients-overlay');
           const ingredientsHTML = ingredientsOverlay ? ingredientsOverlay.innerHTML : '';
@@ -456,7 +588,6 @@
         alert(`Redirigiendo al carrito con ${cart.length} productos`);
         console.log('Productos en el carrito:', cart);
       });
-
     }); // DOMContentLoaded
     </script>
 </body>

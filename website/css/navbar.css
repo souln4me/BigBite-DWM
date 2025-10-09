@@ -1,124 +1,214 @@
 @import url('https://fonts.googleapis.com/css?family=Work+Sans:400,600');
 
-nav {
+/* =========================
+   NAVBAR (archivo: navbar.css)
+   ========================= */
+
+/* NAVBAR principal */
+.navbar {
+  position: fixed;          /* barra fija arriba */
+  top: 0;
+  left: 0;
+  right: 0;
   width: 100%;
   background-color: #222;
-  height: 80px;
   font-family: 'Work Sans', sans-serif;
   font-weight: 800;
+  height: 80px;            /* altura en desktop */
+  z-index: 1100;
+  padding: 0;              /* .container controla el padding interno */
+  display: flex;
+  align-items: center;
 }
 
-nav .container {
+/* Deja espacio para la navbar fija */
+body {
+  padding-top: 80px;       /* debe coincidir con .navbar height */
+}
+
+/* Contenedor interno */
+.navbar .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px 20px;
+  padding: 0 20px;
   height: 100%;
 }
 
-/* Logo */
-.logo a {
+/* Logo / marca */
+.logo, .navbar-brand {
   display: flex;
   align-items: center;
-  height: 100%;
   text-decoration: none;
   color: #fff;
 }
-
+.navbar-brand-img,
 .logo img {
-  height: 80px;
+  height: 56px;            /* evita romper la altura de la navbar */
   object-fit: contain;
-  margin-right: 15px;
   display: block;
+  margin-right: 12px;
 }
-
+.brand-text,
 .logo span {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 800;
-  display: flex;
-  align-items: center;
+  color: #fff;
+  letter-spacing: 1px;
+  line-height: 1;
 }
 
-/* Links */
-nav ul {
+/* NAV LINKS */
+.navbar-nav {
   display: flex;
-  gap: 50px;
+  gap: 42px;
+  align-items: center;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-nav li {
-  position: relative;
-}
-
-nav a {
+/* usa clases de bootstrap .nav-link pero con tu estilo */
+.navbar-nav .nav-link {
   color: #bdbdbd;
-  text-decoration: none;
   text-transform: uppercase;
   font-size: 14px;
-  padding: 5px 0;
-  transition: color 0.2s;
+  padding: 8px 0;
+  position: relative;
+  transition: color 0.18s ease;
 }
 
-nav a:hover {
+/* hover + active (mantén tu look) */
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
   color: #fff;
 }
 
-nav a.active {
-  color: #fff; 
-  text-decoration: none;
-  text-transform: uppercase;
-  font-size: 14px;
-  padding: 5px 0;
-  transition: color 0.2s;
-}
-
-nav a::before {
+/* línea animada encima del link */
+.navbar-nav .nav-link::before {
   content: '';
   display: block;
   height: 3px;
   background-color: #555;
   position: absolute;
-  top: -5px;
+  top: -6px;
+  left: 0;
   width: 0%;
   transition: width 0.25s ease-in-out;
 }
-
-nav a:hover::before {
+.navbar-nav .nav-link:hover::before,
+.navbar-nav .nav-link.active::before {
   width: 100%;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  nav .container {
-    flex-direction: column;
-    align-items: flex-start;
+/* =========================
+   HAMBURGER ICON (white SVG inline)
+   ========================= */
+
+/* botón toggler básico */
+.navbar-toggler {
+  border: none;
+  padding: 0.25rem 0.5rem;
+  background: transparent;
+}
+
+/* SVG inline para tener icono blanco consistente */
+.navbar-toggler-icon {
+  width: 30px;
+  height: 30px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='rgba(255,255,255,0.95)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/></svg>");
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+}
+
+/* opcional: borde sutil para mejorar contraste en móviles */
+.navbar-toggler {
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* =========================
+   COLLAPSE BACKGROUND (evita 'parpadeo' al abrir)
+   ========================= */
+
+/* Mantén el fondo del panel colapsable desde el inicio para que no "aparezca" con retraso */
+.navbar-collapse {
+  background-color: #222;
+  transition: height 0.18s ease, padding 0.18s ease;
+  border-radius: 30px;
+}
+
+/* Ajustes cuando está desplegado (clase .show que añade Bootstrap) */
+.navbar-collapse.collapse.show {
+  padding: 12px 16px;
+  border-radius: 30px;
+}
+
+/* Asegura que los links del collapse ocupen ancho completo en móvil */
+.navbar-collapse .navbar-nav {
+  align-items: center;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 992px) {
+  .navbar {
+    height: 64px;          /* altura en pantallas pequeñas */
   }
-  nav ul {
-    flex-direction: column;
-    gap: 15px;
+  body {
+    padding-top: 64px;
+  }
+  .brand-text, .logo span {
+    font-size: 22px;
+  }
+  .navbar-brand-img,
+  .logo img {
+    height: 48px;
+  }
+  .navbar-nav {
+    gap: 12px;
     width: 100%;
+    flex-direction: column;   /* links en columna cuando collapse está abierto */
   }
-  .logo a {
-    margin-bottom: 10px;
+  .navbar-nav .nav-link {
+    width: 100%;
+    padding: 10px 12px;
+  }
+
+  /* Hacemos que el collapse no opaque abruptamente: */
+  .navbar-collapse {
+    box-shadow: none;
   }
 }
 
-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 999; /* se mantiene encima de todo */
-}
+/* =========================
+   Pequeñas mejoras visuales
+   ========================= */
 
-body {
-    padding-top: 80px; /* espacio para la barra de navegación */
+.nav-link:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 html {
-  overflow-y: scroll; /* Siempre mostrar la barra de desplazamiento vertical */
+  overflow-y: scroll;    /* evita salto al abrir modal */
+  scrollbar-gutter: stable; /* evita salto al abrir modal */
 }
+
+/* evita salto al abrir modal */
+body.modal-open {
+  padding-right: 0 !important;
+}
+
+/* evitar que la navbar salte al abrir modal */
+body.modal-open .navbar {
+  padding-right: 0 !important;
+}
+
+
+
 
 

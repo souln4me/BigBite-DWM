@@ -1,0 +1,74 @@
+    .card {
+        border-radius: 40px !important;
+        padding: 30px;
+        height: 100%;
+        margin-bottom: 100px;
+        border: 1px solid dark !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25) !important;
+    }
+    /* Botones dentro de la card */
+    .btn-card-cancel {
+        background-color: #6c757d;
+        /* gris similar a Bootstrap secondary */
+        color: white;
+        font-weight: 600;
+        border-radius: 40px;
+        padding: 15px 45px;
+        border: none;
+        transition: 0.3s;
+    }
+
+    .btn-card-cancel:hover {
+        background-color: #5a6268;
+    }
+
+    .btn-card-save {
+        background-color: #ffc107;
+        /* amarillo similar a Bootstrap warning */
+        color: black;
+        font-weight: 600;
+        border-radius: 40px;
+        padding: 15px 45px;
+        border: none;
+        transition: 0.3s;
+    }
+
+    .btn-card-save:hover {
+        background-color: #e0a800;
+    }
+
+    /* Botones de la columna derecha */
+    .btn-perfil {
+        display: block;
+        width: 100%;
+        margin-bottom: 15px;
+        background-color: #ff8c42;
+        color: black;
+        font-weight: 600;
+        border: none;
+        border-radius: 40px;
+        padding: 20px 45px;
+        transition: 0.3s;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-perfil:hover {
+        background-color: #ff7b00;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn-perfil.active {
+        background-color: #ff7b00;
+        box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .card label {
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+
+    input {
+        border-radius: 12px;
+        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+    }

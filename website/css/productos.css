@@ -98,9 +98,61 @@
 }
 
 /* === Modal === */
-.modal-content {
-    border-radius: 30px;
+div.modal-content {
+    border-radius: 40px;
     overflow: hidden;
+}
+
+h4.modal-price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #28a745;
+}
+
+h6.availability {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #28a745;
+}
+
+button.btn-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 0, 0, 0.8);
+    opacity: 1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 16 16'%3E%3Cpath d='M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 16px;
+}
+
+button.cart-btn {
+    border-radius: 30px;
+    padding: 13px 13px;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    background-color: #ffc107;
+    color: black;
+    border-color: #ffc107;
+}
+
+button.cart-btn:hover {
+    background-color: #ecb100;
+    color: black;
+    transform: translateY(-2px);
+    border-color: #ecb100;
+}
+
+button.cart-btn:active, button.cart-btn:focus {
+    background-color: #ffc107 !important;
+    color: black !important;
+    transform: translateY(0);
+    border-color: #ffc107 !important;
 }
 
 /* === Contenedor principal === */
@@ -119,4 +171,28 @@
     padding: 15px;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
+}
+
+.card-price {
+  display: flex;
+  gap: 10px; /* espacio entre los precios */
+  justify-content: center; /* centra los precios en la card */
+  align-items: center;
+  margin: 0;
+}
+
+.card-price .old-price {
+    text-decoration: line-through;
+    margin-right: 10px;
+}
+
+.card-price .new-price {
+    font-weight: bold;
+    color: #28a745;
+}
+
+button.filter-btn {
+    height: 42px;
+    border-radius: 80px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
