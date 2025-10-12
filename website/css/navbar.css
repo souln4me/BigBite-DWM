@@ -182,6 +182,11 @@ body {
   .navbar-collapse {
     box-shadow: none;
   }
+
+  /* evitar que el carrito se superponga al toggler */
+  .navbar .navbar-cart {
+    right: 80px;
+  }
 }
 
 /* =========================
@@ -208,7 +213,26 @@ body.modal-open .navbar {
   padding-right: 0 !important;
 }
 
+.navbar .navbar-cart {
+  position: absolute;
+  right: 30px;
+  top: 50%; /* centra verticalmente */
+  transform: translateY(-50%); /* centra verticalmente */
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  padding-left: 25px; /* espacio entre línea y carrito */
+}
 
+.navbar .navbar-cart a {
+  color: #bdbdbd;
+  text-decoration: none; /* elimina subrayado */
+}
 
+.navbar .navbar-cart a:hover {
+  color: #fff;
+  transition: color 0.18s ease; /* transición suave al cambiar color */
+}
 
-
+/* hacer que el icono del carrito se ponga blanco al estar activo */
+.navbar .navbar-cart a.active {
+  color: #fff;
+}

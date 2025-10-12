@@ -32,7 +32,7 @@
         <div class="col-lg-8 mb-4 mt-4">
           <div class="card">
             <div class="container">
-              <h5 class="mb-5">Agrega información adicional:</h5>
+              <h5 class="mb-5">Información de la cuenta:</h5>
               <!-- Fila 1 -->
               <div class="row mb-4">
                 <div class="col-md-4">
@@ -69,22 +69,35 @@
             </div>
             <div class="row">
               <div class="col-6 text-start">
-                <button class="btn-card-cancel">Cancelar</button>
+                <button class="btn-card-cancel">
+                  <i class="bi bi-x-lg me-2"></i> Cancelar
+                </button>
               </div>
               <div class="col-6 text-end">
-                <button class="btn-card-save">Guardar cambios</button>
+                <button class="btn-card-save">
+                  <i class="bi bi-floppy me-2"></i> Guardar cambios
+                </button>
               </div>
             </div>
           </div>
         </div>
 
         <!-- CAMBIO: botones en col-4 a la derecha -->
-        <div class="col-lg-4 ps-5">
-          <button class="btn-perfil active mb-5 mt-5">Información personal</button>
-          <button class="btn-perfil mb-5">Mis pedidos</button>
-          <button class="btn-perfil mb-5">Cambiar contraseña</button>
-          <button class="btn-perfil mb-5">Cerrar sesión</button>
+        <div class="col-12 col-md-4 d-flex flex-column align-items-start mt-4 mt-md-5">
+          <button class="btn-perfil active">
+            <i class="bi bi-person me-2"></i> Información personal
+          </button>
+          <button class="btn-perfil">
+            <i class="bi bi-bag-check me-2"></i> Mis pedidos
+          </button>
+          <button class="btn-perfil">
+            <i class="bi bi-key me-2"></i> Cambiar contraseña
+          </button>
+          <button class="btn-perfil">
+            <i class="bi bi-box-arrow-right me-2"></i> Cerrar sesión
+          </button>
         </div>
+
       </div>
     </div>
   </main>
@@ -104,20 +117,31 @@
 
         links.forEach(link => {
           const href = link.getAttribute("href");
-          if (href === currentPage) {
+          if (href && currentPage.includes(href.replace('./', ''))) {
             link.classList.add("active");
           }
         });
+        // Usuario registrado?
+        const perfilLink = document.getElementById('perfil-link');
+
+        perfilLink.addEventListener('click', (e) => {
+          const usuarioLogueado = localStorage.getItem('usuarioLogueado'); // ejemplo
+
+          if (!usuarioLogueado) {
+            // No está logueado → redirigir a registro
+            e.preventDefault();
+            window.location.href = 'register.html';
+          }
+          // Si está logueado, deja que vaya a perfil_usuario.html
+        });
       });
 
-    // Cargar footer
     fetch("components/footer.html")
       .then(response => response.text())
       .then(data => {
         document.getElementById("footer-placeholder").innerHTML = data;
-      })
+      });
   </script>
 </body>
 
 </html>
-

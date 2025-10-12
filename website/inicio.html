@@ -128,10 +128,10 @@
         const links = document.querySelectorAll("nav a");
 
         links.forEach(link => {
-          const href = link.getAttribute("href");
-          if (href === currentPage) {
-            link.classList.add("active");
-          }
+            const href = link.getAttribute("href");
+            if (href && currentPage.includes(href.replace('./',''))) {
+                link.classList.add("active");
+            }
         });
         // Usuario registrado?
         const perfilLink = document.getElementById('perfil-link');

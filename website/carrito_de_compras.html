@@ -1,160 +1,256 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrito de Compras - Big Bite</title>
+    <title>Big Bite - Carrito de Compras</title>
+
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { 
-            padding-top: 2rem; 
-            padding-bottom: 5rem; 
-        }
-        .cart-item { 
-            border-bottom: 1px solid #ddd; 
-            padding: 1rem 0; 
-        }
-        .cart-item:last-child { 
-            border-bottom: none; 
-        }
-        .cart-controls button { 
-            margin: 0 0.25rem; 
-        }
-        #empty-message { display: none; 
-            text-align: center; 
-            margin-top: 2rem; 
-            font-size: 1.2rem; 
-            color: #666; 
-        }
-        #payment-message { 
-            margin-top: 1rem; 
-            font-weight: bold; 
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Icono -->
+    <link rel="icon" type="image/png" sizes="32x32" href="img/logo/icon.png">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/carrito.css">
 </head>
-<body class="container">
 
-    <h1 class="text-center mb-4">Carrito de Compras</h1>
+<body class="d-flex flex-column min-vh-100">
+    <div id="navbar-placeholder"></div>
 
-    <!-- Lista de productos -->
-    <div id="cart-items">
-        <!-- Ejemplo de producto (se repetirá dinámicamente) -->
-        <!--
-        <div class="cart-item d-flex justify-content-between align-items-center" data-product-id="1">
-            <div>
-                <strong class="product-name">Hamburguesa Clásica</strong><br>
-                <span class="product-price" data-price="8990">$8.990</span>
+    <main class="flex-grow-1">
+        <h1 class="text-center mb-4 mt-4">Carrito de Compras</h1>
+        <hr class="mb-4">
+
+        <div class="container mb-5 mt-5">
+            <!-- Card: Lista de productos -->
+            <div class="card card-cart p-4">
+                <div id="cart-items"></div>
+                <div id="empty-message">Carrito de compras vacío</div>
             </div>
-            <div class="cart-controls d-flex align-items-center">
-                <button class="btn btn-sm btn-secondary decrease">-</button>
-                <span class="mx-2 quantity">1</span>
-                <button class="btn btn-sm btn-secondary increase">+</button>
-                <button class="btn btn-sm btn-danger ms-2 remove">Eliminar</button>
+
+            <!-- Card: Subtotal y acciones -->
+            <div class="card p-4 mt-4" id="cart-summary">
+                <h4 class="mb-3 text-center">Resumen del pedido</h4>
+                <div class="d-flex flex-column gap-2">
+                    <div class="d-flex justify-content-between">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Envío:</span>
+                        <span id="shipping">$2.000</span>
+                    </div>
+                    <div class="d-flex justify-content-between fw-bold">
+                        <span>Total:</span>
+                        <span id="total">$0</span>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between flex-wrap gap-2 mt-4">
+                    <button id="empty-cart" class="btn btn-warning flex-fill">
+                        <i class="bi bi-trash me-2"></i> Vaciar carrito
+                    </button>
+                    <a href="productos.html" class="btn btn-continue btn-secondary flex-fill">
+                        <i class="bi bi-bag me-2"></i> Seguir comprando</a>
+                    <button id="checkout" class="btn btn-success flex-fill">
+                        <i class="bi bi-wallet me-2"></i> Proceder al pago
+                    </button>
+                </div>
+
+                <div id="payment-message" class="mt-3 text-center fw-semibold"></div>
             </div>
         </div>
-        -->
-    </div>
+    </main>
 
-    <!-- Mensaje carrito vacío -->
-    <div id="empty-message">Carrito de compras vacío</div>
+    <div id="footer-placeholder"></div>
 
-    <!-- Subtotal -->
-    <div class="d-flex justify-content-between align-items-center mt-4">
-        <strong>Subtotal:</strong>
-        <span id="subtotal">$0</span>
-    </div>
-
-    <!-- Controles generales -->
-    <div class="mt-3 d-flex justify-content-between">
-        <button id="empty-cart" class="btn btn-warning">Vaciar Carrito</button>
-        <button id="checkout" class="btn btn-success">Confirmar Pago</button>
-    </div>
-
-    <!-- Mensaje de pago -->
-    <div id="payment-message"></div>
-
-    <!-- Scripts -->
     <script>
-        // Skeleton JS para manejar cantidades, eliminar y vaciar
+        // ==============
+        // 1. NAVBAR Y FOOTER
+        // ==============
+        fetch("components/navbar.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("navbar-placeholder").innerHTML = data;
+                const currentPage = window.location.pathname.split("/").pop();
+                document.querySelectorAll("nav a").forEach(link => {
+                    if (link.getAttribute("href") === currentPage) link.classList.add("active");
+                });
+            });
+
+        fetch("components/footer.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer-placeholder").innerHTML = data;
+            });
+
+        // ==============
+        // 2. CARRITO
+        // ==============
+        // -------------------- CART LOGIC --------------------
+        const SHIPPING_COST = 2000;
+        const cartKey = 'carrito';
+
+        function loadCart() {
+            try { return JSON.parse(localStorage.getItem(cartKey)) || []; }
+            catch (e) { return []; }
+        }
+        function saveCart(cart) {
+            localStorage.setItem(cartKey, JSON.stringify(cart));
+            window.dispatchEvent(new Event('cart-updated')); // notify other scripts if needed
+        }
+
+        // Ensure internal representation: array of unique items { name, price, quantity }
+        function normalizeCart(cartRaw) {
+            const byName = {};
+            cartRaw.forEach(it => {
+                const name = it.name;
+                const price = Number(it.price) || Number(it.precio) || 0;
+                const qty = Number(it.quantity) || Number(it.cantidad) || 1;
+                const image = it.image || 'img/productos/default.png';
+                if (!byName[name]) byName[name] = { name, price, quantity: qty, image };
+                else byName[name].quantity += qty;
+            });
+            return Object.values(byName);
+        }
+
+        // UI refs
         const cartItemsContainer = document.getElementById('cart-items');
         const emptyMessage = document.getElementById('empty-message');
         const subtotalEl = document.getElementById('subtotal');
+        const shippingEl = document.getElementById('shipping');
+        const totalEl = document.getElementById('total');
         const paymentMessage = document.getElementById('payment-message');
-        const emptyCartBtn = document.getElementById('empty-cart');
+        const emptyBtn = document.getElementById('empty-cart');
         const checkoutBtn = document.getElementById('checkout');
 
-        let cart = [
-            {id:1, name:'Hamburguesa Clásica', price:8990, quantity:1},
-            {id:2, name:'Combo Papas + Bebida', price:5990, quantity:2}
-        ];
+        // Current cart (normalized)
+        let cart = normalizeCart(loadCart());
 
         function renderCart() {
             cartItemsContainer.innerHTML = '';
-            if(cart.length===0){
-                emptyMessage.style.display='block';
-                subtotalEl.textContent='$0';
+            if (!cart || cart.length === 0) {
+                emptyMessage.style.display = 'block';
+                subtotalEl.textContent = '$0';
+                shippingEl.textContent = '$0';
+                totalEl.textContent = '$0';
+                saveCart([]); // keep localStorage consistent
                 return;
             }
-            emptyMessage.style.display='none';
+            emptyMessage.style.display = 'none';
+
             let subtotal = 0;
-            cart.forEach(item => {
-                subtotal += item.price * item.quantity;
+            cart.forEach((item, idx) => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+
                 const div = document.createElement('div');
-                div.className='cart-item d-flex justify-content-between align-items-center';
-                div.dataset.productId=item.id;
-                div.innerHTML=`
-                    <div>
-                        <strong class="product-name">${item.name}</strong><br>
-                        <span class="product-price" data-price="${item.price}">${item.price.toLocaleString('es-CL',{style:'currency',currency:'CLP'})}</span>
+                div.className = 'cart-item d-flex justify-content-between align-items-center';
+                div.dataset.name = item.name;
+                div.innerHTML = `
+                <div class="d-flex align-items-center justify-content-between">
+                    <!-- Imagen + Info del producto -->
+                    <div class="d-flex align-items-center gap-3">
+                        <img src="${item.image || 'img/productos/default.png'}" class="img-fluid carrito-img" alt="${item.name}">
+                        <div>
+                            <strong>${item.name}</strong><br>
+                            <small>${item.quantity} x ${item.price.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</small><br>
+                            <small class="text-muted"><strong>${itemTotal.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</strong></small>
+                        </div>
                     </div>
-                    <div class="cart-controls d-flex align-items-center">
-                        <button class="btn btn-sm btn-secondary decrease">-</button>
-                        <span class="mx-2 quantity">${item.quantity}</span>
-                        <button class="btn btn-sm btn-secondary increase">+</button>
-                        <button class="btn btn-sm btn-danger ms-2 remove">Eliminar</button>
+
+                    <!-- Controles al extremo derecho -->
+                    <div class="d-flex align-items-center gap-1 cart-controls">
+                        <button class="btn btn-warning decrease" title="Quitar 1"><i class="fa-solid fa-minus"></i></button>
+                        <span>${item.quantity}</span>
+                        <button class="btn btn-warning increase" title="Agregar 1"><i class="fa-solid fa-plus"></i></button>
+                        <button class="btn btn-danger remove" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
                     </div>
+                </div>
                 `;
                 cartItemsContainer.appendChild(div);
+
+                // Wire listeners per-row (use item name as identifier)
+                div.querySelector('.increase').addEventListener('click', () => changeQuantity(item.name, +1));
+                div.querySelector('.decrease').addEventListener('click', () => changeQuantity(item.name, -1));
+                div.querySelector('.remove').addEventListener('click', () => removeItem(item.name));
             });
-            subtotalEl.textContent = subtotal.toLocaleString('es-CL',{style:'currency',currency:'CLP'});
+
+            updateSummary(subtotal);
+            // persist normalized cart to localStorage (so products page reads unique items)
+            saveCart(cart);
         }
 
-        function updateCartItem(id, change){
-            const item = cart.find(i=>i.id===id);
-            if(!item) return;
-            item.quantity += change;
-            if(item.quantity<=0){
-                cart = cart.filter(i=>i.id!==id);
+        // change quantity of a single product (by name)
+        function changeQuantity(name, delta) {
+            cart = cart.map(it => {
+                if (it.name === name) return { ...it, quantity: Math.max(0, (it.quantity || 1) + delta) };
+                return it;
+            }).filter(it => it.quantity > 0);
+            renderCart();
+        }
+
+        function removeItem(name) {
+            cart = cart.filter(it => it.name !== name);
+            renderCart();
+        }
+
+        function updateSummary(subtotal) {
+            const shipping = subtotal > 0 ? SHIPPING_COST : 0;
+            const total = subtotal + shipping;
+            subtotalEl.textContent = subtotal.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
+            shippingEl.textContent = shipping.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
+            totalEl.textContent = total.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
+        }
+
+        emptyBtn.addEventListener('click', () => {
+            cart = [];
+            renderCart();
+        });
+
+        checkoutBtn.addEventListener('click', () => {
+            if (!cart.length) {
+                paymentMessage.textContent = 'El carrito está vacío.';
+                return;
             }
-            renderCart();
-        }
-
-        function removeCartItem(id){
-            cart = cart.filter(i=>i.id!==id);
-            renderCart();
-        }
-
-        cartItemsContainer.addEventListener('click', e=>{
-            const parent = e.target.closest('.cart-item');
-            if(!parent) return;
-            const id = parseInt(parent.dataset.productId);
-            if(e.target.classList.contains('increase')) updateCartItem(id,1);
-            if(e.target.classList.contains('decrease')) updateCartItem(id,-1);
-            if(e.target.classList.contains('remove')) removeCartItem(id);
+            const estados = ['Pago realizado con éxito', 'Pago rechazado', 'Pago cancelado'];
+            const random = estados[Math.floor(Math.random() * estados.length)];
+            paymentMessage.textContent = random;
+            if (random === 'Pago realizado con éxito') {
+                cart = [];
+                renderCart();
+            }
         });
 
-        emptyCartBtn.addEventListener('click', ()=>{ cart=[]; renderCart(); });
-        checkoutBtn.addEventListener('click', ()=>{
-            if(cart.length===0){ paymentMessage.textContent='Carrito vacío, no se puede pagar.'; return; }
-            // Simular estados de pago: Exitoso, Rechazado, Cancelado
-            const states=['Pago realizado con éxito','Pago rechazado','Pago cancelado'];
-            const random = states[Math.floor(Math.random()*states.length)];
-            paymentMessage.textContent=random;
-            if(random==='Pago realizado con éxito') cart=[]; // Vaciar carrito si se confirma
+        // sync with other tabs/pages: when storage changes, reload normalized cart and re-render
+        window.addEventListener('storage', (e) => {
+            if (e.key === cartKey) {
+                cart = normalizeCart(loadCart());
+                renderCart();
+            }
+        });
+
+        // also listen to custom event triggered by saveCart in other scripts
+        window.addEventListener('cart-updated', () => {
+            cart = normalizeCart(loadCart());
             renderCart();
         });
 
-        renderCart();
+        // initialize
+        (function init() {
+            cart = normalizeCart(loadCart());
+            renderCart();
+        })();
     </script>
+
 </body>
+
 </html>

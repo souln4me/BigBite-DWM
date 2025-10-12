@@ -8,13 +8,71 @@
 
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
   <!-- Icono -->
   <link rel="icon" type="image/png" sizes="32x32" href="img/logo/icon.png">
 
   <!-- CSS Navbar -->
   <link rel="stylesheet" href="css/navbar.css">
+
+  <style>
+    div.card-contacto {
+      background-color: #f5f5f5;
+      /* gris claro */
+      border: 1px solid #e0e0e0;
+      /* borde sutil */
+      border-radius: 40px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+      padding: 30px;
+      transition: 0.3s ease;
+    }
+
+    div.card-contacto:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    div.card-contacto label {
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    input,
+    textarea {
+      border-radius: 12px;
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    button.btn-perfil {
+      background-color: #ffc107;
+      /* amarillo similar a Bootstrap warning */
+      color: black;
+      font-weight: 600;
+      border-radius: 40px;
+      padding: 15px 45px;
+      border: none;
+      transition: 0.3s;
+    }
+
+    button.btn-perfil:hover {
+      background-color: #ecb100;
+      color: black;
+      border-color: #ecb100;
+    }
+
+    button.btn-perfil:active,
+    button.btn-perfil:focus {
+      background-color: #ffc107 !important;
+      color: black !important;
+      transform: translateY(0);
+      border-color: #ffc107 !important;
+    }
+  </style>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -27,7 +85,7 @@
       <div class="row g-4">
         <!-- Formulario -->
         <div class="col-lg-7">
-          <div class="card p-4 shadow" style="border-radius: 40px; background-color: #fff9f2;">
+          <div class="card card-contacto p-4">
             <h5 class="mb-4">Envíanos un mensaje</h5>
             <form>
               <div class="mb-3">
@@ -47,24 +105,39 @@
                 <textarea class="form-control" id="mensaje" rows="5"
                   placeholder="Escribe tu mensaje aquí..."></textarea>
               </div>
-              <button type="submit" class="btn btn-perfil">Enviar mensaje</button>
+              <button type="submit" class="btn btn-perfil mt-4">
+                <i class="bi bi-send me-3"></i>Enviar mensaje
+              </button>
             </form>
           </div>
         </div>
 
         <!-- Información de contacto -->
         <div class="col-lg-5">
-          <div class="card p-4 shadow" style="border-radius: 40px; background-color: #fff9f2;">
+          <div class="card card-contacto p-4">
             <h5 class="mb-4">Nuestra información</h5>
             <p><strong>Teléfono:</strong> +56 9 1234 5678</p>
             <p><strong>Email:</strong> contacto@bigbite.cl</p>
-            <p><strong>Dirección:</strong> Calle Principal 123, Santiago, Chile</p>
+            <p><strong>Dirección:</strong> Calle cualquiera 123, Cualquier lugar</p>
             <p><strong>Redes sociales:</strong></p>
             <div class="d-flex gap-3">
-              <a href="#" class="btn btn-warning btn-sm">Facebook</a>
-              <a href="#" class="btn btn-warning btn-sm">Instagram</a>
-              <a href="#" class="btn btn-warning btn-sm">TikTok</a>
+              <a href="#" class="btn btn-outline-dark btn-floating m-1"><i class="bi bi-facebook"></i> Facebook</a>
+              <a href="#" class="btn btn-outline-dark btn-floating m-1"><i class="bi bi-instagram"></i> Instagram</a>
+              <a href="#" class="btn btn-outline-dark btn-floating m-1"><i class="fa-brands fa-x-twitter"></i> Twitter
+                (X)</a>
             </div>
+          </div>
+          <div class="card card-contacto mt-4">
+            <h5 class="mb-4">Horario de atención</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2"><strong>Lunes a Viernes:</strong> 09:00 - 19:00</li>
+              <li class="mb-2"><strong>Sábado:</strong> 10:00 - 17:00</li>
+              <li class="mb-2"><strong>Domingo:</strong> Cerrado</li>
+            </ul>
+          </div>
+          <div class="mt-4 text-center">
+            <i class="bi bi-chat-dots"></i>
+            <p>¿Tienes dudas? ¡Escríbenos y te ayudaremos rápidamente!</p>
           </div>
         </div>
       </div>
@@ -87,7 +160,7 @@
 
         links.forEach(link => {
           const href = link.getAttribute("href");
-          if (href === currentPage) {
+          if (href && currentPage.includes(href.replace('./', ''))) {
             link.classList.add("active");
           }
         });
