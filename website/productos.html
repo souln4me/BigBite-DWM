@@ -46,7 +46,8 @@
             <hr class="mb-4">
 
             <div id="no-products-message" class="mt-5 text-center hidden">
-                <h4>No hay productos disponibles en esta categoría</h4>
+                <h4 class="mb-4">No hay productos disponibles en esta categoría</h4>
+                    <img src="img/logo/Hamburguesa Triste.png" style="max-height: 250px; height: 100%;" alt="No hay productos" class="mt-5">
             </div>
 
             <!-- Cards -->
@@ -199,7 +200,7 @@
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">Empanaditas de Queso</h5>
-                            <p class="card-text">$4.990</p>
+                            <p class="card-text">$3.990</p>
                         </div>
                     </div>
                 </div>
@@ -305,7 +306,7 @@
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">Combo Empanaditas + Papas</h5>
-                            <p class="card-text">$10.990</p>
+                            <p class="card-text">$9.990</p>
                         </div>
                     </div>
                 </div>
@@ -381,215 +382,9 @@
             </div>
         </div>
     </div>
-    <!-- Scripts -->
-    <script>
-        // ==============
-        // 1. NAVBAR Y FOOTER
-        // ==============
-        // Cargar navbar
-        fetch("components/navbar.html")
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("navbar-placeholder").innerHTML = data;
 
-                // Detectar página actual y marcar enlace activo
-                const currentPage = window.location.pathname.split("/").pop();
-                const links = document.querySelectorAll("nav a");
-
-                links.forEach(link => {
-                    const href = link.getAttribute("href");
-                    if (href && currentPage.includes(href.replace('./', ''))) {
-                        link.classList.add("active");
-                    }
-                });
-                // Usuario registrado?
-                const perfilLink = document.getElementById('perfil-link');
-
-                perfilLink.addEventListener('click', (e) => {
-                    const usuarioLogueado = localStorage.getItem('usuarioLogueado'); // ejemplo
-
-                    if (!usuarioLogueado) {
-                        // No está logueado → redirigir a registro
-                        e.preventDefault();
-                        window.location.href = 'register.html';
-                    }
-                    // Si está logueado, deja que vaya a perfil_usuario.html
-                });
-            });
-
-        fetch("components/footer.html")
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("footer-placeholder").innerHTML = data;
-            });
-
-        // ==============
-        // 2. PRODUCTOS, MODAL Y CARRITO
-        // ==============
-        document.addEventListener('DOMContentLoaded', () => {
-            const modalElement = document.getElementById('productModal');
-            const bsModal = new bootstrap.Modal(modalElement);
-            const goToCartBtn = document.getElementById('go-to-cart-btn');
-            const productCards = document.querySelectorAll('.product-card');
-            const orderBar = document.getElementById('order-summary-bar');
-            const leftColumn = document.getElementById('order-summary-left');
-            const noProductsMessage = document.getElementById('no-products-message');
-
-            // cart: array of unique items { id?, name, price (number), quantity }
-            // source of truth is localStorage 'carrito'
-            function loadCart() {
-                try {
-                    return JSON.parse(localStorage.getItem('carrito')) || [];
-                } catch (e) {
-                    return [];
-                }
-            }
-            function saveCart(cart) {
-                localStorage.setItem('carrito', JSON.stringify(cart));
-                // lanzar custom event para debug interno (opcional)
-                window.dispatchEvent(new Event('cart-updated'));
-            }
-
-            // Ensure cart items are unique (by name)
-            function addToCart(productName, productPrice, productImage) {
-                const cart = loadCart();
-                const existing = cart.find(i => i.name === productName);
-                if (existing) {
-                    existing.quantity = (existing.quantity || 1) + 1;
-                } else {
-                    cart.push({ name: productName, price: productPrice, quantity: 1, image: productImage });
-                }
-                saveCart(cart);
-                updateOrderSummary();
-            }
-
-            // price helpers
-            function parsePriceString(s) { return parseInt((s || '').replace(/\D/g, ''), 10) || 0; }
-            function formatPrice(n) { return '$' + n.toLocaleString('es-CL'); }
-
-            // ---------------------- FILTERS ----------------------
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            const productCardsArr = Array.from(productCards);
-            filterButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    filterButtons.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    const cat = btn.dataset.category;
-                    let visible = 0;
-                    productCardsArr.forEach(card => {
-                        if (cat === 'todos' || card.classList.contains(cat)) {
-                            card.classList.remove('d-none');
-                            visible++;
-                        } else {
-                            card.classList.add('d-none');
-                        }
-                    });
-                    if (visible === 0) {
-                        noProductsMessage.classList.remove('d-none');
-                    } else {
-                        noProductsMessage.classList.add('d-none');
-                    }
-                });
-            });
-
-            // ---------------------- ORDER SUMMARY ----------------------
-            function updateOrderSummary() {
-                const cart = loadCart();
-                if (!cart || cart.length === 0) {
-                    orderBar.classList.add('d-none');
-                    return;
-                }
-                // aggregate by name
-                const agg = {};
-                let subtotal = 0;
-                cart.forEach(it => {
-                    const qty = it.quantity || 1;
-                    if (!agg[it.name]) agg[it.name] = { ...it };
-                    else agg[it.name].quantity = (agg[it.name].quantity || 0) + qty;
-                    subtotal += (it.price || 0) * qty;
-                });
-
-                let text = '';
-                for (const [name, item] of Object.entries(agg)) {
-                    text += `${item.quantity}x ${name}, `;
-                }
-                text = text.replace(/, $/, '');
-                leftColumn.innerHTML = `
-                    <strong>${text}</strong> |
-                    <span class="order-total">Subtotal: ${formatPrice(subtotal)}</span>
-                `;
-                orderBar.classList.remove('d-none');
-            }
-
-            // ---------------------- MODAL / ADD ----------------------
-            productCards.forEach(card => {
-                card.setAttribute('tabindex', card.getAttribute('tabindex') || '0');
-                card.addEventListener('click', function () {
-                    if (this.classList.contains('unavailable-product')) return;
-                    const title = this.querySelector('.card-title').textContent.trim();
-                    const newPriceEl = this.querySelector('.new-price');
-                    const priceText = newPriceEl ? newPriceEl.textContent : this.querySelector('.card-text').textContent;
-                    const price = parsePriceString(priceText);
-                    const image = this.querySelector('.card-img-top').src;
-                    const ingredientsOverlay = this.querySelector('.ingredients-overlay');
-                    const ingredientsHTML = ingredientsOverlay ? ingredientsOverlay.innerHTML : '';
-                    document.getElementById('modalTitle').textContent = title;
-                    document.getElementById('modalPrice').textContent = priceText;
-                    document.getElementById('modalImage').src = image;
-                    document.getElementById('modalIngredients').innerHTML = ingredientsHTML.replace('<div class="view-product">Ver producto</div>', '');
-
-                    // extras example for hamburguesas
-                    if (this.classList.contains('hamburguesas')) {
-                        document.getElementById('modalExtras').innerHTML = `
-                            <div class="mb-3">
-                                <h6>Extras disponibles:</h6>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="extraQueso">
-                                    <label class="form-check-label" for="extraQueso">Queso extra (+$1.000)</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="extraTocino">
-                                    <label class="form-check-label" for="extraTocino">Tocino extra (+$1.800)</label>
-                                </div>
-                            </div>`;
-                    } else {
-                        document.getElementById('modalExtras').innerHTML = '';
-                    }
-
-                    const addBtn = modalElement.querySelector('.btn-primary');
-                    addBtn.onclick = () => addToCart(title, price, image);
-                    bsModal.show();
-                });
-
-                card.addEventListener('keydown', function (e) {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        this.click();
-                    }
-                });
-            });
-
-            // ---------------------- GO TO CART ----------------------
-            goToCartBtn.addEventListener('click', () => {
-                window.location.href = 'carrito_de_compras.html';
-            });
-
-            // ---------------------- STORAGE SYNC ----------------------
-            // Update summary when other tab/page modifies localStorage
-            window.addEventListener('storage', (ev) => {
-                if (ev.key === 'carrito') updateOrderSummary();
-            });
-            // also refresh on focus (user may have changed cart in other tab)
-            window.addEventListener('visibilitychange', () => {
-                if (!document.hidden) updateOrderSummary();
-            });
-
-            // init
-            updateOrderSummary();
-        });
-
-    </script>
-
+    <!-- Script -->
+    <script src="JS/productos.js"></script>
 </body>
 
 </html>

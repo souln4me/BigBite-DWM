@@ -157,27 +157,37 @@
         // Detectar página actual y marcar enlace activo
         const currentPage = window.location.pathname.split("/").pop();
         const links = document.querySelectorAll("nav a");
-
         links.forEach(link => {
           const href = link.getAttribute("href");
           if (href && currentPage.includes(href.replace('./', ''))) {
             link.classList.add("active");
           }
         });
-        // Usuario registrado?
+
+        // Usuario registrado
         const perfilLink = document.getElementById('perfil-link');
+        if (perfilLink) {
+          perfilLink.addEventListener('click', (e) => {
+            const usuarioLogueado = localStorage.getItem('usuarioLogueado');
+            if (!usuarioLogueado) {
+              e.preventDefault();
+              window.location.href = 'register.html';
+            }
+          });
+        }
 
-        perfilLink.addEventListener('click', (e) => {
-          const usuarioLogueado = localStorage.getItem('usuarioLogueado'); // ejemplo
-
-          if (!usuarioLogueado) {
-            // No está logueado → redirigir a registro
-            e.preventDefault();
-            window.location.href = 'register.html';
-          }
-          // Si está logueado, deja que vaya a perfil_usuario.html
-        });
+        // ----------------------------
+        // Aquí aseguramos que el badge del carrito se actualice
+        setTimeout(() => {
+          const badge = document.getElementById('cart-count');
+          if (!badge) return;
+          const cart = JSON.parse(localStorage.getItem('carrito')) || [];
+          const totalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+          badge.textContent = totalItems;
+        }, 0);
+        // ----------------------------
       });
+
 
     fetch("components/footer.html")
       .then(response => response.text())

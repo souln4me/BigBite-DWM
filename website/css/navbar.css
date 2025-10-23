@@ -6,7 +6,7 @@
 
 /* NAVBAR principal */
 .navbar {
-  position: fixed;          /* barra fija arriba */
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -14,16 +14,16 @@
   background-color: #222;
   font-family: 'Work Sans', sans-serif;
   font-weight: 800;
-  height: 80px;            /* altura en desktop */
+  height: 80px;
   z-index: 1100;
-  padding: 0;              /* .container controla el padding interno */
+  padding: 0;
   display: flex;
   align-items: center;
 }
 
 /* Deja espacio para la navbar fija */
 body {
-  padding-top: 80px;       /* debe coincidir con .navbar height */
+  padding-top: 80px;
 }
 
 /* Contenedor interno */
@@ -33,6 +33,14 @@ body {
   align-items: center;
   padding: 0 20px;
   height: 100%;
+  position: relative;
+}
+
+/* === NUEVO: agrupamos toggler y carrito === */
+.navbar .right-section {
+  display: flex;
+  align-items: center;
+  gap: 14px; /* espacio entre el menú y el carrito */
 }
 
 /* Logo / marca */
@@ -44,7 +52,7 @@ body {
 }
 .navbar-brand-img,
 .logo img {
-  height: 56px;            /* evita romper la altura de la navbar */
+  height: 56px;
   object-fit: contain;
   display: block;
   margin-right: 12px;
@@ -78,7 +86,7 @@ body {
   transition: color 0.18s ease;
 }
 
-/* hover + active (mantén tu look) */
+/* hover + active */
 .navbar-nav .nav-link:hover,
 .navbar-nav .nav-link.active {
   color: #fff;
@@ -104,15 +112,14 @@ body {
 /* =========================
    HAMBURGER ICON (white SVG inline)
    ========================= */
-
-/* botón toggler básico */
 .navbar-toggler {
   border: none;
   padding: 0.25rem 0.5rem;
   background: transparent;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.06);
 }
 
-/* SVG inline para tener icono blanco consistente */
 .navbar-toggler-icon {
   width: 30px;
   height: 30px;
@@ -122,30 +129,20 @@ body {
   display: inline-block;
 }
 
-/* opcional: borde sutil para mejorar contraste en móviles */
-.navbar-toggler {
-  border-radius: 6px;
-  border: 1px solid rgba(255,255,255,0.06);
-}
-
 /* =========================
-   COLLAPSE BACKGROUND (evita 'parpadeo' al abrir)
+   COLLAPSE BACKGROUND
    ========================= */
-
-/* Mantén el fondo del panel colapsable desde el inicio para que no "aparezca" con retraso */
 .navbar-collapse {
   background-color: #222;
   transition: height 0.18s ease, padding 0.18s ease;
   border-radius: 30px;
 }
 
-/* Ajustes cuando está desplegado (clase .show que añade Bootstrap) */
 .navbar-collapse.collapse.show {
   padding: 12px 16px;
   border-radius: 30px;
 }
 
-/* Asegura que los links del collapse ocupen ancho completo en móvil */
 .navbar-collapse .navbar-nav {
   align-items: center;
 }
@@ -153,10 +150,9 @@ body {
 /* =========================
    RESPONSIVE
    ========================= */
-
 @media (max-width: 992px) {
   .navbar {
-    height: 64px;          /* altura en pantallas pequeñas */
+    height: 64px;
   }
   body {
     padding-top: 64px;
@@ -171,68 +167,63 @@ body {
   .navbar-nav {
     gap: 12px;
     width: 100%;
-    flex-direction: column;   /* links en columna cuando collapse está abierto */
+    flex-direction: column;
   }
   .navbar-nav .nav-link {
     width: 100%;
     padding: 10px 12px;
   }
-
-  /* Hacemos que el collapse no opaque abruptamente: */
   .navbar-collapse {
     box-shadow: none;
   }
 
-  /* evitar que el carrito se superponga al toggler */
-  .navbar .navbar-cart {
-    right: 80px;
+  /* === Ajuste extra: carrito y toggler mantienen su espacio === */
+  .navbar .right-section {
+    gap: 10px;
   }
 }
 
 /* =========================
    Pequeñas mejoras visuales
    ========================= */
-
 .nav-link:focus {
   outline: none;
   box-shadow: none;
 }
 
 html {
-  overflow-y: scroll;    /* evita salto al abrir modal */
-  scrollbar-gutter: stable; /* evita salto al abrir modal */
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
 }
 
-/* evita salto al abrir modal */
 body.modal-open {
   padding-right: 0 !important;
 }
 
-/* evitar que la navbar salte al abrir modal */
 body.modal-open .navbar {
   padding-right: 0 !important;
 }
 
+/* =========================
+   CARRITO
+   ========================= */
 .navbar .navbar-cart {
-  position: absolute;
-  right: 30px;
-  top: 50%; /* centra verticalmente */
-  transform: translateY(-50%); /* centra verticalmente */
+  display: flex;
+  align-items: center;
   border-left: 1px solid rgba(255, 255, 255, 0.3);
-  padding-left: 25px; /* espacio entre línea y carrito */
+  padding-left: 18px;
 }
 
 .navbar .navbar-cart a {
   color: #bdbdbd;
-  text-decoration: none; /* elimina subrayado */
+  text-decoration: none;
 }
 
 .navbar .navbar-cart a:hover {
   color: #fff;
-  transition: color 0.18s ease; /* transición suave al cambiar color */
+  transition: color 0.18s ease;
 }
 
-/* hacer que el icono del carrito se ponga blanco al estar activo */
 .navbar .navbar-cart a.active {
   color: #fff;
 }

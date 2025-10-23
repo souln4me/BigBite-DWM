@@ -61,6 +61,7 @@ div.card:hover {
     transition: 0.3s;
     margin-bottom: 52px;
     margin-left: 40px;
+    text-decoration: none !important;
 }
 
 .btn-perfil:hover {
@@ -68,12 +69,14 @@ div.card:hover {
     color: #000;
     border-color: #ffc107;
     transform: scale(1.02);
+    text-decoration: none !important;
 }
 
 .btn-perfil.active {
     background-color: #ffc107;
     color: #000;
     border-color: #ffc107;
+    text-decoration: none !important;
 }
 
 .card label {

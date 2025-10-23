@@ -144,15 +144,13 @@ button.cart-btn {
 button.cart-btn:hover {
     background-color: #ecb100;
     color: black;
-    transform: translateY(-2px);
     border-color: #ecb100;
 }
 
 button.cart-btn:active, button.cart-btn:focus {
-    background-color: #ffc107 !important;
+    background-color: #ecb100 !important;
     color: black !important;
-    transform: translateY(0);
-    border-color: #ffc107 !important;
+    border-color: #ecb100 !important;
 }
 
 /* === Contenedor principal === */
@@ -251,4 +249,15 @@ button.filter-btn {
 img.img-logo-modal {
     margin-top: 25px !important;
     margin-left: 130px;
+}
+
+/* Animación de clic en botón del modal */
+.cart-btn.animate {
+    animation: pop 0.3s ease forwards;
+}
+
+@keyframes pop {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.02); }
+    100% { transform: scale(1); }
 }
