@@ -36,22 +36,37 @@
                             <!-- Contraseña actual -->
                             <div class="mb-4">
                                 <label for="current-pass">Contraseña actual:</label>
-                                <input type="password" id="current-pass" class="form-control"
-                                    placeholder="Ingrese su contraseña actual">
+                                <div class="input-group">
+                                    <input type="password" id="current-pass" class="form-control"
+                                        placeholder="Ingrese su contraseña actual">
+                                    <span class="input-group-text" id="toggleCurrentPass">
+                                        <i class="bi bi-eye-slash"></i>
+                                    </span>
+                                </div>
                             </div>
 
                             <!-- Nueva contraseña -->
                             <div class="mb-4">
                                 <label for="new-pass">Nueva contraseña:</label>
-                                <input type="password" id="new-pass" class="form-control"
-                                    placeholder="Ingrese la nueva contraseña">
+                                <div class="input-group">
+                                    <input type="password" id="new-pass" class="form-control"
+                                        placeholder="Ingrese la nueva contraseña">
+                                    <span class="input-group-text" id="toggleNewPass">
+                                        <i class="bi bi-eye-slash"></i>
+                                    </span>
+                                </div>
                             </div>
 
                             <!-- Confirmar nueva contraseña -->
                             <div class="mb-5">
                                 <label for="confirm-pass">Confirmar nueva contraseña:</label>
-                                <input type="password" id="confirm-pass" class="form-control"
-                                    placeholder="Confirme la nueva contraseña">
+                                <div class="input-group">
+                                    <input type="password" id="confirm-pass" class="form-control"
+                                        placeholder="Confirme la nueva contraseña">
+                                    <span class="input-group-text" id="toggleConfirmPass">
+                                        <i class="bi bi-eye-slash"></i>
+                                    </span>
+                                </div>
                             </div>
 
                             <div class="row">
@@ -156,6 +171,26 @@
             // Opcional: redirige a la página de inicio o login
             window.location.href = 'inicio.html';
         });
+
+        // Hacer que se vea la contraseña
+        function togglePassword(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId).querySelector('i');
+
+            icon.addEventListener('click', () => {
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.replace('bi-eye-slash', 'bi-eye');
+                } else {
+                    input.type = 'password';
+                    icon.classList.replace('bi-eye', 'bi-eye-slash');
+                }
+            });
+        }
+
+        togglePassword('current-pass', 'toggleCurrentPass');
+        togglePassword('new-pass', 'toggleNewPass');
+        togglePassword('confirm-pass', 'toggleConfirmPass');
     </script>
 </body>
 

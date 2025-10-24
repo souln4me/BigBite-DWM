@@ -65,6 +65,10 @@
             color: #28a745;
             margin-bottom: 15px;
         }
+
+        .input-group-text {
+            border-radius: 0 15px 15px 0;
+        }
     </style>
 </head>
 
@@ -80,17 +84,30 @@
         <form>
             <div class="mb-4 text-start">
                 <label for="token" class="form-label fw-semibold">Token recibido:</label>
-                <input type="text" id="token" class="form-control" placeholder="Ingresa el token enviado a tu correo" required>
+                <input type="text" id="token" class="form-control"
+                    placeholder="Ingresa el token enviado a tu correo" required>
             </div>
 
             <div class="mb-4 text-start">
                 <label for="new-pass" class="form-label fw-semibold">Nueva contraseña:</label>
-                <input type="password" id="new-pass" class="form-control" placeholder="Escribe tu nueva contraseña" required>
+                <div class="input-group">
+                    <input type="password" id="new-pass" class="form-control"
+                        placeholder="Escribe tu nueva contraseña" required>
+                    <span class="input-group-text bg-white border-start-0" id="toggleNewPass" style="cursor: pointer;">
+                        <i class="bi bi-eye-slash"></i>
+                    </span>
+                </div>
             </div>
 
             <div class="mb-5 text-start">
                 <label for="confirm-pass" class="form-label fw-semibold">Confirmar contraseña:</label>
-                <input type="password" id="confirm-pass" class="form-control" placeholder="Repite la nueva contraseña" required>
+                <div class="input-group">
+                    <input type="password" id="confirm-pass" class="form-control"
+                        placeholder="Repite la nueva contraseña" required>
+                    <span class="input-group-text bg-white border-start-0" id="toggleConfirmPass" style="cursor: pointer;">
+                        <i class="bi bi-eye-slash"></i>
+                    </span>
+                </div>
             </div>
 
             <button type="submit" class="btn btn-success">
@@ -98,6 +115,26 @@
             </button>
         </form>
     </div>
+
+    <script>
+        function togglePassword(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId).querySelector('i');
+
+            icon.parentElement.addEventListener('click', () => {
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.replace('bi-eye-slash', 'bi-eye');
+                } else {
+                    input.type = 'password';
+                    icon.classList.replace('bi-eye', 'bi-eye-slash');
+                }
+            });
+        }
+
+        togglePassword('new-pass', 'toggleNewPass');
+        togglePassword('confirm-pass', 'toggleConfirmPass');
+    </script>
 </body>
 
 </html>

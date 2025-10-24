@@ -53,11 +53,6 @@
       border-color: #ffc107 !important;
     }
 
-    .form-control {
-      border-radius: 12px;
-      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-
     a.btn-outline-secondary {
       border-radius: 40px;
     }
@@ -66,6 +61,21 @@
       border-top-left-radius: 50px;
       border-bottom-left-radius: 50px;
       overflow: hidden;
+    }
+
+    .input-group-text {
+      border-radius: 0 15px 15px 0;
+      cursor: pointer;
+    }
+
+    .form-control {
+      border-radius: 15px;
+      padding: 12px;
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .already-btn:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -93,13 +103,22 @@
             <input type="email" class="form-control" id="email" placeholder="ejemplo@correo.com">
           </div>
 
-          <div class="mb-4">
+          <div class="mb-5">
             <label for="password" class="form-label">Contraseña:</label>
-            <input type="password" class="form-control" id="password" placeholder="********">
+            <div class="input-group">
+              <input type="password" class="form-control" id="pass" placeholder="********">
+              <span class="input-group-text" id="togglePass">
+                <i class="bi bi-eye-slash"></i>
+              </span>
+            </div>
           </div>
 
           <div class="d-grid mb-3">
             <button type="button" class="btn btn-lg btn-register mb-4">Crear cuenta</button>
+          </div>
+
+          <div class="already-btn text-center mb-3">
+            <a href="login.html" class="text-decoration-none text-secondary">¿Ya tienes una cuenta?</a>
           </div>
 
           <div class="text-center">
@@ -108,10 +127,27 @@
             </a>
           </div>
         </div>
-
       </div>
     </div>
   </div>
+  <script>
+    function togglePassword(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId).querySelector('i');
+
+      icon.parentElement.addEventListener('click', () => {
+        if (input.type === 'password') {
+          input.type = 'text';
+          icon.classList.replace('bi-eye-slash', 'bi-eye');
+        } else {
+          input.type = 'password';
+          icon.classList.replace('bi-eye', 'bi-eye-slash');
+        }
+      });
+    }
+
+    togglePassword('pass', 'togglePass');
+  </script>
 </body>
 
 </html>
