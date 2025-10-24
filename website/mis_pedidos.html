@@ -180,7 +180,7 @@
                         const usuarioLogueado = localStorage.getItem('usuarioLogueado');
                         if (!usuarioLogueado) {
                             e.preventDefault();
-                            window.location.href = 'register.html';
+                            window.location.href = 'login.html';
                         }
                     });
                 }
@@ -239,6 +239,17 @@
             toast.classList.remove('show');
             void toast.offsetWidth;
             toast.classList.add('show');
+        });
+
+        // Selecciona el botón de cerrar sesión
+        const btnCerrarSesion = document.querySelector('.btn-perfil:last-child'); // último btn-perfil
+
+        btnCerrarSesion.addEventListener('click', () => {
+            // Borra el localStorage
+            localStorage.removeItem('usuarioLogueado');
+
+            // Opcional: redirige a la página de inicio o login
+            window.location.href = 'inicio.html';
         });
     </script>
 </body>

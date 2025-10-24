@@ -37,7 +37,7 @@ fetch("components/navbar.html")
                 const usuarioLogueado = localStorage.getItem('usuarioLogueado');
                 if (!usuarioLogueado) {
                     e.preventDefault();
-                    window.location.href = 'register.html';
+                    window.location.href = 'login.html';
                 }
             });
         }
