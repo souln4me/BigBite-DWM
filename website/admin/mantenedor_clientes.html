@@ -1,237 +1,416 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <title>Big Bite - Mantenedor de Clientes</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big Bite - Mantenedor de Clientes</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="icon" type="image/png" sizes="32x32" href="../img/logo/icon.png">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/sidebar.css">
     <style>
-        .admin-panel {
+        /* ===================== */
+        /* ===== Admin Panel (Estilo Unificado) ==== */
+        /* ===================== */
+
+        /* ===== General ===== */
+        body {
             background-color: #f8f9fa;
-            min-height: 100vh;
         }
-        .nav-sidebar {
-            background-color: #343a40;
-            color: white;
-            min-height: 100vh;
-            padding-top: 20px;
+
+        .admin-panel {
+            padding: 2rem 1.5rem;
+            font-family: 'Poppins', 'Arial', sans-serif;
         }
-        .nav-sidebar .nav-link {
-            color: #adb5bd;
-            padding: 10px 20px;
+
+        /* ===== Tipografía ===== */
+        .admin-panel h1,
+        .admin-panel h3,
+        .admin-panel h5,
+        .admin-panel .card-title,
+        .modal-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: #212529;
         }
-        .nav-sidebar .nav-link.active {
-            color: white;
-            background-color: #495057;
-        }
-        .nav-sidebar .nav-link:hover {
-            color: white;
-        }
-        .card-dashboard {
+
+        /* ===== Tarjetas Principales (Filtros, Reporte) ===== */
+        .admin-panel .card-dashboard {
+            border-radius: 1rem;
+            background-color: #ffffff;
             border: none;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+            overflow: hidden;
         }
-        .table-actions {
-            white-space: nowrap;
+
+        .admin-panel .card-dashboard .card-header {
+            background-color: #ffffff;
+            color: #212529;
+            border-bottom: 1px solid #dee2e6;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 1.25rem 1.5rem;
         }
-        .customer-premium { background-color: #ffc107; color: black; }
-        .customer-regular { background-color: #6c757d; color: white; }
+
+        /* ===== Botones ===== */
+        .admin-panel .btn,
+        .modal-footer .btn {
+            border-radius: 50rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            border: none;
+            padding: 0.5rem 1.25rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .admin-panel .btn:hover,
+        .modal-footer .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Botones pequeños de tabla */
+        .admin-panel .btn-sm {
+            padding: 0.25rem 0.75rem;
+            font-weight: 500;
+            font-size: 0.8rem;
+        }
+        .admin-panel .table-actions .btn {
+            margin-right: 0.25rem;
+        }
+
+        /* Botón Amarillo (Primario) */
+        .admin-panel .btn.btn-primary,
+        .modal-footer .btn.btn-primary {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #212529;
+        }
+        .admin-panel .btn.btn-primary:hover,
+        .modal-footer .btn.btn-primary:hover {
+            background-color: #e0a800;
+            border-color: #e0a800;
+            color: #212529;
+        }
+
+        /* Botones de Exportar (del CSS anterior) */
+        .admin-panel .btn.btn-export-pdf {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: #fff;
+        }
+        .admin-panel .btn.btn-export-pdf:hover {
+            background-color: #bb2d3b;
+            border-color: #b02a37;
+            color: #fff;
+        }
+        .admin-panel .btn.btn-export-excel {
+            background-color: #198754;
+            border-color: #198754;
+            color: #fff;
+        }
+        .admin-panel .btn.btn-export-excel:hover {
+            background-color: #157347;
+            border-color: #146c43;
+            color: #fff;
+        }
+
+        /* Botón de Dropdown de Usuario y Secundarios */
+        .admin-panel .btn.btn-outline-secondary,
+        .modal-footer .btn.btn-secondary {
+            border-radius: 50rem;
+            font-weight: 500;
+            border: 1px solid #ced4da;
+            color: #495057;
+            background-color: #fff;
+        }
+        .admin-panel .btn.btn-outline-secondary:hover,
+        .modal-footer .btn.btn-secondary:hover {
+            background-color: #e9ecef;
+            transform: none;
+            box-shadow: none;
+        }
+        .modal-footer .btn.btn-secondary {
+            font-weight: 600; /* Hacerlo coincidir con otros botones */
+        }
+        
+        /* Botones de acciones de tabla */
+        .admin-panel .btn.btn-outline-primary {
+            border-color: #ffc107;
+            color: #e0a800;
+        }
+        .admin-panel .btn.btn-outline-primary:hover {
+            background-color: #ffc107;
+            color: #212529;
+        }
+         .admin-panel .btn.btn-outline-info {
+            border-color: #0dcaf0;
+            color: #0dcaf0;
+        }
+        .admin-panel .btn.btn-outline-info:hover {
+            background-color: #0dcaf0;
+            color: #000;
+        }
+
+
+        /* ===== Inputs y Formularios ===== */
+        .admin-panel .form-control,
+        .admin-panel .form-select,
+        .modal-body .form-control,
+        .modal-body .form-select {
+            border-radius: 0.5rem;
+            border: 1px solid #ced4da;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+        }
+        .admin-panel .form-control:focus,
+        .admin-panel .form-select:focus,
+        .modal-body .form-control:focus,
+        .modal-body .form-select:focus {
+            border-color: #ffc107;
+            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+        }
+        
+        .admin-panel label,
+        .modal-body label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+        
+        .admin-panel .input-group .btn {
+            box-shadow: none; /* Quitar sombra de botón pegado al input */
+        }
+
+        /* ===== Tabla ===== */
+        .admin-panel .table-responsive {
+            border-radius: 0.75rem;
+            overflow: hidden;
+            border: 1px solid #dee2e6;
+            box-shadow: none;
+        }
+        .admin-panel .table th,
+        .admin-panel .table td {
+            vertical-align: middle;
+            padding: 1rem;
+        }
+        .admin-panel .table thead {
+            background-color: #212529;
+            color: #fff;
+        }
+        .admin-panel .table-hover tbody tr:hover {
+            background-color: #fff8e1; /* Hover amarillo claro */
+        }
+
+        /* ===== Dropdowns ===== */
+        .admin-panel .dropdown-menu {
+            border-radius: 0.75rem;
+            padding: 0.5rem 0;
+            border: 1px solid #dee2e6;
+            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+        }
+        
+        /* ===== Modal ===== */
+        .modal-content {
+            border-radius: 1rem;
+            border: none;
+            box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.15);
+        }
+        .modal-header {
+            border-bottom: 1px solid #dee2e6;
+            padding: 1.25rem 1.5rem;
+        }
+        .modal-body {
+            padding: 1.5rem;
+        }
+        .modal-footer {
+            background-color: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            padding: 1rem 1.5rem;
+            border-bottom-left-radius: 1rem;
+            border-bottom-right-radius: 1rem;
+        }
+
+        /* ===== Insignias de Cliente (NUEVO) ===== */
+        .admin-panel .badge {
+            font-weight: 600;
+            padding: 0.5em 0.75em;
+            border-radius: 50rem;
+            font-size: 0.8rem;
+        }
+        .admin-panel .badge.customer-premium {
+            color: #664d03;
+            background-color: #fff3cd;
+            border: 1px solid #ffecb5;
+        }
+        .admin-panel .badge.customer-regular {
+            color: #41464b;
+            background-color: #e2e3e5;
+            border: 1px solid #d3d6d8;
+        }
+
     </style>
 </head>
+
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="col-md-2 col-lg-2 d-md-block bg-dark nav-sidebar">
-                <h4 class="text-center mb-4">Big Bite Admin</h4>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            📊 Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="reportes_ventas.html">
-                            📈 Reportes de Ventas
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="mantenedor_productos.html">
-                            🍔 Productos
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="mantenedor_usuarios.html">
-                            👥 Usuarios
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="mantenedor_clientes.html" active>
-                            👨‍💼 Clientes
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            ⚙️ Configuración
-                        </a>
-                    </li>
-                </ul>
-            </div>
+    <div id="sidebar-placeholder"></div>
+    
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="admin-panel">
 
-            <!-- Main Content -->
-            <div class="col-md-10 col-lg-10 admin-panel">
-                <div class="container-fluid py-4">
-                    <!-- Header -->
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h1 class="h3">Mantenedor de Clientes</h1>
-                        <div class="dropdown">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                👤 Administrador
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
-                                <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
-                            </ul>
-                        </div>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="h3 mb-0">Mantenedor de Clientes</h1>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-fill me-1"></i> Administrador
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
+                        </ul>
                     </div>
+                </div>
 
-                    <!-- Barra de Herramientas -->
-                    <div class="card card-dashboard mb-4">
-                        <div class="card-body">
-                            <div class="row g-3 align-items-center">
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Buscar clientes...">
-                                        <button class="btn btn-outline-secondary" type="button">🔍</button>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <select class="form-select">
-                                        <option selected>Tipo: Todos</option>
-                                        <option>Premium</option>
-                                        <option>Regular</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 text-end">
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
-                                        ➕ Nuevo Cliente
+                <div class="card card-dashboard mb-4">
+                    <div class="card-body p-4">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Buscar clientes...">
+                                    <button class="btn btn-primary" type="button">
+                                        <i class="bi bi-search"></i>
                                     </button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Tabla de Clientes -->
-                    <div class="card card-dashboard">
-                        <div class="card-header bg-white">
-                            <h5 class="mb-0">Lista de Clientes</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="table-dark">
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Nombre</th>
-                                            <th>Email</th>
-                                            <th>Teléfono</th>
-                                            <th>Tipo</th>
-                                            <th>Total Compras</th>
-                                            <th>Última Visita</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>CLI-001</td>
-                                            <td>Roberto Sánchez</td>
-                                            <td>roberto.s@email.com</td>
-                                            <td>+56 9 1234 5678</td>
-                                            <td><span class="badge customer-premium">Premium</span></td>
-                                            <td>$450,000</td>
-                                            <td>15/03/2024</td>
-                                            <td class="table-actions">
-                                                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
-                                                    ✏️ Editar
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-info" onclick="verHistorial()">
-                                                    📊 Historial
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>CLI-002</td>
-                                            <td>Laura Mendoza</td>
-                                            <td>laura.m@email.com</td>
-                                            <td>+56 9 8765 4321</td>
-                                            <td><span class="badge customer-premium">Premium</span></td>
-                                            <td>$320,000</td>
-                                            <td>14/03/2024</td>
-                                            <td class="table-actions">
-                                                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
-                                                    ✏️ Editar
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-info" onclick="verHistorial()">
-                                                    📊 Historial
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>CLI-003</td>
-                                            <td>Diego Castillo</td>
-                                            <td>diego.c@email.com</td>
-                                            <td>+56 9 5555 1234</td>
-                                            <td><span class="badge customer-regular">Regular</span></td>
-                                            <td>$85,000</td>
-                                            <td>10/03/2024</td>
-                                            <td class="table-actions">
-                                                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
-                                                    ✏️ Editar
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-info" onclick="verHistorial()">
-                                                    📊 Historial
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>CLI-004</td>
-                                            <td>Fernanda Rojas</td>
-                                            <td>fernanda.r@email.com</td>
-                                            <td>+56 9 4444 5678</td>
-                                            <td><span class="badge customer-regular">Regular</span></td>
-                                            <td>$45,000</td>
-                                            <td>08/03/2024</td>
-                                            <td class="table-actions">
-                                                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
-                                                    ✏️ Editar
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-info" onclick="verHistorial()">
-                                                    📊 Historial
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="col-md-4">
+                                <select class="form-select">
+                                    <option selected>Tipo: Todos</option>
+                                    <option>Premium</option>
+                                    <option>Regular</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 text-end">
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
+                                    <i class="bi bi-plus-lg me-1"></i> Nuevo Cliente
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Modal para Nuevo/Editar Cliente -->
-    <div class="modal fade" id="modalCliente" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+                <div class="card card-dashboard">
+                    <div class="card-header">
+                        <h5 class="mb-0">Lista de Clientes</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Email</th>
+                                        <th>Teléfono</th>
+                                        <th>Tipo</th>
+                                        <th>Total Compras</th>
+                                        <th>Última Visita</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>CLI-001</td>
+                                        <td>Roberto Sánchez</td>
+                                        <td>roberto.s@email.com</td>
+                                        <td>+56 9 1234 5678</td>
+                                        <td><span class="badge customer-premium">Premium</span></td>
+                                        <td>$450,000</td>
+                                        <td>15/03/2024</td>
+                                        <td class="table-actions">
+                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
+                                                <i class="bi bi-pencil-fill me-1"></i> Editar
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-info" onclick="verHistorial()">
+                                                <i class="bi bi-clock-history me-1"></i> Historial
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>CLI-002</td>
+                                        <td>Laura Mendoza</td>
+                                        <td>laura.m@email.com</td>
+                                        <td>+56 9 8765 4321</td>
+                                        <td><span class="badge customer-premium">Premium</span></td>
+                                        <td>$320,000</td>
+                                        <td>14/03/2024</td>
+                                        <td class="table-actions">
+                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
+                                                <i class="bi bi-pencil-fill me-1"></i> Editar
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-info" onclick="verHistorial()">
+                                                <i class="bi bi-clock-history me-1"></i> Historial
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>CLI-003</td>
+                                        <td>Diego Castillo</td>
+                                        <td>diego.c@email.com</td>
+                                        <td>+56 9 5555 1234</td>
+                                        <td><span class="badge customer-regular">Regular</span></td>
+                                        <td>$85,000</td>
+                                        <td>10/03/2024</td>
+                                        <td class="table-actions">
+                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
+                                                <i class="bi bi-pencil-fill me-1"></i> Editar
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-info" onclick="verHistorial()">
+                                                <i class="bi bi-clock-history me-1"></i> Historial
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>CLI-004</td>
+                                        <td>Fernanda Rojas</td>
+                                        <td>fernanda.r@email.com</td>
+                                        <td>+56 9 4444 5678</td>
+                                        <td><span class="badge customer-regular">Regular</span></td>
+                                        <td>$45,000</td>
+                                        <td>08/03/2024</td>
+                                        <td class="table-actions">
+                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
+                                                <i class="bi bi-pencil-fill me-1"></i> Editar
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-info" onclick="verHistorial()">
+                                                <i class="bi bi-clock-history me-1"></i> Historial
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div> </div> </div> <div class="modal fade" id="modalCliente" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered"> <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Nuevo Cliente</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formCliente">
-                        <div class="row g-3">
+                    <form id="formCliente" novalidate> <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">Nombre Completo *</label>
                                 <input type="text" class="form-control" required>
@@ -253,7 +432,8 @@
                             </div>
                             <div class="col-12">
                                 <label class="form-label">Dirección</label>
-                                <textarea class="form-control" rows="3" placeholder="Calle, número, comuna..."></textarea>
+                                <textarea class="form-control" rows="3"
+                                    placeholder="Calle, número, comuna..."></textarea>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Fecha de Nacimiento</label>
@@ -268,48 +448,86 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="guardarCliente()">💾 Guardar Cliente</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarCliente()">
+                        <i class="bi bi-save-fill me-1"></i> Guardar Cliente
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Mensajes de Confirmación -->
-    <div class="toast-container position-fixed top-0 end-0 p-3">
-        <div id="toastExitoCliente" class="toast align-items-center text-bg-success border-0" role="alert">
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100"> <div id="toastExitoCliente" class="toast align-items-center text-bg-success border-0" role="alert">
             <div class="d-flex">
                 <div class="toast-body">
-                    ✅ Cliente actualizado correctamente
+                    <i class="bi bi-check-circle-fill me-2"></i> Cliente actualizado correctamente
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        fetch('includes/sidebar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar-placeholder').innerHTML = data;
+
+                // Toggle sidebar (móvil)
+                const toggle = document.getElementById('sidebarToggle');
+                if (toggle) {
+                    toggle.addEventListener('click', function () {
+                        document.querySelector('.nav-sidebar').classList.toggle('active');
+                    });
+                }
+
+                // Marcar link activo
+                const currentPage = window.location.pathname.split('/').pop();
+                const links = document.querySelectorAll('.nav-sidebar .nav-link');
+
+                links.forEach(link => {
+                    const linkPage = link.getAttribute('href').split('/').pop();
+                    if (linkPage === currentPage) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
         function guardarCliente() {
             // Validar campos obligatorios
             const form = document.getElementById('formCliente');
             if (!form.checkValidity()) {
-                form.reportValidity();
+                // Forzar que Bootstrap muestre los mensajes de validación
+                form.classList.add('was-validated'); 
+                
+                // Un hack simple para mostrar la validación HTML5 nativa si el 'was-validated' no es suficiente
+                if (typeof form.reportValidity === 'function') {
+                    form.reportValidity();
+                }
                 return;
             }
-            
+
+            // Si es válido, quitar la clase por si acaso
+            form.classList.remove('was-validated');
+
             // Cerrar modal
-            const modal = bootstrap.Modal.getInstance(document.getElementById('modalCliente'));
-            modal.hide();
-            
+            const modalEl = document.getElementById('modalCliente');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) {
+                modal.hide();
+            }
+
+            // Limpiar formulario (opcional, pero buena práctica)
+            form.reset();
+
             // Mostrar mensaje de éxito
-            const toast = new bootstrap.Toast(document.getElementById('toastExitoCliente'));
+            const toastEl = document.getElementById('toastExitoCliente');
+            const toast = new bootstrap.Toast(toastEl);
             toast.show();
-            
-            // Aquí iría la lógica real para guardar/editar el cliente
+
             console.log('Cliente guardado/actualizado correctamente');
         }
 
         function verHistorial() {
-            // Aquí iría la lógica para ver el historial de compras del cliente
             alert('Funcionalidad: Ver historial de compras del cliente');
         }
 
@@ -322,4 +540,5 @@
         }
     </script>
 </body>
+
 </html>
