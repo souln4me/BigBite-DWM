@@ -19,370 +19,7 @@
         rel="stylesheet">
 
     <link rel="stylesheet" href="../css/sidebar.css">
-    <style>
-        /* ===== General ===== */
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .admin-panel {
-            padding: 2rem 1.5rem;
-            font-family: 'Poppins', 'Arial', sans-serif;
-        }
-
-        /* ===== Tipografía ===== */
-        .admin-panel h1,
-        .admin-panel h3,
-        .admin-panel h5,
-        .admin-panel .card-title,
-        .modal-title {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            color: #212529;
-        }
-
-        /* ===== Tarjetas Principales (Filtros, Reporte) ===== */
-        .admin-panel .card-dashboard {
-            border-radius: 1rem;
-            background-color: #ffffff;
-            border: none;
-            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-        }
-
-        .admin-panel .card-dashboard .card-header {
-            background-color: #ffffff;
-            color: #212529;
-            border-bottom: 1px solid #dee2e6;
-            font-weight: 600;
-            font-size: 1.1rem;
-            padding: 1.25rem 1.5rem;
-        }
-
-        /* ===== Botones ===== */
-        .admin-panel .btn,
-        .modal-footer .btn {
-            border-radius: 50rem;
-            font-weight: 600;
-            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; 
-            border: 2px solid transparent; 
-            padding: 0.5rem 1.25rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        .admin-panel .btn:hover,
-        .modal-footer .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Botones pequeños de tabla */
-        .admin-panel .btn-sm {
-            padding: 0.25rem 0.75rem;
-            font-weight: 500;
-            font-size: 0.8rem;
-            border-width: 1px;
-        }
-
-        .admin-panel .table-actions .btn {
-            margin-right: 0.25rem;
-        }
-
-        .admin-panel .table-actions {
-            white-space: nowrap;
-        }
-
-        /* Botón Amarillo (Primario) */
-        .admin-panel .btn.btn-primary,
-        .modal-footer .btn.btn-primary {
-            background-color: #ffc107;
-            border-color: transparent; 
-            color: #212529;
-        }
-
-        .admin-panel .btn.btn-primary:hover,
-        .modal-footer .btn.btn-primary:hover {
-            background-color: #e0a800; /* Color Hover */
-            border-color: transparent; 
-            color: #212529;
-        }
-        
-        /* Estado presionado (:active) para botones primarios */
-        .admin-panel .btn.btn-primary:active,
-        .modal-footer .btn.btn-primary:active {
-            background-color: #e0a800 !important; /* MISMO COLOR QUE HOVER */
-            border-color: transparent !important; /* SIN BORDE NEGRO */
-            transform: none; 
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important; /* Sombra normal */
-        }
-
-        /* Foco visible (teclado) para botones primarios */
-        .admin-panel .btn.btn-primary:focus-visible,
-        .modal-footer .btn.btn-primary:focus-visible {
-           box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.5); 
-           border-color: transparent; 
-        }
-        
-        /* Botón Rojo (Peligro) */
-        .admin-panel .btn.btn-danger,
-        .modal-footer .btn.btn-danger {
-            background-color: #dc3545;
-            border-color: transparent; /* Consistencia */
-            color: #fff;
-        }
-        .admin-panel .btn.btn-danger:hover,
-        .modal-footer .btn.btn-danger:hover {
-            background-color: #bb2d3b;
-            border-color: transparent;
-            color: #fff;
-        }
-         /* Estado presionado (:active) para botones danger */
-        .admin-panel .btn.btn-danger:active,
-        .modal-footer .btn.btn-danger:active {
-            background-color: #bb2d3b !important; 
-            border-color: transparent !important; 
-            transform: none; 
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important; 
-        }
-        /* Foco visible (teclado) para botones danger */
-        .admin-panel .btn.btn-danger:focus-visible,
-        .modal-footer .btn.btn-danger:focus-visible {
-             box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.5);
-             border-color: transparent; 
-        }
-
-
-        /* Botón de Dropdown de Usuario y Secundarios */
-        .admin-panel .btn.btn-outline-secondary,
-        .modal-footer .btn.btn-secondary {
-            border-radius: 50rem;
-            font-weight: 500;
-            border: 1px solid #ced4da; 
-            color: #495057;
-            background-color: #fff;
-            padding: 0.5rem 1.25rem; 
-        }
-
-        .admin-panel .btn.btn-outline-secondary:hover,
-        .modal-footer .btn.btn-secondary:hover {
-            background-color: #e9ecef;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .modal-footer .btn.btn-secondary {
-            font-weight: 600;
-        }
-         /* Foco visible (teclado) para secundarios */
-        .admin-panel .btn.btn-outline-secondary:focus-visible,
-        .modal-footer .btn.btn-secondary:focus-visible {
-            box-shadow: 0 0 0 0.25rem rgba(108, 117, 125, 0.5);
-        }
-
-
-        /* Botones de acciones de tabla */
-        .admin-panel .btn.btn-outline-primary {
-            border-color: #ffc107;
-            color: #e0a800;
-        }
-
-        .admin-panel .btn.btn-outline-primary:hover {
-            background-color: #ffc107;
-            color: #212529;
-            border-color: #ffc107;
-        }
-
-        .admin-panel .btn.btn-outline-danger {
-            border-color: #dc3545;
-            color: #dc3545;
-        }
-        .admin-panel .btn.btn-outline-danger:hover {
-            background-color: #dc3545;
-            color: #fff;
-            border-color: #dc3545;
-        }
-        
-        /* QUITAR SOMBRA DE FOCO EN CLIC (botones generales) */
-        .admin-panel .btn:focus:not(:focus-visible),
-        .modal-footer .btn:focus:not(:focus-visible) {
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra normal */
-            outline: none; 
-        }
-
-
-        /* ===== Inputs y Formularios ===== */
-        .admin-panel .form-control,
-        .admin-panel .form-select,
-        .modal-body .form-control,
-        .modal-body .form-select {
-            border-radius: 0.5rem; 
-            border: 1px solid #ced4da;
-            padding: 0.5rem 1rem;
-            font-weight: 500;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-        /* Estado :focus (se aplica a :focus y :focus-visible) */
-        .admin-panel .form-control:focus,
-        .admin-panel .form-select:focus,
-        .modal-body .form-control:focus,
-        .modal-body .form-select:focus {
-            border-color: #ffc107;
-            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25); 
-        }
-
-        /* Barra de búsqueda */
-        .admin-panel .input-group > .form-control { /* Usa form-control normal */
-            border-radius: 50rem 0 0 50rem; 
-            border-right: none; 
-        }
-        .admin-panel .input-group > .form-control:focus {
-             box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25); 
-             z-index: 3; 
-        }
-
-        /* Botón de búsqueda (pegado al input) */
-        .admin-panel .input-group > .btn.btn-primary { 
-            border-radius: 0 50rem 50rem 0 !important;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); 
-            border: 1px solid #ced4da; 
-            border-left: none; 
-            padding: 0.5rem 1rem; 
-            border-color: #ced4da; 
-            border-left: none; 
-        }
-        .admin-panel .input-group > .btn.btn-primary:hover {
-            border-color: #ced4da; 
-        }
-        /* Estado presionado del botón de búsqueda */
-         .admin-panel .input-group > .btn.btn-primary:active {
-            background-color: #e0a800 !important; 
-            border: 1px solid #ced4da !important; 
-            border-left: none !important;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
-            transform: none !important;
-        }
-        /* Foco visible (teclado) del botón de búsqueda */
-        .admin-panel .input-group > .btn.btn-primary:focus-visible {
-             box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.5);
-             border-color: #ffc107; 
-             border-left: none; 
-             z-index: 3;
-        }
-        /* Quitar sombra foco en click del botón de búsqueda */
-        .admin-panel .input-group > .btn.btn-primary:focus:not(:focus-visible) {
-             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); 
-             border-color: #ced4da; 
-             border-left: none;
-             outline: none;
-        }
-
-        .admin-panel label,
-        .modal-body label {
-            font-weight: 600;
-            color: #495057;
-            margin-bottom: 0.25rem;
-            font-size: 0.9rem;
-        }
-
-         /* Estilo para el check */
-        .modal-body .form-check-input {
-            border-radius: 0.25em;
-            border: 1px solid #ced4da;
-            box-shadow: none; /* Sin sombra interna */
-        }
-         .modal-body .form-check-input:checked {
-            background-color: #ffc107;
-            border-color: #ffc107;
-        }
-         .modal-body .form-check-input:focus {
-             border-color: #ffc107;
-             box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25); 
-        }
-        .modal-body .form-check-label {
-            font-weight: 500;
-            font-size: 1rem;
-            color: #495057;
-        }
-
-        /* ===== Tabla ===== */
-        .admin-panel .table-responsive {
-            border-radius: 0.75rem;
-            overflow: hidden;
-            border: 1px solid #dee2e6;
-            box-shadow: none;
-        }
-
-        .admin-panel .table th,
-        .admin-panel .table td {
-            vertical-align: middle;
-            padding: 1rem;
-        }
-
-        .admin-panel .table thead {
-            background-color: #212529;
-            color: #fff;
-        }
-
-        .admin-panel .table-hover tbody tr:hover {
-            background-color: #fff8e1;
-        }
-
-        /* ===== Dropdowns ===== */
-        .admin-panel .dropdown-menu {
-            border-radius: 0.75rem;
-            padding: 0.5rem 0;
-            border: 1px solid #dee2e6;
-            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
-        }
-
-        /* ===== Modal ===== */
-        .modal-content {
-            border-radius: 40px !important; 
-            border: none;
-            box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
-            overflow: hidden;
-        }
-
-        .modal-header {
-            border-bottom: 1px solid #dee2e6;
-            padding: 1.5rem 2rem !important; 
-            border-top-left-radius: 40px;
-            border-top-right-radius: 40px;
-        }
-
-        .modal-body {
-            padding: 2rem !important; 
-        }
-
-        .modal-footer {
-            background-color: #f8f9fa;
-            border-top: 1px solid #dee2e6;
-            padding: 1.5rem 2rem !important; 
-            border-bottom-left-radius: 40px;
-            border-bottom-right-radius: 40px;
-        }
-        
-        /* ===== Insignias (Badges) ===== */
-        .admin-panel .badge {
-            font-weight: 600;
-            padding: 0.5em 0.75em;
-            border-radius: 50rem;
-            font-size: 0.8rem;
-            border: 1px solid transparent;
-        }
-        /* Específicos para Estado */
-        .admin-panel .badge.bg-success {
-            color: #0a3622;
-            background-color: #d1e7dd;
-            border-color: #b1d3c6;
-        }
-        .admin-panel .badge.bg-danger {
-            color: #58151c;
-            background-color: #f8d7da;
-            border-color: #f1b0b7;
-        }
-
-    </style>
+     <link rel="stylesheet" href="../css/mantenedor_base.css">
 </head>
 
 <body>
@@ -418,11 +55,11 @@
                             </div>
                             <div class="col-md-4">
                                 <select class="form-select">
-                                    <option selected>Categoría: Todas</option>
-                                    <option>Hamburguesas</option>
-                                    <option>Bebidas</option>
-                                    <option>Acompañamientos</option>
-                                    <option>Combos</option>
+                                    <option selected value="Todas">Categoría: Todas</option>
+                                    <option value="Hamburguesas">Hamburguesas</option>
+                                    <option value="Bebidas">Bebidas</option>
+                                    <option value="Acompañamientos">Acompañamientos</option>
+                                    <option value="Combos">Combos</option>
                                 </select>
                             </div>
                             <div class="col-md-4 text-end">
@@ -541,7 +178,7 @@
                             <div class="col-md-6">
                                 <label class="form-label">Categoría *</label>
                                 <select class="form-select" required>
-                                    <option value="" disabled selected>Seleccionar categoría</option>
+                                    <option value="" disabled selected>Seleccionar categoría</option> 
                                     <option>Hamburguesas</option>
                                     <option>Bebidas</option>
                                     <option>Acompañamientos</option>
@@ -551,12 +188,12 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Precio *</label>
-                                <input type="number" class="form-control" required placeholder="Ej: 10000" min="0">
+                                <input type="number" class="form-control" required placeholder="Ej: 10000" min="0"> 
                                 <div class="invalid-feedback">Ingrese un precio válido.</div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Stock *</label>
-                                <input type="number" class="form-control" required placeholder="Ej: 50" min="0">
+                                <input type="number" class="form-control" required placeholder="Ej: 50" min="0"> 
                                 <div class="invalid-feedback">Ingrese una cantidad válida.</div>
                             </div>
                             <div class="col-12">
@@ -566,7 +203,7 @@
                             <div class="col-12">
                                 <label class="form-label">Imagen del Producto</label>
                                 <input type="file" class="form-control">
-                                <div class="invalid-feedback">Seleccione un archivo de imagen.</div>
+                                <div class="invalid-feedback">Seleccione un archivo de imagen.</div> 
                             </div>
                             <div class="col-12">
                                 <div class="form-check mt-2">
@@ -640,12 +277,11 @@
                 const sidebarPlaceholder = document.getElementById('sidebar-placeholder');
                 if (sidebarPlaceholder) {
                     sidebarPlaceholder.innerHTML = data;
-                    // Inicializar listeners del sidebar después de cargar
+                    // Listeners del sidebar
                     const toggle = document.getElementById('sidebarToggle');
                     if (toggle) {
                         toggle.addEventListener('click', function () {
-                            const navSidebar = document.querySelector('.nav-sidebar');
-                             if (navSidebar) navSidebar.classList.toggle('active');
+                            document.querySelector('.nav-sidebar')?.classList.toggle('active');
                         });
                     }
                     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
@@ -658,8 +294,6 @@
                             link.classList.remove('active');
                         }
                     });
-                } else {
-                    console.error('Placeholder del sidebar no encontrado.');
                 }
             })
             .catch(error => console.error('Error cargando el sidebar:', error));
@@ -686,7 +320,7 @@
              }
 
             console.log('Producto guardado exitosamente');
-            // Aquí iría la lógica real para enviar datos
+            // Aquí iría la lógica real (fetch)
         }
 
         function eliminarProducto() {
@@ -703,7 +337,7 @@
              }
 
             console.log('Producto eliminado correctamente');
-             // Aquí iría la lógica real para eliminar
+             // Aquí iría la lógica real (fetch)
         }
 
         // --- Listeners y Lógica adicional que espera al DOM ---
@@ -730,11 +364,11 @@
                          if (modalTitleEl) modalTitleEl.textContent = 'Editar Producto';
 
                          const row = event.target.closest('tr');
-                         if (row && row.cells.length > 4) { // Verifica celdas
+                         if (row && row.cells.length > 5) { // Verifica celdas (ID, Nombre, Cat, Precio, Stock, Estado)
                              const id = row.cells[0]?.textContent;
                              const nombre = row.cells[1]?.textContent;
                              const categoria = row.cells[2]?.textContent;
-                             const precio = row.cells[3]?.textContent.replace(/\D/g,''); // Limpia no dígitos
+                             const precio = row.cells[3]?.textContent.replace(/\D/g,''); 
                              const stock = row.cells[4]?.textContent;
                              const estadoBadge = row.cells[5]?.querySelector('.badge');
                              const activo = estadoBadge ? estadoBadge.classList.contains('bg-success') : true;
@@ -746,15 +380,16 @@
                              const stockInput = modalProducto.querySelector('input[type="number"][required][placeholder="Ej: 50"]');
                              const descTextarea = modalProducto.querySelector('textarea');
                              const activoCheckbox = document.getElementById('productoActivo');
-                             // const imagenInput = modalProducto.querySelector('input[type="file"]'); // No se puede poblar file input
+                             const imagenInput = modalProducto.querySelector('input[type="file"]'); 
 
                              if (nombreInput) nombreInput.value = nombre || '';
                              if (categoriaSelect) categoriaSelect.value = categoria || '';
                              if (precioInput) precioInput.value = precio || '';
                              if (stockInput) stockInput.value = stock || '';
-                             // if (descTextarea) descTextarea.value = ''; // Poblar si tienes descripción en la tabla
+                             if (descTextarea) descTextarea.value = ''; // Limpia descripción (o poblar si la tienes)
                              if (activoCheckbox) activoCheckbox.checked = activo;
-                             
+                             if (imagenInput) imagenInput.value = ''; // Limpia input file
+
                              const form = document.getElementById('formProducto');
                               if (form) form.classList.remove('was-validated');
                          } else {
@@ -767,5 +402,4 @@
         }); // Fin DOMContentLoaded
     </script>
 </body>
-
 </html>

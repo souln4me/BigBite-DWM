@@ -18,290 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../css/sidebar.css">
-    <style>
-        /* ===================== */
-        /* ===== Admin Panel (Nuevo Estilo) ==== */
-        /* ===================== */
-
-        /* ===== General ===== */
-        body {
-            background-color: #f8f9fa;
-            /* Fondo gris claro */
-        }
-
-        .admin-panel {
-            padding: 2rem 1.5rem;
-            font-family: 'Poppins', 'Arial', sans-serif;
-            /* Nueva fuente */
-        }
-
-        /* ===== Tipografía ===== */
-        .admin-panel h1,
-        .admin-panel h3,
-        .admin-panel h5,
-        .admin-panel .card-title {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            /* Más audaz, pero no 'Black' */
-            color: #212529;
-        }
-
-        /* ===== Tarjetas Principales (Filtros, Reporte) ===== */
-        .admin-panel .card-dashboard {
-            border-radius: 1rem;
-            /* Radio más suave (16px) */
-            background-color: #ffffff;
-            /* Blanco limpio */
-            border: none;
-            /* Sin bordes pesados */
-            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
-            /* Sombra suave */
-            overflow: hidden;
-            /* Asegura que el radio se aplique al contenido */
-        }
-
-        .admin-panel .card-dashboard .card-header {
-            background-color: #ffffff;
-            /* Encabezado blanco */
-            color: #212529;
-            border-bottom: 1px solid #dee2e6;
-            /* Separador estándar */
-            font-weight: 600;
-            font-size: 1.1rem;
-            padding: 1.25rem 1.5rem;
-        }
-
-        /* ===== Tarjetas de Estadísticas (NUEVO DISEÑO) ===== */
-        .admin-panel .stat-card {
-            background-color: #fff;
-            border-radius: 1rem;
-            border: 1px solid #dee2e6;
-            /* Borde sutil */
-            box-shadow: none;
-            color: #212529;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-        
-        .admin-panel .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.07);
-        }
-
-        .admin-panel .stat-card .card-body {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .admin-panel .stat-card .stat-icon {
-            font-size: 2rem;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .admin-panel .stat-card h6 {
-            font-weight: 500;
-            font-size: 0.9rem;
-            color: #6c757d;
-            /* Color de texto secundario */
-            margin-bottom: 0.25rem;
-        }
-
-        .admin-panel .stat-card h3 {
-            font-weight: 700;
-            margin: 0;
-            font-size: 1.75rem;
-        }
-
-        /* Colores específicos para cada tarjeta de estadística */
-        .stat-card.ventas .stat-icon {
-            background-color: #e0f8e9;
-            /* Verde claro */
-            color: #198754;
-            /* Verde oscuro */
-        }
-
-        .stat-card.promedio .stat-icon {
-            background-color: #fff8e1;
-            /* Amarillo claro */
-            color: #ffc107;
-            /* Amarillo oscuro */
-        }
-
-        .stat-card.pedidos .stat-icon {
-            background-color: #e0f2fe;
-            /* Azul claro */
-            color: #0d6efd;
-            /* Azul oscuro */
-        }
-
-        .stat-card.productos .stat-icon {
-            background-color: #fdeded;
-            /* Rojo claro */
-            color: #dc3545;
-            /* Rojo oscuro */
-        }
-
-        /* ===== Botones ===== */
-        .admin-panel .btn {
-            border-radius: 50rem;
-            /* Estilo píldora */
-            font-weight: 600;
-            transition: all 0.2s ease;
-            border: none;
-            padding: 0.5rem 1.25rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-        .admin-panel .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Botón Amarillo (Primario) */
-        .admin-panel .btn.btn-primary {
-            background-color: #ffc107;
-            border-color: #ffc107;
-            color: #212529;
-            /* Texto oscuro para mejor contraste */
-        }
-
-        .admin-panel .btn.btn-primary:hover {
-            background-color: #e0a800;
-            /* Amarillo más oscuro */
-            border-color: #e0a800;
-            color: #212529;
-        }
-
-        /* * ======================================
-         * ==== INICIO DEL CAMBIO DE BOTONES ====
-         * ======================================
-        */
-
-        /* Botón Exportar PDF (Rojo) */
-        .admin-panel .btn.btn-export-pdf {
-            background-color: #dc3545; /* Rojo de Bootstrap (danger) */
-            border-color: #dc3545;
-            color: #fff;
-        }
-        .admin-panel .btn.btn-export-pdf:hover {
-            background-color: #bb2d3b;
-            border-color: #b02a37;
-            color: #fff;
-        }
-
-        /* Botón Exportar Excel (Verde) */
-        .admin-panel .btn.btn-export-excel {
-            background-color: #198754; /* Verde de Bootstrap (success) */
-            border-color: #198754;
-            color: #fff;
-        }
-        .admin-panel .btn.btn-export-excel:hover {
-            background-color: #157347;
-            border-color: #146c43;
-            color: #fff;
-        }
-        
-        /* * ======================================
-         * ===== FIN DEL CAMBIO DE BOTONES ======
-         * ======================================
-        */
-
-
-        /* Botón de Dropdown de Usuario */
-        .admin-panel .btn.btn-outline-secondary {
-            border-radius: 50rem;
-            font-weight: 500;
-            border: 1px solid #ced4da;
-            color: #495057;
-            background-color: #fff;
-        }
-
-        .admin-panel .btn.btn-outline-secondary:hover {
-            background-color: #e9ecef;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* ===== Inputs ===== */
-        .admin-panel .form-control,
-        .admin-panel .form-select {
-            border-radius: 0.5rem;
-            /* Radio más suave */
-            border: 1px solid #ced4da;
-            /* Borde estándar */
-            padding: 0.5rem 1rem;
-            font-weight: 500;
-        }
-
-        .admin-panel .form-control:focus,
-        .admin-panel .form-select:focus {
-            border-color: #ffc107;
-            /* Foco en color amarillo */
-            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
-            /* Sombra de foco */
-        }
-
-        /* ===== Alertas ===== */
-        .admin-panel .alert {
-            border-radius: 0.75rem;
-            font-weight: 500;
-        }
-
-        /* ===== Tabla ===== */
-        .admin-panel .table-responsive {
-            border-radius: 0.75rem;
-            overflow: hidden;
-            border: 1px solid #dee2e6;
-            /* Borde estándar */
-            box-shadow: none;
-        }
-
-        .admin-panel .table th,
-        .admin-panel .table td {
-            vertical-align: middle;
-            padding: 1rem;
-            /* Más espaciado */
-        }
-
-        .admin-panel .table thead {
-            background-color: #212529;
-            color: #fff;
-        }
-
-        .admin-panel .table-hover tbody tr:hover {
-            background-color: #fff8e1;
-            /* Hover amarillo claro */
-        }
-
-        /* ===== Dropdowns ===== */
-        .admin-panel .dropdown-menu {
-            border-radius: 0.75rem;
-            padding: 0.5rem 0;
-            border: 1px solid #dee2e6;
-            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
-        }
-
-        /* ===== Otros detalles ===== */
-        .admin-panel label {
-            font-weight: 600;
-            color: #495057;
-            margin-bottom: 0.25rem;
-            font-size: 0.9rem;
-        }
-
-        .admin-panel .badge.bg-success {
-            border-radius: 50rem;
-            /* Insignia tipo píldora */
-            font-weight: 600;
-            background-color: #198754 !important;
-            padding: 0.5em 0.75em;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/mantenedor_base.css">
 </head>
 
 <body>
@@ -312,7 +29,7 @@
             <div class="admin-panel">
 
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h1 class="h3 mb-0">Panel de Administración</h1>
+                    <h1 class="h3 mb-0">Reporte de Ventas</h1>
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                             <i class="bi bi-person-fill me-1"></i> Administrador
@@ -338,28 +55,24 @@
                                 <label for="fechaHasta" class="form-label">Hasta:</label>
                                 <input type="date" class="form-control" id="fechaHasta" value="2024-03-15">
                             </div>
-                            <div class="col-md-6 d-flex justify-content-start">
-                                <button class="btn btn-primary me-2" id="generarReporte">
+                            <div class="col-md-6 d-flex justify-content-start flex-wrap gap-2">
+                                <button class="btn btn-primary" id="generarReporte">
                                     <i class="bi bi-search me-1"></i> Generar Reporte
                                 </button>
-                                
-                                <button class="btn btn-export-pdf me-2">
+                                <button class="btn btn-export-pdf">
                                     <i class="bi bi-file-earmark-pdf me-1"></i> Exportar PDF
                                 </button>
                                 <button class="btn btn-export-excel">
                                     <i class="bi bi-file-earmark-excel me-1"></i> Exportar Excel
                                 </button>
-                                
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div id="mensajeSinResultados" class="alert alert-warning d-none" role="alert">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i> No hay registro de ventas en el período
-                    seleccionado.
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i> No hay registro de ventas en el período seleccionado.
                 </div>
-
                 <div id="mensajeRangoInvalido" class="alert alert-danger d-none" role="alert">
                     <i class="bi bi-x-circle-fill me-2"></i> Rango de fechas no válido.
                 </div>
@@ -367,10 +80,10 @@
                 <div id="resumenGeneral" class="row mb-4">
                     <div class="col-xl-3 col-md-6 mb-3">
                         <div class="card stat-card ventas">
-                            <div class="card-body p-4">
+                            <div class="card-body">
                                 <div>
-                                    <h6 class="card-title">Total Ventas</h6>
-                                    <h3 class="text-dark">$1,250,000</h3>
+                                    <h6>Total Ventas</h6>
+                                    <h3>$1,250,000</h3>
                                 </div>
                                 <div class="stat-icon">
                                     <i class="bi bi-cash-coin"></i>
@@ -378,13 +91,12 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="col-xl-3 col-md-6 mb-3">
                         <div class="card stat-card promedio">
-                            <div class="card-body p-4">
+                            <div class="card-body">
                                 <div>
-                                    <h6 class="card-title">Ticket Promedio</h6>
-                                    <h3 class="text-dark">$14,705</h3>
+                                    <h6>Ticket Promedio</h6>
+                                    <h3>$14,705</h3>
                                 </div>
                                 <div class="stat-icon">
                                     <i class="bi bi-graph-up"></i>
@@ -392,13 +104,12 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="col-xl-3 col-md-6 mb-3">
                         <div class="card stat-card pedidos">
-                            <div class="card-body p-4">
+                            <div class="card-body">
                                 <div>
-                                    <h6 class="card-title">Total Pedidos</h6>
-                                    <h3 class="text-dark">85</h3>
+                                    <h6>Total Pedidos</h6>
+                                    <h3>85</h3>
                                 </div>
                                 <div class="stat-icon">
                                     <i class="bi bi-box-seam"></i>
@@ -406,13 +117,12 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="col-xl-3 col-md-6 mb-3">
                         <div class="card stat-card productos">
-                            <div class="card-body p-4">
+                            <div class="card-body">
                                 <div>
-                                    <h6 class="card-title">Productos Vendidos</h6>
-                                    <h3 class="text-dark">210</h3>
+                                    <h6>Productos Vendidos</h6>
+                                    <h3>210</h3>
                                 </div>
                                 <div class="stat-icon">
                                     <i class="bi bi-cart"></i>
@@ -424,8 +134,8 @@
 
                 <div id="reporteVentas" class="card card-dashboard">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Reporte de Ventas - 1 al 15 de Marzo 2024</h5>
-                        <span class="badge bg-success">85 pedidos</span>
+                        <h5 class="mb-0">Reporte Detallado - <span id="report-date-range">1 al 15 de Marzo 2024</span></h5>
+                        <span class="badge bg-success"><span id="report-order-count">85</span> pedidos</span>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -475,65 +185,117 @@
                                         <td>1</td>
                                         <td>$45,000</td>
                                     </tr>
-                                    </tbody>
+                                </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
             </div> </div> </div> <script>
+        // --- Carga del Sidebar ---
         fetch('includes/sidebar.html')
-            .then(response => response.text())
+            .then(response => {
+                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                 return response.text();
+            })
             .then(data => {
-                document.getElementById('sidebar-placeholder').innerHTML = data;
-
-                // Toggle sidebar (móvil)
-                const toggle = document.getElementById('sidebarToggle');
-                if (toggle) {
-                    toggle.addEventListener('click', function () {
-                        document.querySelector('.nav-sidebar').classList.toggle('active');
-                    });
-                }
-
-                // Marcar link activo
-                const currentPage = window.location.pathname.split('/').pop(); // obtiene solo el archivo actual
-                const links = document.querySelectorAll('.nav-sidebar .nav-link');
-
-                links.forEach(link => {
-                    const linkPage = link.getAttribute('href').split('/').pop();
-                    if (linkPage === currentPage) {
-                        link.classList.add('active');
+                const sidebarPlaceholder = document.getElementById('sidebar-placeholder');
+                if (sidebarPlaceholder) {
+                    sidebarPlaceholder.innerHTML = data;
+                    // Listeners del sidebar
+                    const toggle = document.getElementById('sidebarToggle');
+                    if (toggle) {
+                        toggle.addEventListener('click', function () {
+                            document.querySelector('.nav-sidebar')?.classList.toggle('active');
+                        });
                     }
+                    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+                    const links = sidebarPlaceholder.querySelectorAll('.nav-sidebar .nav-link');
+                    links.forEach(link => {
+                        const linkPage = link.getAttribute('href')?.split('/').pop();
+                        if (linkPage === currentPage) {
+                            link.classList.add('active');
+                        } else {
+                            link.classList.remove('active');
+                        }
+                    });
+                } else {
+                     console.error('Placeholder del sidebar no encontrado.');
+                }
+            })
+            .catch(error => console.error('Error cargando el sidebar:', error));
+            
+        // --- Lógica del Reporte ---
+        document.addEventListener('DOMContentLoaded', () => { // Esperar al DOM
+            const generarBtn = document.getElementById('generarReporte');
+            const fechaDesdeInput = document.getElementById('fechaDesde');
+            const fechaHastaInput = document.getElementById('fechaHasta');
+            const msgSinResultados = document.getElementById('mensajeSinResultados');
+            const msgRangoInvalido = document.getElementById('mensajeRangoInvalido');
+            const reporteVentasDiv = document.getElementById('reporteVentas');
+            const resumenGeneralDiv = document.getElementById('resumenGeneral');
+            const reportDateRangeSpan = document.getElementById('report-date-range');
+            const reportOrderCountSpan = document.getElementById('report-order-count');
+
+            if (generarBtn) {
+                 generarBtn.addEventListener('click', function () {
+                    const fechaDesde = fechaDesdeInput.value;
+                    const fechaHasta = fechaHastaInput.value;
+
+                    // Ocultar mensajes
+                    if(msgSinResultados) msgSinResultados.classList.add('d-none');
+                    if(msgRangoInvalido) msgRangoInvalido.classList.add('d-none');
+
+                    // Validación
+                    if (!fechaDesde || !fechaHasta) {
+                        if(msgRangoInvalido) msgRangoInvalido.classList.remove('d-none');
+                        return;
+                    }
+                    if (fechaDesde > fechaHasta) {
+                        if(msgRangoInvalido) msgRangoInvalido.classList.remove('d-none');
+                        return;
+                    }
+
+                    // --- Simulación de Carga de Datos ---
+                    console.log('Generando reporte desde:', fechaDesde, 'hasta:', fechaHasta);
+                    // Aquí iría la llamada a la API (fetch) para obtener datos reales
+                    
+                    // Ejemplo: Actualizar dinámicamente el título y conteo (simulado)
+                    if(reportDateRangeSpan) {
+                         // Formatear fechas para mostrar (opcional, pero mejora la UX)
+                         const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                         const desdeFormatted = new Date(fechaDesde + 'T00:00:00').toLocaleDateString('es-CL', options);
+                         const hastaFormatted = new Date(fechaHasta + 'T00:00:00').toLocaleDateString('es-CL', options);
+                         reportDateRangeSpan.textContent = `${desdeFormatted} al ${hastaFormatted}`;
+                    }
+                    if(reportOrderCountSpan) reportOrderCountSpan.textContent = "85"; // Actualizar con datos reales
+
+                    // Mostrar secciones de resultados (asumiendo que hay datos)
+                    if(reporteVentasDiv) reporteVentasDiv.classList.remove('d-none');
+                    if(resumenGeneralDiv) resumenGeneralDiv.classList.remove('d-none');
+
+                    // Simulación de "Sin Resultados" (ejemplo)
+                    /*
+                    if (fechaDesde === "2024-04-01") { // Si eliges Abril 2024 (sin datos simulados)
+                        if(msgSinResultados) msgSinResultados.classList.remove('d-none');
+                        if(reporteVentasDiv) reporteVentasDiv.classList.add('d-none');
+                        if(resumenGeneralDiv) resumenGeneralDiv.classList.add('d-none');
+                    }
+                    */
+                    // --- Fin Simulación ---
                 });
-            });
-
-        document.getElementById('generarReporte').addEventListener('click', function () {
-            const fechaDesde = document.getElementById('fechaDesde').value;
-            const fechaHasta = document.getElementById('fechaHasta').value;
-
-            // Ocultar todos los mensajes primero
-            document.getElementById('mensajeSinResultados').classList.add('d-none');
-            document.getElementById('mensajeRangoInvalido').classList.add('d-none');
-
-            // Validación básica de rango de fechas
-            if (!fechaDesde || !fechaHasta) {
-                document.getElementById('mensajeRangoInvalido').classList.remove('d-none');
-                return;
             }
+            
+            // Lógica para botones Exportar (simulada)
+             document.querySelectorAll('.btn-export-pdf, .btn-export-excel').forEach(button => {
+                 button.addEventListener('click', () => {
+                     const format = button.classList.contains('btn-export-pdf') ? 'PDF' : 'Excel';
+                     alert(`Funcionalidad pendiente: Exportar reporte a ${format}`);
+                     // Aquí iría la lógica real de exportación (librería como jsPDF, SheetJS, o llamada a backend)
+                 });
+             });
 
-            if (fechaDesde > fechaHasta) {
-                document.getElementById('mensajeRangoInvalido').classList.remove('d-none');
-                return;
-            }
-
-            // Simulación de generación de reporte
-            console.log('Generando reporte desde:', fechaDesde, 'hasta:', fechaHasta);
-
-            // Aquí iría la lógica real para generar el reporte
-            // Por ahora solo mostramos el reporte existente
-            document.getElementById('reporteVentas').classList.remove('d-none');
-            document.getElementById('resumenGeneral').classList.remove('d-none');
-        });
+        }); // Fin DOMContentLoaded
     </script>
 </body>
 

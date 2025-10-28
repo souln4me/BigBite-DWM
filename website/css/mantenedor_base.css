@@ -1,0 +1,589 @@
+/* ========================== */
+/* ===== BASE MANTENEDOR ==== */
+/* ========================== */
+
+/* ===== General ===== */
+body {
+    background-color: #f8f9fa;
+}
+
+.admin-panel {
+    padding: 32px 24px;
+    font-family: 'Poppins', 'Arial', sans-serif;
+}
+
+/* ===== Tipografía ===== */
+.admin-panel h1,
+.admin-panel h3,
+.admin-panel h5,
+.admin-panel .card-title,
+.modal-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: #212529;
+}
+
+/* ===== Tarjetas Principales ===== */
+.admin-panel .card-dashboard {
+    border-radius: 40px;
+    background-color: #ffffff;
+    border: none;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.admin-panel .card-dashboard .card-header {
+    background-color: #ffffff;
+    color: #212529;
+    border-bottom: 1px solid #dee2e6;
+    font-weight: 600;
+    font-size: 17.6px;
+    padding: 25px 30px;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+}
+
+/* Padding consistente para el cuerpo de las tarjetas */
+.admin-panel .card-dashboard .card-body {
+    padding: 25px 30px;
+}
+
+.admin-panel .card-dashboard .mb-4 .card-body {
+    padding: 20px 30px;
+}
+
+/* ===== Botones ===== */
+.admin-panel .btn,
+.modal-footer .btn {
+    border-radius: 800px;
+    font-weight: 600;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; 
+    border: 2px solid transparent; 
+    padding: 8px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.admin-panel .btn:hover,
+.modal-footer .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Botones pequeños de tabla */
+.admin-panel .btn-sm {
+    padding: 4px 12px;
+    font-weight: 500;
+    font-size: 12.8px;
+    border-width: 1px;
+}
+
+.admin-panel .table-actions .btn {
+    margin-right: 0.25rem;
+}
+
+.admin-panel .table-actions {
+    white-space: nowrap;
+}
+
+/* Botón Amarillo (Primario) */
+.admin-panel .btn.btn-primary,
+.modal-footer .btn.btn-primary {
+    background-color: #ffc107;
+    border-color: transparent; 
+    color: #212529;
+}
+
+.admin-panel .btn.btn-primary:hover,
+.modal-footer .btn.btn-primary:hover {
+    background-color: #e0a800; /* Color Hover */
+    border-color: transparent; 
+    color: #212529;
+}
+
+/* Estado presionado (:active) para botones primarios */
+.admin-panel .btn.btn-primary:active,
+.modal-footer .btn.btn-primary:active {
+    background-color: #e0a800 !important; /* MISMO COLOR QUE HOVER */
+    border-color: transparent !important; /* SIN BORDE NEGRO */
+    transform: none; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important; /* Sombra normal */
+}
+
+/* Foco visible (teclado) para botones primarios */
+.admin-panel .btn.btn-primary:focus-visible,
+.modal-footer .btn.btn-primary:focus-visible {
+   box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.5); 
+   border-color: transparent; 
+}
+
+/* Botón Rojo (Peligro) */
+.admin-panel .btn.btn-danger,
+.modal-footer .btn.btn-danger {
+    background-color: #dc3545;
+    border-color: transparent; 
+    color: #fff;
+}
+.admin-panel .btn.btn-danger:hover,
+.modal-footer .btn.btn-danger:hover {
+    background-color: #bb2d3b;
+    border-color: transparent;
+    color: #fff;
+}
+ /* Estado presionado (:active) para botones danger */
+.admin-panel .btn.btn-danger:active,
+.modal-footer .btn.btn-danger:active {
+    background-color: #bb2d3b !important;
+    border-color: transparent !important;
+    transform: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+}
+/* Foco visible (teclado) para botones danger */
+.admin-panel .btn.btn-danger:focus-visible,
+.modal-footer .btn.btn-danger:focus-visible {
+     box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.5);
+     border-color: transparent; 
+}
+
+/* Botón de Dropdown de Usuario y Secundarios */
+.admin-panel .btn.btn-outline-secondary,
+.modal-footer .btn.btn-secondary {
+    border-radius: 800px;
+    font-weight: 500;
+    border: 1px solid #ced4da; 
+    color: #495057;
+    background-color: #fff;
+    padding: 8px 20px; 
+}
+
+.admin-panel .btn.btn-outline-secondary:hover,
+.modal-footer .btn.btn-secondary:hover {
+    background-color: #e9ecef;
+    transform: none;
+    box-shadow: none;
+}
+
+.modal-footer .btn.btn-secondary {
+    font-weight: 600;
+}
+ /* Foco visible (teclado) para secundarios */
+.admin-panel .btn.btn-outline-secondary:focus-visible,
+.modal-footer .btn.btn-secondary:focus-visible {
+    box-shadow: 0 0 0 4px rgba(108, 117, 125, 0.5);
+}
+
+/* Botones de acciones de tabla */
+.admin-panel .btn.btn-outline-primary {
+    border-color: #ffc107;
+    color: #e0a800;
+    background-color: transparent; /* Asegura fondo transparente */
+}
+
+.admin-panel .btn.btn-outline-primary:hover {
+    background-color: #ffc107;
+    color: #212529;
+    border-color: #ffc107;
+}
+
+.admin-panel .btn.btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+     background-color: transparent;
+}
+.admin-panel .btn.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+    border-color: #dc3545;
+}
+
+.admin-panel .btn.btn-outline-info {
+    border-color: #0dcaf0;
+    color: #0dcaf0;
+     background-color: transparent;
+}
+
+.admin-panel .btn.btn-outline-info:hover {
+    background-color: #0dcaf0;
+    color: #000;
+    border-color: #0dcaf0;
+}
+
+/* QUITAR SOMBRA DE FOCO EN CLIC (botones generales) */
+.admin-panel .btn:focus:not(:focus-visible),
+.modal-footer .btn:focus:not(:focus-visible) {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra normal */
+    outline: none; 
+}
+
+
+ /* ===== Inputs y Formularios ===== */
+.admin-panel .form-control,
+.modal-body .form-control {
+    border-radius: 8px; 
+    border: 1px solid #ced4da;
+    padding: 8px 16px;
+    font-weight: 500;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.admin-panel .form-select {
+    border-radius: 40px;
+    border: 1px solid #ced4da;
+    padding: 8px 16px;
+    font-weight: 500;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+/* Estado :focus */
+.admin-panel .form-control:focus,
+.modal-body .form-control:focus {
+    border-color: #ffc107;
+    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.25); 
+}
+
+.admin-panel .form-select:focus,
+.modal-body .form-select:focus {
+    border-color: #ffc107;
+    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.25); 
+}
+
+/* Barra de búsqueda (Input dentro de input-group) */
+.admin-panel .input-group > .form-control { 
+    border-radius: 800px 0 0 800px; 
+    border-right: none; 
+}
+.admin-panel .input-group > .form-control:focus {
+     box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.25); 
+     z-index: 3; 
+}
+
+/* Botón de búsqueda (pegado al input) */
+.admin-panel .input-group > .btn.btn-primary { 
+    border-radius: 0 800px 800px 0 !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); 
+    border: 1px solid #ced4da; 
+    border-left: none; 
+    padding: 8px 16px; 
+    border-color: #ced4da; 
+    border-left: none; 
+}
+.admin-panel .input-group > .btn.btn-primary:hover {
+    border-color: #ced4da; 
+}
+/* Estado presionado del botón de búsqueda */
+ .admin-panel .input-group > .btn.btn-primary:active {
+    background-color: #e0a800 !important; 
+    border: 1px solid #ced4da !important; 
+    border-left: none !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+    transform: none !important;
+}
+/* Foco visible (teclado) del botón de búsqueda */
+.admin-panel .input-group > .btn.btn-primary:focus-visible {
+     box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.5);
+     border-color: #ffc107; 
+     border-left: none; 
+     z-index: 3;
+}
+/* Quitar sombra foco en click del botón de búsqueda */
+.admin-panel .input-group > .btn.btn-primary:focus:not(:focus-visible) {
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); 
+     border-color: #ced4da; 
+     border-left: none;
+     outline: none;
+}
+
+.admin-panel label,
+.modal-body label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 4px;
+    font-size: 14.4px;
+}
+
+ /* Estilo para el check */
+.modal-body .form-check-input {
+    border-radius: 0.25em;
+    border: 1px solid #ced4da;
+    box-shadow: none;
+}
+ .modal-body .form-check-input:checked {
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+ .modal-body .form-check-input:focus {
+     border-color: #ffc107;
+     box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.25);
+}
+.modal-body .form-check-label {
+    font-weight: 500;
+    font-size: 1rem;
+    color: #495057;
+}
+
+/* ===== Tabla ===== */
+.admin-panel .table-responsive {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #dee2e6;
+    box-shadow: none;
+}
+
+.admin-panel .table th,
+.admin-panel .table td {
+    vertical-align: middle;
+    padding: 16px;
+}
+
+.admin-panel .table thead {
+    background-color: #212529;
+    color: #fff;
+}
+
+.admin-panel .table-hover tbody tr:hover {
+    background-color: #fff8e1;
+}
+
+/* ===== Dropdowns ===== */
+.admin-panel .dropdown-menu {
+    border-radius: 12px;
+    padding: 0.5rem 0;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+}
+
+/* ===== Modal ===== */
+.modal-content {
+    border-radius: 40px !important;
+    border: none;
+    box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.15);
+    overflow: hidden;
+}
+.modal-header {
+    border-bottom: 1px solid #dee2e6;
+    padding: 25px 30px !important;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+}
+.modal-body {
+    padding: 30px !important;
+}
+.modal-body .form-select {
+    border: 1px solid #ced4da;
+    padding: 8px 16px;
+    font-weight: 500;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.modal-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    padding: 20px 30px !important;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+}
+.modal-body h5 { /* Subtítulo "Datos opcionales" */
+    font-weight: 600;
+    color: #6c757d;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 0.5rem;
+    margin-top: 24px; /* Espacio antes del subtítulo */
+}
+
+ /* Icono del ojo en contraseña */
+.modal-body .input-group > .form-control { /* Input */
+    border-radius: 8px 0 0 8px;
+}
+ .modal-body .input-group > .input-group-text { /* Span del ojo */
+    cursor: pointer;
+    border-radius: 0 8px 8px 0 !important;
+    border: 1px solid #ced4da;
+    padding: 0.5rem 0.75rem; /* ajusta tamaño del recuadro */
+}
+
+/* cuando el input tiene foco, aplicar el mismo estilo/contorno al icono */
+.modal-body .input-group:focus-within > .input-group-text,
+.modal-body .input-group > .form-control:focus + .input-group-text {
+    border-color: #ffc107;
+    box-shadow: 0 0 0 4px rgba(255,193,7,0.25);
+}
+
+/* ===== Badges ===== */
+.admin-panel .badge {
+    font-weight: 600;
+    padding: 0.5em 0.75em;
+    border-radius: 800px;
+    font-size: 12.8px;
+    border: 1px solid transparent;
+}
+/* Específicos para Estado */
+.admin-panel .badge.bg-success { /* Activo */
+    color: #0a3622;
+    background-color: #d1e7dd;
+    border-color: #b1d3c6;
+}
+.admin-panel .badge.bg-warning { /* Inactivo */
+    color: #664d03;
+    background-color: #fff3cd;
+    border-color: #ffecb5;
+}
+.admin-panel .badge.bg-danger { /* Sin Stock */
+    color: #58151c;
+    background-color: #f8d7da;
+    border-color: #f1b0b7;
+}
+/* Específicos para Rol (Usuarios) */
+.admin-panel .badge.role-owner { /* Dueño */
+    color: #6f42c1; /* Púrpura */
+    background-color: #e9d5ff;
+    border-color: #d8b4fe;
+}
+.admin-panel .badge.role-admin { /* Admin */
+    color: #055160;
+    background-color: #cff4fc;
+    border-color: #aeeafc;
+}
+.admin-panel .badge.role-manager { /* Manager (se quitó de usuarios?) */
+    color: #0a3622; 
+    background-color: #d1e7dd;
+    border-color: #b1d3c6;
+}
+.admin-panel .badge.role-user { /* Usuario */
+    color: #41464b;
+    background-color: #e2e3e5;
+    border-color: #d3d6d8;
+}
+.admin-panel .badge.role-delivery { /* Despacho */
+    color: #664d03;
+    background-color: #fff3cd;
+    border-color: #ffecb5;
+}
+
+/* ===================================== */
+/* ==== Estilos Específicos REPORTES ==== */
+/* ===================================== */
+
+/* ===== Inputs de Fecha ===== */
+.admin-panel #fechaDesde,
+.admin-panel #fechaHasta {
+    padding: 8px 16px;
+    border-radius: 40px;
+}
+
+/* ===== Tarjetas de Estadísticas ===== */
+.admin-panel .stat-card {
+    background-color: #fff;
+    border-radius: 40px;
+    border: 1px solid #dee2e6; /* Borde sutil */
+    box-shadow: none;
+    color: #212529;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.admin-panel .stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.07);
+}
+
+.admin-panel .stat-card .card-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem; /* Ajusta padding si es necesario */
+}
+
+.admin-panel .stat-card .stat-icon {
+    font-size: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-panel .stat-card h6 {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: #6c757d; /* Color de texto secundario */
+    margin-bottom: 0.25rem;
+}
+
+.admin-panel .stat-card h3 {
+    font-weight: 700;
+    margin: 0;
+    font-size: 1.75rem;
+}
+
+/* Colores específicos para cada tarjeta de estadística */
+.stat-card.ventas .stat-icon {
+    background-color: #e0f8e9; /* Verde claro */
+    color: #198754; /* Verde oscuro */
+}
+
+.stat-card.promedio .stat-icon {
+    background-color: #fff8e1; /* Amarillo claro */
+    color: #ffc107; /* Amarillo oscuro */
+}
+
+.stat-card.pedidos .stat-icon {
+    background-color: #e0f2fe; /* Azul claro */
+    color: #0d6efd; /* Azul oscuro */
+}
+
+.stat-card.productos .stat-icon {
+    background-color: #fdeded; /* Rojo claro */
+    color: #dc3545; /* Rojo oscuro */
+}
+
+/* ===== Botones de Exportar ===== */
+.admin-panel .btn.btn-export-pdf {
+    background-color: #dc3545; /* Rojo */
+    border-color: transparent; /* Consistencia */
+    color: #fff;
+}
+.admin-panel .btn.btn-export-pdf:hover {
+    background-color: #bb2d3b;
+    border-color: transparent;
+    color: #fff;
+}
+ /* Estado presionado */
+.admin-panel .btn.btn-export-pdf:active {
+    background-color: #bb2d3b !important;
+    border-color: transparent !important;
+    transform: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+}
+/* Foco visible */
+.admin-panel .btn.btn-export-pdf:focus-visible {
+     box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.5);
+     border-color: transparent;
+}
+
+
+.admin-panel .btn.btn-export-excel {
+    background-color: #198754; /* Verde */
+    border-color: transparent; /* Consistencia */
+    color: #fff;
+}
+.admin-panel .btn.btn-export-excel:hover {
+    background-color: #157347;
+    border-color: transparent;
+    color: #fff;
+}
+ /* Estado presionado */
+.admin-panel .btn.btn-export-excel:active {
+    background-color: #157347 !important;
+    border-color: transparent !important;
+    transform: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+}
+/* Foco visible */
+.admin-panel .btn.btn-export-excel:focus-visible {
+     box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.5);
+     border-color: transparent;
+}
+
+/* ===== Alertas ===== */
+.admin-panel .alert {
+    border-radius: 0.75rem;
+    font-weight: 500;
+}

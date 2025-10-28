@@ -19,438 +19,7 @@
         rel="stylesheet">
 
     <link rel="stylesheet" href="../css/sidebar.css">
-    <style>
-        /* ===== General ===== */
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .admin-panel {
-            padding: 2rem 1.5rem;
-            font-family: 'Poppins', 'Arial', sans-serif;
-        }
-
-        /* ===== Tipografía ===== */
-        .admin-panel h1,
-        .admin-panel h3,
-        .admin-panel h5,
-        .admin-panel .card-title,
-        .modal-title {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            color: #212529;
-        }
-
-        /* ===== Tarjetas Principales (Filtros, Reporte) ===== */
-        .admin-panel .card-dashboard {
-            border-radius: 1rem;
-            background-color: #ffffff;
-            border: none;
-            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-        }
-
-        .admin-panel .card-dashboard .card-header {
-            background-color: #ffffff;
-            color: #212529;
-            border-bottom: 1px solid #dee2e6;
-            font-weight: 600;
-            font-size: 1.1rem;
-            padding: 1.25rem 1.5rem;
-        }
-
-        /* ===== Botones ===== */
-        .admin-panel .btn,
-        .modal-footer .btn {
-            border-radius: 50rem;
-            font-weight: 600;
-            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-            border: 2px solid transparent;
-            padding: 0.5rem 1.25rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        .admin-panel .btn:hover,
-        .modal-footer .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Botones pequeños de tabla */
-        .admin-panel .btn-sm {
-            padding: 0.25rem 0.75rem;
-            font-weight: 500;
-            font-size: 0.8rem;
-            border-width: 1px;
-        }
-
-        .admin-panel .table-actions .btn {
-            margin-right: 0.25rem;
-        }
-
-        .admin-panel .table-actions {
-            white-space: nowrap;
-        }
-
-        /* Botón Amarillo (Primario) */
-        .admin-panel .btn.btn-primary,
-        .modal-footer .btn.btn-primary {
-            background-color: #ffc107;
-            border-color: transparent;
-            color: #212529;
-        }
-
-        .admin-panel .btn.btn-primary:hover,
-        .modal-footer .btn.btn-primary:hover {
-            background-color: #e0a800;
-            /* Color Hover */
-            border-color: transparent;
-            color: #212529;
-        }
-
-        /* Estado presionado (:active) para botones primarios */
-        .admin-panel .btn.btn-primary:active,
-        .modal-footer .btn.btn-primary:active {
-            background-color: #e0a800 !important;
-            /* MISMO COLOR QUE HOVER */
-            border-color: transparent !important;
-            /* SIN BORDE NEGRO */
-            transform: none;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
-            /* Sombra normal */
-        }
-
-        /* Foco visible (teclado) para botones primarios */
-        .admin-panel .btn.btn-primary:focus-visible,
-        .modal-footer .btn.btn-primary:focus-visible {
-            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.5);
-            border-color: transparent;
-        }
-
-        /* Botón Rojo (Peligro) */
-        .admin-panel .btn.btn-danger,
-        .modal-footer .btn.btn-danger {
-            background-color: #dc3545;
-            border-color: transparent;
-            /* Consistencia */
-            color: #fff;
-        }
-
-        .admin-panel .btn.btn-danger:hover,
-        .modal-footer .btn.btn-danger:hover {
-            background-color: #bb2d3b;
-            border-color: transparent;
-            color: #fff;
-        }
-
-        /* Estado presionado (:active) para botones danger */
-        .admin-panel .btn.btn-danger:active,
-        .modal-footer .btn.btn-danger:active {
-            background-color: #bb2d3b !important;
-            border-color: transparent !important;
-            transform: none;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
-        }
-
-        /* Foco visible (teclado) para botones danger */
-        .admin-panel .btn.btn-danger:focus-visible,
-        .modal-footer .btn.btn-danger:focus-visible {
-            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.5);
-            border-color: transparent;
-        }
-
-
-        /* Botón de Dropdown de Usuario y Secundarios */
-        .admin-panel .btn.btn-outline-secondary,
-        .modal-footer .btn.btn-secondary {
-            border-radius: 50rem;
-            font-weight: 500;
-            border: 1px solid #ced4da;
-            color: #495057;
-            background-color: #fff;
-            padding: 0.5rem 1.25rem;
-        }
-
-        .admin-panel .btn.btn-outline-secondary:hover,
-        .modal-footer .btn.btn-secondary:hover {
-            background-color: #e9ecef;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .modal-footer .btn.btn-secondary {
-            font-weight: 600;
-        }
-
-        /* Foco visible (teclado) para secundarios */
-        .admin-panel .btn.btn-outline-secondary:focus-visible,
-        .modal-footer .btn.btn-secondary:focus-visible {
-            box-shadow: 0 0 0 0.25rem rgba(108, 117, 125, 0.5);
-        }
-
-
-        /* Botones de acciones de tabla */
-        .admin-panel .btn.btn-outline-primary {
-            border-color: #ffc107;
-            color: #e0a800;
-        }
-
-        .admin-panel .btn.btn-outline-primary:hover {
-            background-color: #ffc107;
-            color: #212529;
-            border-color: #ffc107;
-        }
-
-        .admin-panel .btn.btn-outline-danger {
-            border-color: #dc3545;
-            color: #dc3545;
-        }
-
-        .admin-panel .btn.btn-outline-danger:hover {
-            background-color: #dc3545;
-            color: #fff;
-            border-color: #dc3545;
-        }
-
-
-        /* QUITAR SOMBRA DE FOCO EN CLIC (botones generales) */
-        .admin-panel .btn:focus:not(:focus-visible),
-        .modal-footer .btn:focus:not(:focus-visible) {
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            /* Sombra normal */
-            outline: none;
-        }
-
-
-        /* ===== Inputs y Formularios ===== */
-        .admin-panel .form-control,
-        .admin-panel .form-select,
-        .modal-body .form-control,
-        .modal-body .form-select {
-            border-radius: 0.5rem;
-            border: 1px solid #ced4da;
-            padding: 0.5rem 1rem;
-            font-weight: 500;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        /* Estado :focus (se aplica a :focus y :focus-visible) */
-        .admin-panel .form-control:focus,
-        .admin-panel .form-select:focus,
-        .modal-body .form-control:focus,
-        .modal-body .form-select:focus {
-            border-color: #ffc107;
-            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
-        }
-
-        /* Barra de búsqueda */
-        .admin-panel .input-group>.form-control {
-            /* Usa form-control normal */
-            border-radius: 50rem 0 0 50rem;
-            border-right: none;
-        }
-
-        .admin-panel .input-group>.form-control:focus {
-            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
-            z-index: 3;
-        }
-
-        /* Botón de búsqueda (pegado al input) */
-        .admin-panel .input-group>.btn.btn-primary {
-            border-radius: 0 50rem 50rem 0 !important;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            border: 1px solid #ced4da;
-            border-left: none;
-            padding: 0.5rem 1rem;
-            border-color: #ced4da;
-            border-left: none;
-        }
-
-        .admin-panel .input-group>.btn.btn-primary:hover {
-            border-color: #ced4da;
-        }
-
-        /* Estado presionado del botón de búsqueda */
-        .admin-panel .input-group>.btn.btn-primary:active {
-            background-color: #e0a800 !important;
-            border: 1px solid #ced4da !important;
-            border-left: none !important;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
-            transform: none !important;
-        }
-
-        /* Foco visible (teclado) del botón de búsqueda */
-        .admin-panel .input-group>.btn.btn-primary:focus-visible {
-            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.5);
-            border-color: #ffc107;
-            border-left: none;
-            z-index: 3;
-        }
-
-        /* Quitar sombra foco en click del botón de búsqueda */
-        .admin-panel .input-group>.btn.btn-primary:focus:not(:focus-visible) {
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            border-color: #ced4da;
-            border-left: none;
-            outline: none;
-        }
-
-
-        .admin-panel label,
-        .modal-body label {
-            font-weight: 600;
-            color: #495057;
-            margin-bottom: 0.25rem;
-            font-size: 0.9rem;
-        }
-
-        /* Estilo para el check */
-        .modal-body .form-check-input {
-            border-radius: 0.25em;
-            border: 1px solid #ced4da;
-            box-shadow: none;
-        }
-
-        .modal-body .form-check-input:checked {
-            background-color: #ffc107;
-            border-color: #ffc107;
-        }
-
-        .modal-body .form-check-input:focus {
-            border-color: #ffc107;
-            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
-        }
-
-        .modal-body .form-check-label {
-            font-weight: 500;
-            font-size: 1rem;
-            color: #495057;
-        }
-
-        /* ===== Tabla ===== */
-        .admin-panel .table-responsive {
-            border-radius: 0.75rem;
-            overflow: hidden;
-            border: 1px solid #dee2e6;
-            box-shadow: none;
-        }
-
-        .admin-panel .table th,
-        .admin-panel .table td {
-            vertical-align: middle;
-            padding: 1rem;
-        }
-
-        .admin-panel .table thead {
-            background-color: #212529;
-            color: #fff;
-        }
-
-        .admin-panel .table-hover tbody tr:hover {
-            background-color: #fff8e1;
-        }
-
-        /* ===== Dropdowns ===== */
-        .admin-panel .dropdown-menu {
-            border-radius: 0.75rem;
-            padding: 0.5rem 0;
-            border: 1px solid #dee2e6;
-            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
-        }
-
-        /* ===== Modal ===== */
-        .modal-content {
-            border-radius: 40px !important;
-            /* Radio estándar */
-            border: none;
-            box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
-            overflow: hidden;
-            /* Necesario si se usa radio grande */
-        }
-
-        .modal-header {
-            border-bottom: 1px solid #dee2e6;
-            padding: 1.5rem 2rem !important;
-            /* Padding estándar */
-            /* border-top-left-radius: 1rem; Si se usa radio grande */
-            /* border-top-right-radius: 1rem; */
-        }
-
-        .modal-body {
-            padding: 2rem !important;
-            /* Padding estándar */
-        }
-
-        .modal-footer {
-            background-color: #f8f9fa;
-            border-top: 1px solid #dee2e6;
-            padding: 1.5rem 2rem !important;
-            /* Padding estándar */
-            border-bottom-left-radius: 1rem;
-            /* Radio estándar */
-            border-bottom-right-radius: 1rem;
-        }
-
-        .modal-body .input-group>.input-group-text {
-            /* Span del ojo */
-            cursor: pointer;
-            border: 1px solid #ced4da;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        /* Estilo foco para el input + span */
-        .modal-body .input-group>.form-control:focus {
-            z-index: 3;
-            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
-        }
-
-        .modal-body .input-group>.form-control:focus+.input-group-text {
-            border-color: #ffc107;
-            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
-            z-index: 3;
-        }
-
-        /* ===== Insignias (Badges) ===== */
-        .admin-panel .badge {
-            font-weight: 600;
-            padding: 0.5em 0.75em;
-            border-radius: 50rem;
-            font-size: 0.8rem;
-            border: 1px solid transparent;
-        }
-
-        /* Específicos para Estado */
-        .admin-panel .badge.bg-success {
-            color: #0a3622;
-            background-color: #d1e7dd;
-            border-color: #b1d3c6;
-        }
-
-        .admin-panel .badge.bg-warning {
-            color: #664d03;
-            background-color: #fff3cd;
-            border-color: #ffecb5;
-        }
-
-        /* Específicos para Rol */
-        .admin-panel .badge.role-admin {
-            color: #58151c;
-            background-color: #f8d7da;
-            border-color: #f1b0b7;
-        }
-
-        .admin-panel .badge.role-manager {
-            color: #055160;
-            background-color: #cff4fc;
-            border-color: #aeeafc;
-        }
-
-        .admin-panel .badge.role-user {
-            color: #41464b;
-            background-color: #e2e3e5;
-            border-color: #d3d6d8;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/mantenedor_base.css">
 </head>
 
 <body>
@@ -487,14 +56,15 @@
                             </div>
                             <div class="col-md-4">
                                 <select class="form-select">
-                                    <option selected>Rol: Todos</option>
-                                    <option>Administrador</option>
-                                    <option>Usuario</option>
-                                    <option>Manager</option>
+                                    <option selected value="Todos">Rol: Todos</option>
+                                    <option value="Dueño">Dueño</option>
+                                    <option value="Administrador">Administrador</option>
+                                    <option value="Despacho">Despacho</option>
                                 </select>
                             </div>
                             <div class="col-md-4 text-end">
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalUsuario">
+                                <button class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#modalUsuario">
                                     <i class="bi bi-plus-lg me-1"></i> Nuevo Usuario
                                 </button>
                             </div>
@@ -525,7 +95,7 @@
                                         <td>USER-001</td>
                                         <td>María González</td>
                                         <td>maria@bigbite.com</td>
-                                        <td><span class="badge role-admin">Administrador</span></td>
+                                        <td><span class="badge role-owner">Dueño</span></td>
                                         <td>15/01/2024</td>
                                         <td><span class="badge bg-success">Activo</span></td>
                                         <td class="table-actions">
@@ -543,16 +113,14 @@
                                         <td>USER-002</td>
                                         <td>Carlos López</td>
                                         <td>carlos@bigbite.com</td>
-                                        <td><span class="badge role-manager">Manager</span></td>
+                                        <td><span class="badge role-admin">Administrador</span></td>
                                         <td>20/02/2024</td>
                                         <td><span class="badge bg-success">Activo</span></td>
                                         <td class="table-actions">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-                                                data-bs-target="#modalUsuario">
+                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalUsuario">
                                                 <i class="bi bi-pencil-fill me-1"></i> Editar
                                             </button>
-                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#modalEliminarUsuario">
+                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarUsuario">
                                                 <i class="bi bi-trash-fill me-1"></i> Eliminar
                                             </button>
                                         </td>
@@ -561,16 +129,14 @@
                                         <td>USER-003</td>
                                         <td>Ana Silva</td>
                                         <td>ana.silva@email.com</td>
-                                        <td><span class="badge role-user">Usuario</span></td>
+                                        <td><span class="badge role-admin">Administrador</span></td>
                                         <td>05/03/2024</td>
                                         <td><span class="badge bg-success">Activo</span></td>
                                         <td class="table-actions">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-                                                data-bs-target="#modalUsuario">
+                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalUsuario">
                                                 <i class="bi bi-pencil-fill me-1"></i> Editar
                                             </button>
-                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#modalEliminarUsuario">
+                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarUsuario">
                                                 <i class="bi bi-trash-fill me-1"></i> Eliminar
                                             </button>
                                         </td>
@@ -579,16 +145,14 @@
                                         <td>USER-004</td>
                                         <td>Pedro Martínez</td>
                                         <td>pedro.m@email.com</td>
-                                        <td><span class="badge role-user">Usuario</span></td>
+                                        <td><span class="badge role-delivery">Despacho</span></td>
                                         <td>10/03/2024</td>
                                         <td><span class="badge bg-warning">Inactivo</span></td>
                                         <td class="table-actions">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-                                                data-bs-target="#modalUsuario">
+                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalUsuario">
                                                 <i class="bi bi-pencil-fill me-1"></i> Editar
                                             </button>
-                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#modalEliminarUsuario">
+                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarUsuario">
                                                 <i class="bi bi-trash-fill me-1"></i> Eliminar
                                             </button>
                                         </td>
@@ -599,10 +163,7 @@
                     </div>
                 </div>
 
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="modalUsuario" tabindex="-1">
+            </div> </div> </div> <div class="modal fade" id="modalUsuario" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -624,33 +185,31 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Contraseña *</label>
-                                <div class="input-group">
-                                    <input type="password" id="pass1" class="form-control" required
-                                        placeholder="••••••••">
+                                 <div class="input-group">
+                                    <input type="password" id="pass1" class="form-control" required placeholder="••••••••">
                                     <span class="input-group-text toggle-password" style="cursor: pointer;">
                                         <i class="bi bi-eye-slash"></i>
                                     </span>
-                                    <div class="invalid-feedback">Ingrese una contraseña.</div>
+                                     <div class="invalid-feedback">Ingrese una contraseña.</div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Confirmar Contraseña *</label>
-                                <div class="input-group">
-                                    <input type="password" id="pass2" class="form-control" required
-                                        placeholder="••••••••">
-                                    <span class="input-group-text toggle-password" style="cursor: pointer;">
+                                 <div class="input-group">
+                                    <input type="password" id="pass2" class="form-control" required placeholder="••••••••">
+                                     <span class="input-group-text toggle-password" style="cursor: pointer;">
                                         <i class="bi bi-eye-slash"></i>
                                     </span>
-                                    <div class="invalid-feedback">Confirme la contraseña.</div>
+                                     <div class="invalid-feedback">Confirme la contraseña.</div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Rol *</label>
                                 <select class="form-select" required>
-                                    <option value="" disabled selected>Seleccionar rol</option> {/* Placeholder */}
+                                    <option value="" disabled selected>Seleccionar rol</option> 
+                                    <option>Dueño</option>
                                     <option>Administrador</option>
-                                    <option>Manager</option>
-                                    <option>Usuario</option>
+                                    <option>Despacho</option>
                                 </select>
                                 <div class="invalid-feedback">Seleccione un rol.</div>
                             </div>
@@ -680,7 +239,7 @@
     </div>
 
     <div class="modal fade" id="modalEliminarUsuario" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered"> 
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Confirmar Eliminación</h5>
@@ -709,7 +268,7 @@
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
             </div>
         </div>
-        <div id="toastEliminadoUsuario" class="toast align-items-center text-bg-danger border-0" role="alert">
+        <div id="toastEliminadoUsuario" class="toast align-items-center text-bg-danger border-0" role="alert"> 
             <div class="d-flex">
                 <div class="toast-body">
                     <i class="bi bi-trash-fill me-2"></i> Usuario eliminado correctamente
@@ -721,7 +280,7 @@
 
     <script>
         // --- Carga del Sidebar ---
-        fetch('includes/sidebar.html')
+         fetch('includes/sidebar.html')
             .then(response => {
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 return response.text();
@@ -754,20 +313,27 @@
         // --- Lógica del Modal y Formulario ---
         function guardarUsuario() {
             const form = document.getElementById('formUsuario');
-            // Validar contraseñas coinciden (si es necesario)
-            const pass1 = form.querySelector('#pass1')?.value;
-            const pass2 = form.querySelector('#pass2')?.value;
-            // Aquí puedes añadir lógica para comparar pass1 y pass2 si es un usuario nuevo
-            // y mostrar un error personalizado si no coinciden.
+            const pass1Input = form?.querySelector('#pass1');
+            const pass2Input = form?.querySelector('#pass2');
+            let passwordsMatch = true;
 
-            if (!form || !form.checkValidity()) {
+            // Solo validar coincidencia si se están creando (o si se ingresó algo en ambas)
+            if (pass1Input && pass2Input && (pass1Input.value || pass2Input.value) && pass1Input.value !== pass2Input.value) {
+                 passwordsMatch = false;
+                 // Podrías añadir un mensaje de error específico para la confirmación
+                 pass2Input.setCustomValidity("Las contraseñas no coinciden"); // Mensaje de validación HTML5
+            } else if(pass2Input) {
+                 pass2Input.setCustomValidity(""); // Limpiar error si coinciden o están vacías
+            }
+
+            if (!form || !form.checkValidity() || !passwordsMatch) {
                 form?.classList.add('was-validated');
                 return;
             }
             form.classList.remove('was-validated');
 
             const modalEl = document.getElementById('modalUsuario');
-            if (modalEl) bootstrap.Modal.getInstance(modalEl)?.hide();
+            if(modalEl) bootstrap.Modal.getInstance(modalEl)?.hide();
 
             const toastEl = document.getElementById('toastExitoUsuario');
             if (toastEl) bootstrap.Toast.getOrCreateInstance(toastEl).show();
@@ -778,99 +344,120 @@
 
         function eliminarUsuario() {
             const modalEl = document.getElementById('modalEliminarUsuario');
-            if (modalEl) bootstrap.Modal.getInstance(modalEl)?.hide();
+            if(modalEl) bootstrap.Modal.getInstance(modalEl)?.hide();
 
             const toastEl = document.getElementById('toastEliminadoUsuario');
             if (toastEl) bootstrap.Toast.getOrCreateInstance(toastEl).show();
 
             console.log('Usuario eliminado correctamente');
-            // Aquí iría la lógica real (fetch)
+             // Aquí iría la lógica real (fetch)
         }
 
         // --- Listeners y Lógica adicional que espera al DOM ---
         document.addEventListener('DOMContentLoaded', () => {
             const modalUsuario = document.getElementById('modalUsuario');
             if (modalUsuario) {
-                // Limpiar modal al cerrar
-                modalUsuario.addEventListener('hidden.bs.modal', event => {
-                    const form = document.getElementById('formUsuario');
-                    if (form) {
-                        form.classList.remove('was-validated');
-                        form.reset();
-                    }
-                    const titleElement = modalUsuario.querySelector('.modal-title');
-                    if (titleElement) titleElement.textContent = 'Nuevo Usuario';
-
-                    // Resetear iconos de ojo
-                    modalUsuario.querySelectorAll('.toggle-password i').forEach(icon => {
-                        icon.classList.replace('bi-eye', 'bi-eye-slash');
-                    });
-                    modalUsuario.querySelectorAll('input[type="text"][id^="pass"]').forEach(input => input.type = 'password'); // Asegura tipo password
-                });
+                 // Limpiar modal al cerrar
+                 modalUsuario.addEventListener('hidden.bs.modal', event => {
+                     const form = document.getElementById('formUsuario');
+                     if (form) {
+                         form.classList.remove('was-validated');
+                         form.reset();
+                         // Resetear validación custom de contraseña
+                         form.querySelector('#pass2')?.setCustomValidity(""); 
+                     }
+                     const titleElement = modalUsuario.querySelector('.modal-title');
+                     if (titleElement) titleElement.textContent = 'Nuevo Usuario';
+                     
+                     // Resetear iconos de ojo y tipo de input
+                     modalUsuario.querySelectorAll('.toggle-password').forEach(span => {
+                         const icon = span.querySelector('i');
+                         const input = span.previousElementSibling;
+                         if (icon) icon.classList.replace('bi-eye', 'bi-eye-slash');
+                         if (input) input.type = 'password';
+                     });
+                     // Asegurar que campos de contraseña sean requeridos de nuevo
+                     const pass1Input = document.getElementById('pass1');
+                     const pass2Input = document.getElementById('pass2');
+                     if(pass1Input) pass1Input.required = true;
+                     if(pass2Input) pass2Input.required = true;
+                 });
             }
 
-            // Poblar modal al hacer clic en "Editar"
+             // Poblar modal al hacer clic en "Editar"
             document.querySelectorAll('.table-actions .btn-outline-primary').forEach(button => {
-                button.addEventListener('click', (event) => {
-                    if (modalUsuario) {
-                        const modalTitleEl = modalUsuario.querySelector('.modal-title');
-                        if (modalTitleEl) modalTitleEl.textContent = 'Editar Usuario';
+                 button.addEventListener('click', (event) => {
+                     if (modalUsuario) {
+                         const modalTitleEl = modalUsuario.querySelector('.modal-title');
+                         if (modalTitleEl) modalTitleEl.textContent = 'Editar Usuario';
 
-                        const row = event.target.closest('tr');
-                        if (row && row.cells.length > 3) {
-                            const id = row.cells[0]?.textContent;
-                            const nombre = row.cells[1]?.textContent;
-                            const email = row.cells[2]?.textContent;
-                            const rol = row.cells[3]?.textContent; // Asumiendo que el texto coincide con <option>
-                            const estadoBadge = row.cells[5]?.querySelector('.badge');
-                            const activo = estadoBadge ? estadoBadge.classList.contains('bg-success') : true;
-                            // const telefono = ... si lo tuvieras en la tabla
+                         const row = event.target.closest('tr');
+                         if (row && row.cells.length > 3) { // Asegura suficientes celdas
+                             const id = row.cells[0]?.textContent;
+                             const nombre = row.cells[1]?.textContent;
+                             const email = row.cells[2]?.textContent;
+                             const rol = row.cells[3]?.textContent; // Obtiene el texto del badge
+                             const estadoBadge = row.cells[5]?.querySelector('.badge');
+                             const activo = estadoBadge ? estadoBadge.classList.contains('bg-success') : true;
+                             // const telefono = row.cells[X]?.textContent; // Si tuvieras teléfono en tabla
 
-                            // Poblar el formulario
-                            const nombreInput = modalUsuario.querySelector('input[type="text"]'); // Primer input text
-                            const emailInput = modalUsuario.querySelector('input[type="email"]');
-                            const rolSelect = modalUsuario.querySelector('select');
-                            const telInput = modalUsuario.querySelector('input[type="tel"]');
-                            const activoCheckbox = document.getElementById('usuarioActivo');
+                             // Poblar el formulario
+                             const nombreInput = modalUsuario.querySelector('input[type="text"]'); 
+                             const emailInput = modalUsuario.querySelector('input[type="email"]');
+                             const rolSelect = modalUsuario.querySelector('select');
+                             const telInput = modalUsuario.querySelector('input[type="tel"]');
+                             const activoCheckbox = document.getElementById('usuarioActivo');
+                             
+                             if (nombreInput) nombreInput.value = nombre || '';
+                             if (emailInput) emailInput.value = email || '';
+                             if (rolSelect) {
+                                 // Busca la opción que coincida con el texto del rol y la selecciona
+                                 const optionToSelect = Array.from(rolSelect.options).find(opt => opt.text === rol);
+                                 if (optionToSelect) {
+                                     rolSelect.value = optionToSelect.value;
+                                 } else {
+                                     rolSelect.value = ""; // O maneja el caso si no se encuentra
+                                 }
+                             }
+                             if (telInput) telInput.value = ''; // Poblar si lo obtienes
+                             if (activoCheckbox) activoCheckbox.checked = activo;
 
-                            if (nombreInput) nombreInput.value = nombre || '';
-                            if (emailInput) emailInput.value = email || '';
-                            if (rolSelect) rolSelect.value = rol || ''; // Asigna el valor
-                            if (telInput) telInput.value = ''; // Limpia teléfono (o busca en tabla si existe)
-                            if (activoCheckbox) activoCheckbox.checked = activo;
+                             // Hacer contraseñas NO requeridas al editar y limpiar
+                             const pass1Input = document.getElementById('pass1');
+                             const pass2Input = document.getElementById('pass2');
+                             if (pass1Input) {
+                                 pass1Input.value = '';
+                                 pass1Input.required = false; // Ya no es obligatorio
+                                 pass1Input.placeholder = '(Dejar en blanco para no cambiar)'; // Nuevo placeholder
+                             }
+                             if (pass2Input) {
+                                 pass2Input.value = '';
+                                 pass2Input.required = false; // Ya no es obligatorio
+                                  pass2Input.placeholder = '(Dejar en blanco para no cambiar)';
+                             }
+                             
+                             const form = document.getElementById('formUsuario');
+                              if (form) form.classList.remove('was-validated');
+                         }
+                     }
+                 });
+             });
 
-                            // No poblar contraseñas al editar
-                            const pass1Input = document.getElementById('pass1');
-                            const pass2Input = document.getElementById('pass2');
-                            if (pass1Input) pass1Input.value = '';
-                            if (pass2Input) pass2Input.value = '';
-                            // Podrías hacer los campos de contraseña no requeridos al editar,
-                            // o cambiar el texto del label/placeholder
-                            if (pass1Input) pass1Input.required = false;
-                            if (pass2Input) pass2Input.required = false;
-
-                            const form = document.getElementById('formUsuario');
-                            if (form) form.classList.remove('was-validated');
-                        }
-                    }
-                });
-            });
-
-            // Toggle para mostrar/ocultar contraseñas (para AMBOS campos)
+             // Toggle para mostrar/ocultar contraseñas (para AMBOS campos)
             document.querySelectorAll('.toggle-password').forEach(span => {
-                span.addEventListener('click', () => {
-                    const input = span.previousElementSibling; // El input justo antes del span
-                    const icon = span.querySelector('i');
-                    if (input && icon) {
-                        if (input.type === 'password') {
-                            input.type = 'text';
-                            icon.classList.replace('bi-eye-slash', 'bi-eye');
-                        } else {
-                            input.type = 'password';
-                            icon.classList.replace('bi-eye', 'bi-eye-slash');
-                        }
-                    }
-                });
+                 span.addEventListener('click', () => {
+                     const input = span.previousElementSibling; 
+                     const icon = span.querySelector('i');
+                     if (input && icon) {
+                         if (input.type === 'password') {
+                             input.type = 'text';
+                             icon.classList.replace('bi-eye-slash', 'bi-eye');
+                         } else {
+                             input.type = 'password';
+                             icon.classList.replace('bi-eye', 'bi-eye-slash');
+                         }
+                     }
+                 });
             });
 
         }); // Fin DOMContentLoaded
