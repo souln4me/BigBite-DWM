@@ -9,20 +9,17 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <link rel="icon" type="image/png" sizes="32x32" href="../img/logo/icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../img/logo/cropped_circle_image.png">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <link rel="stylesheet" href="../css/sidebar.css">
     <style>
-        /* ===================== */
-        /* ===== Admin Panel (Estilo Unificado) ==== */
-        /* ===================== */
-
         /* ===== General ===== */
         body {
             background-color: #f8f9fa;
@@ -67,61 +64,64 @@
         .modal-footer .btn {
             border-radius: 50rem;
             font-weight: 600;
-            transition: all 0.2s ease;
-            border: none;
+            /* Transiciones específicas */
+            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; 
+            border: 2px solid transparent; 
             padding: 0.5rem 1.25rem;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
+
         .admin-panel .btn:hover,
         .modal-footer .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        
+
         /* Botones pequeños de tabla */
         .admin-panel .btn-sm {
             padding: 0.25rem 0.75rem;
             font-weight: 500;
             font-size: 0.8rem;
+            border-width: 1px;
         }
+
         .admin-panel .table-actions .btn {
             margin-right: 0.25rem;
+        }
+
+        .admin-panel .table-actions {
+            white-space: nowrap;
         }
 
         /* Botón Amarillo (Primario) */
         .admin-panel .btn.btn-primary,
         .modal-footer .btn.btn-primary {
             background-color: #ffc107;
-            border-color: #ffc107;
-            color: #212529;
-        }
-        .admin-panel .btn.btn-primary:hover,
-        .modal-footer .btn.btn-primary:hover {
-            background-color: #e0a800;
-            border-color: #e0a800;
+            border-color: transparent; 
             color: #212529;
         }
 
-        /* Botones de Exportar (del CSS anterior) */
-        .admin-panel .btn.btn-export-pdf {
-            background-color: #dc3545;
-            border-color: #dc3545;
-            color: #fff;
+        .admin-panel .btn.btn-primary:hover,
+        .modal-footer .btn.btn-primary:hover {
+            background-color: #e0a800; /* Color Hover */
+            border-color: transparent; 
+            color: #212529;
         }
-        .admin-panel .btn.btn-export-pdf:hover {
-            background-color: #bb2d3b;
-            border-color: #b02a37;
-            color: #fff;
+        
+        /* Estado presionado (:active) para botones primarios */
+        .admin-panel .btn.btn-primary:active,
+        .modal-footer .btn.btn-primary:active {
+            background-color: #e0a800 !important; /* MISMO COLOR QUE HOVER */
+            border-color: transparent !important; /* SIN BORDE NEGRO */
+            transform: none; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important; /* Sombra normal */
         }
-        .admin-panel .btn.btn-export-excel {
-            background-color: #198754;
-            border-color: #198754;
-            color: #fff;
-        }
-        .admin-panel .btn.btn-export-excel:hover {
-            background-color: #157347;
-            border-color: #146c43;
-            color: #fff;
+
+        /* Foco visible (teclado) para botones primarios */
+        .admin-panel .btn.btn-primary:focus-visible,
+        .modal-footer .btn.btn-primary:focus-visible {
+           box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.5); 
+           border-color: transparent; 
         }
 
         /* Botón de Dropdown de Usuario y Secundarios */
@@ -129,36 +129,57 @@
         .modal-footer .btn.btn-secondary {
             border-radius: 50rem;
             font-weight: 500;
-            border: 1px solid #ced4da;
+            border: 1px solid #ced4da; 
             color: #495057;
             background-color: #fff;
+            padding: 0.5rem 1.25rem; 
         }
+
         .admin-panel .btn.btn-outline-secondary:hover,
         .modal-footer .btn.btn-secondary:hover {
             background-color: #e9ecef;
             transform: none;
             box-shadow: none;
         }
+
         .modal-footer .btn.btn-secondary {
-            font-weight: 600; /* Hacerlo coincidir con otros botones */
+            font-weight: 600;
         }
-        
+         /* Foco visible (teclado) para secundarios */
+        .admin-panel .btn.btn-outline-secondary:focus-visible,
+        .modal-footer .btn.btn-secondary:focus-visible {
+            box-shadow: 0 0 0 0.25rem rgba(108, 117, 125, 0.5);
+        }
+
+
         /* Botones de acciones de tabla */
         .admin-panel .btn.btn-outline-primary {
             border-color: #ffc107;
             color: #e0a800;
         }
+
         .admin-panel .btn.btn-outline-primary:hover {
             background-color: #ffc107;
             color: #212529;
+            border-color: #ffc107;
         }
-         .admin-panel .btn.btn-outline-info {
+
+        .admin-panel .btn.btn-outline-info {
             border-color: #0dcaf0;
             color: #0dcaf0;
         }
+
         .admin-panel .btn.btn-outline-info:hover {
             background-color: #0dcaf0;
             color: #000;
+            border-color: #0dcaf0;
+        }
+
+        /* QUITAR SOMBRA DE FOCO EN CLIC (botones generales) */
+        .admin-panel .btn:focus:not(:focus-visible),
+        .modal-footer .btn:focus:not(:focus-visible) {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra normal */
+            outline: none; 
         }
 
 
@@ -167,19 +188,74 @@
         .admin-panel .form-select,
         .modal-body .form-control,
         .modal-body .form-select {
-            border-radius: 0.5rem;
+            border-radius: 0.5rem; 
             border: 1px solid #ced4da;
             padding: 0.5rem 1rem;
             font-weight: 500;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
         }
+        /* Estado :focus (se aplica a :focus y :focus-visible) */
         .admin-panel .form-control:focus,
         .admin-panel .form-select:focus,
         .modal-body .form-control:focus,
         .modal-body .form-select:focus {
             border-color: #ffc107;
-            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25); 
         }
-        
+
+        /* Barra de búsqueda */
+         .admin-panel .input-group .form-control-search { 
+            border-radius: 50rem 0 0 50rem; 
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            border: 1px solid #ced4da;
+            border-right: none; 
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            width: 90%;
+        }
+        .admin-panel .input-group .form-control-search:focus {
+            border-color: #ffc107;
+            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25); 
+            z-index: 3; 
+        }
+
+        /* Botón de búsqueda (pegado al input) */
+        .admin-panel .input-group > .btn.btn-primary { 
+            border-radius: 0 50rem 50rem 0 !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); 
+            border: 1px solid #ced4da; 
+            border-left: none; 
+            padding: 0.5rem 1rem; 
+            border-color: #ced4da; 
+            border-left: none; 
+        }
+        .admin-panel .input-group > .btn.btn-primary:hover {
+            border-color: #ced4da; 
+        }
+        /* Estado presionado del botón de búsqueda */
+         .admin-panel .input-group > .btn.btn-primary:active {
+            background-color: #e0a800 !important; /* Mismo color hover */
+            border: 1px solid #ced4da !important; /* Mantiene borde gris */
+            border-left: none !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+            transform: none !important;
+        }
+        /* Foco visible (teclado) del botón de búsqueda */
+        .admin-panel .input-group > .btn.btn-primary:focus-visible {
+             box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.5);
+             border-color: #ffc107; 
+             border-left: none; 
+             z-index: 3;
+        }
+        /* Quitar sombra foco en click del botón de búsqueda */
+        .admin-panel .input-group > .btn.btn-primary:focus:not(:focus-visible) {
+             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra normal */
+             border-color: #ced4da; /* Borde normal */
+             border-left: none;
+             outline: none;
+        }
+
+
         .admin-panel label,
         .modal-body label {
             font-weight: 600;
@@ -187,10 +263,7 @@
             margin-bottom: 0.25rem;
             font-size: 0.9rem;
         }
-        
-        .admin-panel .input-group .btn {
-            box-shadow: none; /* Quitar sombra de botón pegado al input */
-        }
+
 
         /* ===== Tabla ===== */
         .admin-panel .table-responsive {
@@ -199,17 +272,20 @@
             border: 1px solid #dee2e6;
             box-shadow: none;
         }
+
         .admin-panel .table th,
         .admin-panel .table td {
             vertical-align: middle;
             padding: 1rem;
         }
+
         .admin-panel .table thead {
             background-color: #212529;
             color: #fff;
         }
+
         .admin-panel .table-hover tbody tr:hover {
-            background-color: #fff8e1; /* Hover amarillo claro */
+            background-color: #fff8e1;
         }
 
         /* ===== Dropdowns ===== */
@@ -219,44 +295,60 @@
             border: 1px solid #dee2e6;
             box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
         }
-        
+
         /* ===== Modal ===== */
         .modal-content {
-            border-radius: 1rem;
+            border-radius: 40px !important; 
             border: none;
-            box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.15);
+            box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
+            overflow: hidden;
         }
+
         .modal-header {
             border-bottom: 1px solid #dee2e6;
-            padding: 1.25rem 1.5rem;
+            padding: 1.5rem 2rem !important; 
+            border-top-left-radius: 40px;
+            border-top-right-radius: 40px;
         }
+
         .modal-body {
-            padding: 1.5rem;
+            padding: 2rem !important; 
         }
+
         .modal-footer {
             background-color: #f8f9fa;
             border-top: 1px solid #dee2e6;
-            padding: 1rem 1.5rem;
-            border-bottom-left-radius: 1rem;
-            border-bottom-right-radius: 1rem;
+            padding: 1.5rem 2rem !important; 
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
         }
 
-        /* ===== Insignias de Cliente (NUEVO) ===== */
-        .admin-panel .badge {
+        .modal-body h5 {
             font-weight: 600;
-            padding: 0.5em 0.75em;
-            border-radius: 50rem;
-            font-size: 0.8rem;
+            color: #6c757d;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 0.5rem;
         }
-        .admin-panel .badge.customer-premium {
-            color: #664d03;
-            background-color: #fff3cd;
-            border: 1px solid #ffecb5;
+        
+        /* Icono del ojo en contraseña */
+        #pass.form-control { 
+            border-radius: 0.5rem 0 0 0.5rem; 
         }
-        .admin-panel .badge.customer-regular {
-            color: #41464b;
-            background-color: #e2e3e5;
-            border: 1px solid #d3d6d8;
+         .input-group > #togglePass.input-group-text { 
+            cursor: pointer;
+            border-radius: 0 0.5rem 0.5rem 0; 
+            border: 1px solid #ced4da; 
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05); 
+        }
+        /* Estilo foco para el input + span */
+        #pass.form-control:focus {
+             z-index: 3; 
+             box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25); 
+        }
+        #pass.form-control:focus + #togglePass.input-group-text {
+             border-color: #ffc107; 
+             box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25); 
+             z-index: 3;
         }
 
     </style>
@@ -264,7 +356,7 @@
 
 <body>
     <div id="sidebar-placeholder"></div>
-    
+
     <div class="main-content">
         <div class="container-fluid">
             <div class="admin-panel">
@@ -272,11 +364,11 @@
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h1 class="h3 mb-0">Mantenedor de Clientes</h1>
                     <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown">
                             <i class="bi bi-person-fill me-1"></i> Administrador
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
                             <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
                         </ul>
                     </div>
@@ -284,23 +376,16 @@
 
                 <div class="card card-dashboard mb-4">
                     <div class="card-body p-4">
-                        <div class="row g-3 align-items-center">
-                            <div class="col-md-4">
+                        <div class="row g-3 align-items-center justify-content-between">
+                            <div class="col-md-9">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Buscar clientes...">
+                                    <input type="text" class="form-control-search" placeholder="Buscar clientes...">
                                     <button class="btn btn-primary" type="button">
                                         <i class="bi bi-search"></i>
                                     </button>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <select class="form-select">
-                                    <option selected>Tipo: Todos</option>
-                                    <option>Premium</option>
-                                    <option>Regular</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4 text-end">
+                            <div class="col-md-3 text-end"> 
                                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
                                     <i class="bi bi-plus-lg me-1"></i> Nuevo Cliente
                                 </button>
@@ -322,7 +407,6 @@
                                         <th>Nombre</th>
                                         <th>Email</th>
                                         <th>Teléfono</th>
-                                        <th>Tipo</th>
                                         <th>Total Compras</th>
                                         <th>Última Visita</th>
                                         <th>Acciones</th>
@@ -334,11 +418,11 @@
                                         <td>Roberto Sánchez</td>
                                         <td>roberto.s@email.com</td>
                                         <td>+56 9 1234 5678</td>
-                                        <td><span class="badge customer-premium">Premium</span></td>
                                         <td>$450,000</td>
                                         <td>15/03/2024</td>
                                         <td class="table-actions">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
+                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                                data-bs-target="#modalCliente">
                                                 <i class="bi bi-pencil-fill me-1"></i> Editar
                                             </button>
                                             <button class="btn btn-sm btn-outline-info" onclick="verHistorial()">
@@ -351,11 +435,11 @@
                                         <td>Laura Mendoza</td>
                                         <td>laura.m@email.com</td>
                                         <td>+56 9 8765 4321</td>
-                                        <td><span class="badge customer-premium">Premium</span></td>
                                         <td>$320,000</td>
                                         <td>14/03/2024</td>
                                         <td class="table-actions">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
+                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                                data-bs-target="#modalCliente">
                                                 <i class="bi bi-pencil-fill me-1"></i> Editar
                                             </button>
                                             <button class="btn btn-sm btn-outline-info" onclick="verHistorial()">
@@ -368,11 +452,11 @@
                                         <td>Diego Castillo</td>
                                         <td>diego.c@email.com</td>
                                         <td>+56 9 5555 1234</td>
-                                        <td><span class="badge customer-regular">Regular</span></td>
                                         <td>$85,000</td>
                                         <td>10/03/2024</td>
                                         <td class="table-actions">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
+                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                                data-bs-target="#modalCliente">
                                                 <i class="bi bi-pencil-fill me-1"></i> Editar
                                             </button>
                                             <button class="btn btn-sm btn-outline-info" onclick="verHistorial()">
@@ -385,11 +469,11 @@
                                         <td>Fernanda Rojas</td>
                                         <td>fernanda.r@email.com</td>
                                         <td>+56 9 4444 5678</td>
-                                        <td><span class="badge customer-regular">Regular</span></td>
                                         <td>$45,000</td>
                                         <td>08/03/2024</td>
                                         <td class="table-actions">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
+                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                                data-bs-target="#modalCliente">
                                                 <i class="bi bi-pencil-fill me-1"></i> Editar
                                             </button>
                                             <button class="btn btn-sm btn-outline-info" onclick="verHistorial()">
@@ -404,44 +488,55 @@
                 </div>
 
             </div> </div> </div> <div class="modal fade" id="modalCliente" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-centered"> <div class="modal-content">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Nuevo Cliente</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formCliente" novalidate> <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Nombre Completo *</label>
-                                <input type="text" class="form-control" required>
-                            </div>
+                    <form id="formCliente" novalidate>
+                        <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">Email *</label>
-                                <input type="email" class="form-control" required>
+                                <input type="email" class="form-control" required placeholder="ejemplo@correo.com">
+                                <div class="invalid-feedback">Por favor, ingrese un email válido.</div>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Teléfono *</label>
-                                <input type="tel" class="form-control" required>
+                                <label class="form-label">Contraseña *</label>
+                                <div class="input-group"> 
+                                    <input type="password" id="pass" class="form-control" required placeholder="••••••••">
+                                    <span class="input-group-text" id="togglePass" style="cursor: pointer;">
+                                        <i class="bi bi-eye-slash"></i>
+                                    </span>
+                                     <div class="invalid-feedback">Por favor, ingrese una contraseña.</div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-4 mb-2">
+                                <h5>Datos opcionales:</h5>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">RUN</label>
+                                <input type="text" class="form-control" placeholder="12345678-9">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Tipo de Cliente</label>
-                                <select class="form-select">
-                                    <option>Regular</option>
-                                    <option>Premium</option>
-                                </select>
+                                <label class="form-label">Nombre Completo</label>
+                                <input type="text" class="form-control" placeholder="Juan Pérez González">
                             </div>
-                            <div class="col-12">
-                                <label class="form-label">Dirección</label>
-                                <textarea class="form-control" rows="3"
-                                    placeholder="Calle, número, comuna..."></textarea>
+                            <div class="col-md-6">
+                                <label class="form-label">Teléfono</label>
+                                <input type="tel" class="form-control" placeholder="+56 9 1234 5678">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Fecha de Nacimiento</label>
                                 <input type="date" class="form-control">
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Preferencias</label>
-                                <input type="text" class="form-control" placeholder="Ej: Sin cebolla, extra queso...">
+                            <div class="col-12">
+                                <label class="form-label">Dirección</label>
+                                <textarea class="form-control" rows="3"
+                                    placeholder="Calle Falsa 123, Comuna"></textarea>
                             </div>
                         </div>
                     </form>
@@ -456,7 +551,8 @@
         </div>
     </div>
 
-    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100"> <div id="toastExitoCliente" class="toast align-items-center text-bg-success border-0" role="alert">
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100">
+        <div id="toastExitoCliente" class="toast align-items-center text-bg-success border-0" role="alert">
             <div class="d-flex">
                 <div class="toast-body">
                     <i class="bi bi-check-circle-fill me-2"></i> Cliente actualizado correctamente
@@ -467,78 +563,143 @@
     </div>
 
     <script>
+        // --- Carga del Sidebar ---
         fetch('includes/sidebar.html')
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return response.text();
+            })
             .then(data => {
-                document.getElementById('sidebar-placeholder').innerHTML = data;
-
-                // Toggle sidebar (móvil)
-                const toggle = document.getElementById('sidebarToggle');
-                if (toggle) {
-                    toggle.addEventListener('click', function () {
-                        document.querySelector('.nav-sidebar').classList.toggle('active');
+                const sidebarPlaceholder = document.getElementById('sidebar-placeholder');
+                if (sidebarPlaceholder) {
+                    sidebarPlaceholder.innerHTML = data;
+                    // Inicializar listeners del sidebar después de cargar el contenido
+                    const toggle = document.getElementById('sidebarToggle');
+                    if (toggle) {
+                        toggle.addEventListener('click', function () {
+                            const navSidebar = document.querySelector('.nav-sidebar');
+                            if (navSidebar) navSidebar.classList.toggle('active');
+                        });
+                    }
+                    const currentPage = window.location.pathname.split('/').pop() || 'index.html'; // Default to index if path ends in /
+                    const links = sidebarPlaceholder.querySelectorAll('.nav-sidebar .nav-link');
+                    links.forEach(link => {
+                        const linkPage = link.getAttribute('href')?.split('/').pop();
+                        if (linkPage === currentPage) {
+                            link.classList.add('active');
+                        } else {
+                            link.classList.remove('active'); // Ensure others are inactive
+                        }
                     });
+                } else {
+                    console.error('Placeholder del sidebar no encontrado.');
                 }
+            })
+            .catch(error => console.error('Error cargando el sidebar:', error));
 
-                // Marcar link activo
-                const currentPage = window.location.pathname.split('/').pop();
-                const links = document.querySelectorAll('.nav-sidebar .nav-link');
+        // --- Lógica del Modal y Formulario ---
+        function guardarCliente() {
+            const form = document.getElementById('formCliente');
+            if (!form || !form.checkValidity()) { // Check if form exists
+                form?.classList.add('was-validated'); // Optional chaining
+                return;
+            }
+            form.classList.remove('was-validated'); 
 
-                links.forEach(link => {
-                    const linkPage = link.getAttribute('href').split('/').pop();
-                    if (linkPage === currentPage) {
-                        link.classList.add('active');
+            const modalEl = document.getElementById('modalCliente');
+            if (modalEl) { // Check if modal exists
+                 const modalInstance = bootstrap.Modal.getInstance(modalEl);
+                 if (modalInstance) modalInstance.hide();
+            }
+
+            const toastEl = document.getElementById('toastExitoCliente');
+            if (toastEl) {
+                 const toastInstance = bootstrap.Toast.getOrCreateInstance(toastEl);
+                 toastInstance.show();
+            }
+
+            console.log('Cliente guardado/actualizado correctamente');
+            // Aquí iría la lógica real para enviar los datos (fetch, etc.)
+        }
+
+        function verHistorial() {
+            alert('Funcionalidad pendiente: Ver historial de compras del cliente');
+        }
+
+        // --- Listeners y Lógica adicional que espera al DOM ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const modalCliente = document.getElementById('modalCliente');
+            if (modalCliente) {
+                // Limpiar modal al cerrar
+                modalCliente.addEventListener('hidden.bs.modal', event => {
+                    const form = document.getElementById('formCliente');
+                    if (form) { // Check if form exists
+                         form.classList.remove('was-validated');
+                         form.reset();
+                    }
+                    const titleElement = modalCliente.querySelector('.modal-title');
+                    if (titleElement) titleElement.textContent = 'Nuevo Cliente';
+                    
+                    const passInput = document.getElementById('pass');
+                    const toggleIcon = document.querySelector('#togglePass i');
+                    if (passInput) passInput.type = 'password';
+                    if (toggleIcon) toggleIcon.classList.replace('bi-eye', 'bi-eye-slash');
+                });
+            }
+
+            // Poblar modal al hacer clic en "Editar"
+            document.querySelectorAll('.table-actions .btn-outline-primary').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    if (modalCliente) {
+                        const modalTitleEl = modalCliente.querySelector('.modal-title');
+                        if (modalTitleEl) modalTitleEl.textContent = 'Editar Cliente';
+
+                        const row = event.target.closest('tr');
+                        if (row && row.cells.length > 3) { // Check row and cells exist
+                            const id = row.cells[0]?.textContent;
+                            const nombre = row.cells[1]?.textContent;
+                            const email = row.cells[2]?.textContent;
+                            const telefono = row.cells[3]?.textContent;
+                            
+                            const emailInput = modalCliente.querySelector('input[type="email"]');
+                            const nombreInput = modalCliente.querySelector('input[type="text"][placeholder="Juan Pérez González"]');
+                            const telInput = modalCliente.querySelector('input[type="tel"]');
+                            
+                            if (emailInput) emailInput.value = email || '';
+                            if (nombreInput) nombreInput.value = nombre || '';
+                            if (telInput) telInput.value = telefono || '';
+
+                            const passInput = document.getElementById('pass');
+                            if (passInput) passInput.value = '';
+
+                            const form = document.getElementById('formCliente');
+                             if (form) form.classList.remove('was-validated');
+                        } else {
+                             console.error("No se pudo encontrar la fila o las celdas para editar.");
+                        }
                     }
                 });
             });
 
-        function guardarCliente() {
-            // Validar campos obligatorios
-            const form = document.getElementById('formCliente');
-            if (!form.checkValidity()) {
-                // Forzar que Bootstrap muestre los mensajes de validación
-                form.classList.add('was-validated'); 
-                
-                // Un hack simple para mostrar la validación HTML5 nativa si el 'was-validated' no es suficiente
-                if (typeof form.reportValidity === 'function') {
-                    form.reportValidity();
-                }
-                return;
+            // Toggle para mostrar/ocultar contraseña
+            const togglePassElement = document.getElementById('togglePass');
+            const passInputElement = document.getElementById('pass');
+
+            if (togglePassElement && passInputElement) {
+                togglePassElement.addEventListener('click', () => {
+                    const icon = togglePassElement.querySelector('i');
+                    if (icon) { // Check if icon exists
+                         if (passInputElement.type === 'password') {
+                            passInputElement.type = 'text';
+                            icon.classList.replace('bi-eye-slash', 'bi-eye');
+                        } else {
+                            passInputElement.type = 'password';
+                            icon.classList.replace('bi-eye', 'bi-eye-slash');
+                        }
+                    }
+                });
             }
-
-            // Si es válido, quitar la clase por si acaso
-            form.classList.remove('was-validated');
-
-            // Cerrar modal
-            const modalEl = document.getElementById('modalCliente');
-            const modal = bootstrap.Modal.getInstance(modalEl);
-            if (modal) {
-                modal.hide();
-            }
-
-            // Limpiar formulario (opcional, pero buena práctica)
-            form.reset();
-
-            // Mostrar mensaje de éxito
-            const toastEl = document.getElementById('toastExitoCliente');
-            const toast = new bootstrap.Toast(toastEl);
-            toast.show();
-
-            console.log('Cliente guardado/actualizado correctamente');
-        }
-
-        function verHistorial() {
-            alert('Funcionalidad: Ver historial de compras del cliente');
-        }
-
-        // Simulación de edición exitosa de cliente (Escenario Gherkin)
-        function simularEdicionCliente() {
-            console.log('Escenario: Edición de un cliente');
-            console.log('Dado que existe un cliente registrado');
-            console.log('Cuando el administrador modifica sus datos y guarda');
-            console.log('Entonces el sistema actualiza el cliente correctamente');
-        }
+        }); // Fin DOMContentLoaded
     </script>
 </body>
-
 </html>

@@ -1,7 +1,9 @@
+/* ===== Carrusel ===== */
 .carousel-inner img {
     width: 100%;
     height: 500px;
     object-fit: cover;
+    border-radius: 0;
 }
 
 .carousel-control-prev-icon,
@@ -15,81 +17,194 @@
     filter: invert(1);
 }
 
-/* Cards equilibradas para inicio */
-.inicio-producto {
-    padding: 0 15px !important;
+/* ===== Sección de Promociones ===== */
+#inicio-promociones {
+    margin-top: 80px;
+    margin-bottom: 80px;
+    text-align: center;
 }
 
-.inicio-producto .card {
-    width: 100%;
-    max-width: 320px;
-    margin: 0 auto;
-    border-radius: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+#inicio-promociones h2 {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #212529;
+    position: relative;
+    display: inline-block;
 }
 
-.inicio-producto .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-/* Imagen ocupa toda la card sin bordes blancos */
-.inicio-producto .card-img-top,
-#inicio-promociones .card-img-top {
-    width: 100%;
-    height: 220px;          /* tamaño visible de la imagen */
-    object-fit: cover;      /* llena todo el espacio sin dejar margen */
+#inicio-promociones h2::after {
+    content: "";
     display: block;
-    border-radius: 15px 15px 0 0;
-    margin: 0;
-    padding: 0;
+    width: 80px;
+    height: 4px;
+    background-color: #ffc107;
+    margin: 10px auto 0;
+    border-radius: 4px;
 }
 
-/* Cards uniformes */
+/* ===== Cards de Productos ===== */
 #inicio-promociones .card,
 .inicio-producto .card {
-    max-width: 300px;
-    margin: 0 auto;
-    border-radius: 15px;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: #fff8f0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    margin: 20px auto;
 }
 
-/* Card hover */
 #inicio-promociones .card:hover,
 .inicio-producto .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    transform: translateY(-6px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
 }
 
-/* Card body y textos */
-#inicio-promociones .card-body,
-.inicio-producto .card-body {
-    padding: 0.5rem 0.75rem;
+#inicio-promociones .card-img-top,
+.inicio-producto .card-img-top {
+    height: 290px;
+    object-fit: cover;
 }
 
-#inicio-promociones .card-title,
-.inicio-producto .card-title {
-    font-size: 1.15rem;
-    font-weight: 600;
-    margin-bottom: 0.3rem;
+#inicio-promociones .card-body {
+    background-color: #fff8f0;
+    padding: 1rem;
 }
 
-#inicio-promociones .card-text,
-.inicio-producto .card-text {
-    font-size: 1rem;
-    font-weight: bold;
+#inicio-promociones .card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #212529;
+}
+
+#inicio-promociones .card-text {
     color: #28a745;
+    font-weight: 700;
+    font-size: 1.05rem;
 }
 
-#productos-inicio .row {
-    row-gap: 25px;
-    justify-content: center;
+/* ===== Botón "Ver Catálogo" ===== */
+#inicio-promociones a.btn {
+    border-radius: 40px;
+    font-weight: bold;
+    padding: 0.8rem 2rem;
+    background-color: #ffc107;
+    color: #000;
+    transition: all 0.25s ease;
 }
 
-#inicio-promociones {
+#inicio-promociones a.btn:hover {
+    background-color: #e6b800;
+    color: #000;
+    transform: translateY(-2px);
+}
+
+/* ===== Llamado a la acción ===== */
+#inicio-promociones .cta {
+    text-align: center;
+    border-radius: 40px;
     margin-top: 60px;
+    padding: 2rem 1rem;
     margin-bottom: 60px;
+    background-color: #fff8f0;
+}
+
+#inicio-promociones .cta h2 {
+    font-size: 2rem;
+    color: #212529;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+#inicio-promociones .cta p {
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+    color: #444;
+}
+
+/* ===== Local ===== */
+#inicio-local {
+  background-color: #fff8f0;
+  border-radius: 40px;
+  padding: 3rem 1.5rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+#inicio-local .row {
+    align-items: center;
+
+}
+
+#inicio-local img {
+  border-radius: 40px;
+  max-height: 650px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: block;
+  width: 100%;
+}
+
+#inicio-local h2 {
+  font-weight: 700;
+  margin-left: 50px;
+
+}
+
+#inicio-local h2::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 4px;
+  background-color: #ffc107;
+  border-radius: 4px;
+  margin-left: 140px;
+  margin-top: 10px;
+}
+
+#inicio-local p {
+  color: #444;
+  margin-left: 50px;
+}
+
+#inicio-local .btn {
+    border-radius: 40px;
+    font-weight: bold;
+    padding: 0.8rem 2rem;
+    background-color: #ffc107;
+    color: #000;
+    transition: all 0.25s ease;
+    margin-left: 50px;
+    margin-top: 20px;
+}
+
+#inicio-local .btn:hover {
+    background-color: #e6b800;
+    color: #000;
+    transform: translateY(-2px);
+}
+
+#inicio-local .btn:active {
+    border: 1px solid #000 !important;
+}
+
+/* ===== Responsivo ===== */
+@media (max-width: 992px) {
+    .carousel-inner img {
+        height: 400px;
+    }
+
+    #inicio-promociones .card {
+        max-width: 280px;
+    }
+
+    #inicio-promociones .cta {
+        margin-top: 40px;
+    }
+}
+
+@media (max-width: 576px) {
+    #inicio-promociones h2 {
+        font-size: 1.8rem;
+    }
 }

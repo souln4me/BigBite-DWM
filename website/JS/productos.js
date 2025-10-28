@@ -190,23 +190,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('modalImage').src = image;
             document.getElementById('modalIngredients').innerHTML = ingredientsHTML.replace('<div class="view-product">Ver producto</div>', '');
 
-            if (this.classList.contains('hamburguesas')) {
-                document.getElementById('modalExtras').innerHTML = `
-                    <div class="mb-3">
-                        <h6>Extras disponibles:</h6>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="extraQueso">
-                            <label class="form-check-label" for="extraQueso">Queso extra (+$1.000)</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="extraTocino">
-                            <label class="form-check-label" for="extraTocino">Tocino extra (+$1.800)</label>
-                        </div>
-                    </div>`;
-            } else {
-                document.getElementById('modalExtras').innerHTML = '';
-            }
-
             const addBtn = modalElement.querySelector('.cart-btn');
 
             addBtn.classList.remove('animate');
