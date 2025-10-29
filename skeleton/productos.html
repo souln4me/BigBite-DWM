@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Big Bite - Productos (Skeleton)</title>
+
+  </head>
+
+<body class="d-flex flex-column min-vh-100">
+
+  <main class="flex-grow-1">
+    <div class="container mt-4">
+      <h1 class="text-center mb-4">Nuestros Productos</h1>
+
+      <div class="mb-4 text-center">
+        <h5 class="mb-3">Filtrar por categoría:</h5>
+        <div class="d-flex flex-wrap justify-content-center gap-2 mt-2">
+          <button class="btn btn-outline-dark filter-btn active" data-category="todos">Todos</button>
+          <button class="btn btn-outline-dark filter-btn" data-category="combos">Combos</button>
+          <button class="btn btn-outline-dark filter-btn" data-category="hamburguesas">Hamburguesas</button>
+          <button class="btn btn-outline-dark filter-btn"
+            data-category="especialidades">Especialidades</button>
+          <button class="btn btn-outline-dark filter-btn" data-category="bebidas">Bebidas</button>
+          <button class="btn btn-outline-dark filter-btn" data-category="otros">Otros</button>
+        </div>
+      </div>
+
+      <hr class="mb-4">
+
+      <div id="no-products-message" class="mt-5 text-center hidden">
+        <h4 class="mb-4">No hay productos disponibles en esta categoría</h4>
+        </div>
+
+      <div class="row justify-content-center" id="products-container">
+
+        <div class="col-md-4 col-sm-6 mb-4 product-card hamburguesas">
+          <div class="card h-100 text-center" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+            <div class="image-container">
+              <div class="ingredients-overlay">
+                <h6>Ingredientes:</h6>
+                <div class="ingredients-list">
+                  Pan brioche artesanal, Carne de res 150g, Queso cheddar, Lechuga fresca, Tomate,
+                  Salsa Big Bite
+                </div>
+                <div class="view-product">Ver producto</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Hamburguesa Clásica</h5>
+              <p class="card-text">$8.990</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 mb-4 product-card otros">
+          <div class="card h-100 text-center" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+            <div class="image-container">
+              <div class="ingredients-overlay">
+                <h6>Ingredientes:</h6>
+                <div class="ingredients-list">
+                  Papas seleccionadas, Aceite vegetal premium, Sal marina
+                </div>
+                <div class="view-product">Ver producto</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Papas Fritas Medianas</h5>
+              <p class="card-text">$5.990</p>
+            </div>
+          </div>
+        </div>
+
+        </div>
+    </div>
+  </main>
+
+  <div id="order-summary-bar" class="d-none"
+    style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+    <div class="container">
+      <div class="row align-items-center">
+        <div id="order-summary-left" class="col-md-8">
+          </div>
+        <div class="col-md-4 text-end">
+          <button id="go-to-cart-btn" class="btn btn-success btn-lg" href="carrito_de_compras.html">
+            <i class="bi bi-cart3 me-1"></i> Ir al Carrito
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="productModal">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        <div class="modal-body p-0">
+          <div class="row">
+            <div class="col-md-6">
+              </div>
+            <div class="col-md-6 p-4">
+              <button type="button" class="btn-close float-end" data-bs-dismiss="modal"></button>
+              <h3 id="modalTitle"></h3>
+              <h4 id="modalPrice" class="modal-price mb-2"></h4>
+              <h6 class="availability mb-3">Disponible</h6>
+              <p id="modalIngredients"></p>
+              <button class="btn btn-primary w-100 mt-3 cart-btn">
+                <i class="bi bi-cart3 me-2"></i> Agregar al carrito
+              </button>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </body>
+</html>

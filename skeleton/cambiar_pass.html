@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big Bite - Cambiar contraseña (Skeleton)</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+    <main class="flex-grow-1">
+        <h1 class="text-center mb-4 mt-4">Cambiar contraseña</h1>
+        <hr class="mb-4">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mb-4 mt-4">
+                    <div class="card">
+                        <div class="container">
+                            <h5 class="mb-5">Actualiza tu contraseña:</h5>
+
+                            <div class="mb-4">
+                                <label for="current-pass">Contraseña actual:</label>
+                                <div class="input-group">
+                                    <input type="password" id="current-pass" class="form-control"
+                                        placeholder="Ingrese su contraseña actual">
+                                    <span class="input-group-text" id="toggleCurrentPass">
+                                        <i class="bi bi-eye-slash"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="new-pass">Nueva contraseña:</label>
+                                <div class="input-group">
+                                    <input type="password" id="new-pass" class="form-control"
+                                        placeholder="Ingrese la nueva contraseña">
+                                    <span class="input-group-text" id="toggleNewPass">
+                                        <i class="bi bi-eye-slash"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="mb-5">
+                                <label for="confirm-pass">Confirmar nueva contraseña:</label>
+                                <div class="input-group">
+                                    <input type="password" id="confirm-pass" class="form-control"
+                                        placeholder="Confirme la nueva contraseña">
+                                    <span class="input-group-text" id="toggleConfirmPass">
+                                        <i class="bi bi-eye-slash"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6 text-start">
+                                    <button class="btn-card-cancel">
+                                        <i class="bi bi-x-lg me-2"></i> Cancelar
+                                    </button>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <button class="btn-card-save">
+                                        <i class="bi bi-floppy me-2"></i> Guardar cambios
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>        
+</body>
+
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big Bite - Reportes de Ventas (Skeleton)</title>
+</head>
+
+<body>
+
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="admin-panel">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="h3 mb-0">Reporte de Ventas</h1>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown">
+                            Administrador
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card card-dashboard mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Filtros del Reporte</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-3">
+                                <label for="fechaDesde" class="form-label">Desde:</label>
+                                <input type="date" class="form-control" id="fechaDesde" value="2024-03-01">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="fechaHasta" class="form-label">Hasta:</label>
+                                <input type="date" class="form-control" id="fechaHasta" value="2024-03-15">
+                            </div>
+                            <div class="col-md-6 d-flex justify-content-start flex-wrap gap-2">
+                                <button class="btn btn-primary" id="generarReporte">
+                                    Generar Reporte
+                                </button>
+                                <button class="btn btn-export-pdf">
+                                    Exportar PDF
+                                </button>
+                                <button class="btn btn-export-excel">
+                                    Exportar Excel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="mensajeSinResultados" class="alert alert-warning d-none" role="alert">
+                    No hay registro de ventas en el período seleccionado.
+                </div>
+                <div id="mensajeRangoInvalido" class="alert alert-danger d-none" role="alert">
+                    Rango de fechas no válido.
+                </div>
+
+                <div id="resumenGeneral" class="row mb-4">
+                    <div class="col-xl-3 col-md-6 mb-3">
+                        <div class="card stat-card ventas">
+                            <div class="card-body">
+                                <div>
+                                    <h6>Total Ventas</h6>
+                                    <h3>$1,250,000</h3>
+                                </div>
+                                <div class="stat-icon"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6 mb-3">
+                        <div class="card stat-card promedio">
+                            <div class="card-body">
+                                <div>
+                                    <h6>Ticket Promedio</h6>
+                                    <h3>$14,705</h3>
+                                </div>
+                                <div class="stat-icon"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6 mb-3">
+                        <div class="card stat-card pedidos">
+                            <div class="card-body">
+                                <div>
+                                    <h6>Total Pedidos</h6>
+                                    <h3>85</h3>
+                                </div>
+                                <div class="stat-icon"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6 mb-3">
+                        <div class="card stat-card productos">
+                            <div class="card-body">
+                                <div>
+                                    <h6>Productos Vendidos</h6>
+                                    <h3>210</h3>
+                                </div>
+                                <div class="stat-icon"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="reporteVentas" class="card card-dashboard">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Reporte Detallado - <span id="report-date-range">1 al 15 de Marzo 2024</span>
+                        </h5>
+                        <span class="badge bg-success"><span id="report-order-count">85</span> pedidos</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Pedido</th>
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>15/03/2024</td>
+                                        <td>#BGT-655</td>
+                                        <td>Hamburguesa Clásica</td>
+                                        <td>1</td>
+                                        <td>$24,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>15/03/2024</td>
+                                        <td>#BGT-655</td>
+                                        <td>Combo Papas - Bebida</td>
+                                        <td>1</td>
+                                        <td>$18,000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

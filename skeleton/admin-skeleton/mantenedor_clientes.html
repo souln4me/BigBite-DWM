@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big Bite - Mantenedor de Clientes (Skeleton)</title>
+
+</head>
+
+<body>
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="admin-panel">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="h3 mb-0">Mantenedor de Clientes</h1>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown">
+                            <i class="bi bi-person-fill me-1"></i> Administrador
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card card-dashboard mb-4"
+                    style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                    <div class="card-body p-4">
+                        <div class="row g-3 align-items-center justify-content-between">
+                            <div class="col-md-9">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Buscar clientes...">
+                                    <button class="btn btn-primary" type="button">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-end">
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
+                                    <i class="bi bi-plus-lg me-1"></i> Registrar Cliente
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-dashboard" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                    <div class="card-header">
+                        <h5 class="mb-0">Lista de Clientes</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Email</th>
+                                        <th>Teléfono</th>
+                                        <th>Total Compras</th>
+                                        <th>Última Visita</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>CLI-001</td>
+                                        <td>Roberto Sánchez</td>
+                                        <td>roberto.s@email.com</td>
+                                        <td>+56 9 1234 5678</td>
+                                        <td>$450,000</td>
+                                        <td>15/03/2024</td>
+                                        <td class="table-actions">
+                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                                data-bs-target="#modalCliente">
+                                                <i class="bi bi-pencil-fill me-1"></i> Editar
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-info" onclick="verHistorial()">
+                                                <i class="bi bi-clock-history me-1"></i> Historial
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>CLI-002</td>
+                                        <td>Laura Mendoza</td>
+                                        <td>laura.m@email.com</td>
+                                        <td>+56 9 8765 4321</td>
+                                        <td>$320,000</td>
+                                        <td>14/03/2024</td>
+                                        <td class="table-actions">
+                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                                data-bs-target="#modalCliente">
+                                                <i class="bi bi-pencil-fill me-1"></i> Editar
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-info" onclick="verHistorial()">
+                                                <i class="bi bi-clock-history me-1"></i> Historial
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalCliente" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                <div class="modal-header">
+                    <h5 class="modal-title">Registrar Cliente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formCliente" novalidate>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Email *</label>
+                                <input type="email" class="form-control" required placeholder="ejemplo@correo.com">
+                                <div class="invalid-feedback">Por favor, ingrese un email válido.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Contraseña *</label>
+                                <div class="input-group">
+                                    <input type="password" id="pass" class="form-control" required
+                                        placeholder="••••••••">
+                                    <span class="input-group-text" id="togglePass" style="cursor: pointer;">
+                                        <i class="bi bi-eye-slash"></i>
+                                    </span>
+                                    <div class="invalid-feedback">Por favor, ingrese una contraseña.</div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <h5 class="mt-4 mb-2">Datos opcionales:</h5>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">RUN</label>
+                                <input type="text" class="form-control" placeholder="12345678-9">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Nombre Completo</label>
+                                <input type="text" class="form-control" placeholder="Juan Pérez González">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Teléfono</label>
+                                <input type="tel" class="form-control" placeholder="+56 9 1234 5678">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha de Nacimiento</label>
+                                <input type="date" class="form-control">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Dirección</label>
+                                <textarea class="form-control" rows="3"
+                                    placeholder="Calle Falsa 123, Comuna"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarCliente()">
+                        <i class="bi bi-save-fill me-1"></i> Guardar Cliente
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100">
+        <div id="toastExitoCliente" class="toast align-items-center text-bg-success border-0" role="alert"
+            style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        </div>
+    </div>
+</body>
+
+</html>

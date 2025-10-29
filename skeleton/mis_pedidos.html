@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big Bite - Mis pedidos (Skeleton)</title>
+
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+    <main class="flex-grow-1">
+        <h1 class="text-center mb-4 mt-4">Mis pedidos</h1>
+        <hr class="mb-4">
+
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-8 mb-4 mt-4">
+
+                    <div class="pedido-card" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5>Pedido #BGT-001</h5>
+                            </div>
+
+                            <button class="btn btn-anular" data-bs-toggle="modal" data-bs-target="#modalAnulacion">
+                                <i class="bi bi-x-lg me-2"></i> Anular pedido
+                            </button>
+
+                        </div>
+                    </div>
+
+
+                    <div class="pedido-card mt-4 mb-5"
+                        style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5>Pedido #BGT-002</h5>
+                            </div>
+
+                            <button class="btn btn-no-anulable" id="no-anulable">
+                                <i class="bi bi-ban me-2"></i> No anulable
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalAnulacion" tabindex="-1">
+                <div class="modal-dialog">
+
+                    <div class="modal-content" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Confirmar Anulación</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Estás a punto de anular el pedido <strong>#BGT-001</strong></p>
+                            <p>Por favor, indica el motivo de la anulación:</p>
+
+                            <div class="mb-3">
+                                <select class="form-select">
+                                    <option selected>Selecciona un motivo</option>
+                                    <option>Cambio de planes</option>
+                                    <option>Problema con el pago</option>
+                                    <option>Arrepentimiento de compra</option>
+                                    <option>Otro</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <textarea class="form-control" rows="3" placeholder="Explica en detalle..."></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-modal-cancel" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-modal-confirm" id="confirmarAnulacion">Confirmar
+                                anulación</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+
+                <div id="toastExito" class="toast align-items-center text-bg-success border-0" role="alert"
+                    style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="fas fa-check-circle me-2"></i>
+                            Orden anulada exitosamente<br>
+                            <small>Se ha iniciado el proceso de reembolso</small>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                            data-bs-dismiss="toast"></button>
+                    </div>
+                </div>
+
+
+                <div id="toastError" class="toast align-items-center text-bg-danger border-0" role="alert"
+                    style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            No cumple los requisitos de anulación<br>
+                            <small>El pedido ya está en camino</small>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                            data-bs-dismiss="toast"></button>
+                    </div>
+                </div>
+            </div>
+    </main>
+
+</body>
+
+</html>

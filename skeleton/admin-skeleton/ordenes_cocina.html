@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Big Bite - Órdenes de Cocina (Skeleton)</title>
+  </head>
+
+<body>
+
+  <div class="main-content">
+
+    <div class="kitchen-header mb-4">
+      <div class="container-fluid px-4">
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <h1 class="h3 mb-0">Órdenes para Cocina</h1>
+            <small class="opacity-75">Sistema de gestión</small>
+          </div>
+          <div class="col-md-6 text-end">
+            <div class="btn-group">
+              <button class="btn btn-sm btn-outline-dark" data-bs-toggle="modal" data-bs-target="#modalConfigImpresion">
+                Configurar Impresión
+              </button>
+              <button class="btn btn-sm btn-outline-dark">
+                Actualizar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid px-4">
+      <div class="admin-panel pt-0">
+
+        <div class="card card-dashboard mb-4">
+          <div class="card-body p-3">
+            <div class="row g-3 align-items-center">
+              <div class="col-lg-8 col-md-7">
+                <div class="btn-group flex-wrap" role="group">
+                  <button type="button" class="btn btn-sm btn-outline-primary active">Todas</button>
+                  <button type="button" class="btn btn-sm btn-outline-success">Nuevas</button>
+                  <button type="button" class="btn btn-sm btn-outline-warning">En Preparación</button>
+                  <button type="button" class="btn btn-sm btn-outline-info">Listas</button>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-5">
+                <div class="input-group input-group-sm">
+                  <input type="text" class="form-control" placeholder="Buscar orden..." id="buscarOrden">
+                  <button class="btn btn-primary" type="button">Buscar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" id="listaOrdenes">
+
+          <div class="col-lg-6 mb-4">
+            <div class="card order-card status-new">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <div>
+                  <span class="badge bg-success">NUEVA</span>
+                  <small class="text-muted ms-2">Hace 2 min</small>
+                </div>
+                <span class="badge timer-badge">15 min</span>
+              </div>
+              <div class="card-body">
+                <h6 class="card-title">Orden #BGT-001</h6>
+                <p class="card-text small mb-2">
+                  <strong>Cliente:</strong> Juan Pérez<br>
+                  <strong>Ubicación:</strong> Mesa 4
+                </p>
+                <ul class="product-list">
+                  <li><span class="quantity">2x</span> Hamburguesa Clásica</li>
+                  <li><span class="quantity">1x</span> Papas Especiales</li>
+                  <li><span class="quantity">1x</span> Combo Papas - Bebida</li>
+                </ul>
+                <div class="order-actions text-end">
+                  <button class="btn btn-sm btn-outline-secondary me-1">Imprimir</button>
+                  <button class="btn btn-sm btn-success btn-kitchen">Iniciar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 mb-4">
+            <div class="card order-card status-preparing">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <div>
+                  <span class="badge bg-warning">EN PREPARACIÓN</span>
+                  <small class="text-muted ms-2">Hace 5 min</small>
+                </div>
+                <span class="badge timer-badge">20 min</span>
+              </div>
+              <div class="card-body">
+                <h6 class="card-title">Orden #BGT-002</h6>
+                <p class="card-text small mb-2">
+                  <strong>Cliente:</strong> María González<br>
+                  <strong>Ubicación:</strong> Delivery
+                </p>
+                <ul class="product-list">
+                  <li><span class="quantity">1x</span> Hamburguesa BBQ</li>
+                  <li><span class="quantity">1x</span> Hamburguesa Vegana</li>
+                  <li><span class="quantity">2x</span> Papas Fritas Queso</li>
+                </ul>
+                <div class="order-actions text-end">
+                  <button class="btn btn-sm btn-outline-secondary me-1">Ver</button>
+                  <button class="btn btn-sm btn-info btn-kitchen">Lista</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+
+        <div class="row mt-4">
+          <div class="col-12">
+            <div class="card card-dashboard quick-stats-card">
+              <div class="card-body">
+                <div class="row text-center">
+                  <div class="col-md-3 col-6"><h4 id="contadorNuevas">2</h4><small>Nuevas</small></div>
+                  <div class="col-md-3 col-6"><h4 id="contadorPreparacion">1</h4><small>En Preparación</small></div>
+                  <div class="col-md-3 col-6"><h4 id="contadorListas">1</h4><small>Listas</small></div>
+                  <div class="col-md-3 col-6"><h4 id="contadorTotal">4</h4><small>Total Activas</small></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalConfigImpresion" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        </div>
+    </div>
+  </div>
+
+  <div class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="toastImpresionExitosa" class="toast" role="alert"> </div>
+    <div id="toastErrorImpresion" class="toast" role="alert"> </div>
+    <div id="toastEstadoCambiado" class="toast" role="alert"> </div>
+  </div>
+
+</body>
+</html>

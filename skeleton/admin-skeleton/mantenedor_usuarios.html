@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Big Bite - Mantenedor de Usuarios (Skeleton)</title>
+
+  </head>
+
+<body>
+
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="admin-panel">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h1 class="h3 mb-0">Mantenedor de Usuarios</h1>
+          <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              <i class="bi bi-person-fill me-1"></i> Administrador
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
+              <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card card-dashboard mb-4">
+          <div class="card-body p-4">
+            <div class="row g-3 align-items-center">
+              <div class="col-md-4">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Buscar usuarios...">
+                  <button class="btn btn-primary" type="button">
+                    <i class="bi bi-search"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <select class="form-select">
+                  <option selected value="Todos">Rol: Todos</option>
+                  <option value="Dueño">Dueño</option>
+                  </select>
+              </div>
+              <div class="col-md-4 text-end">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalUsuario">
+                  <i class="bi bi-plus-lg me-1"></i> Nuevo Usuario
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-dashboard">
+          <div class="card-header">
+            <h5 class="mb-0">Lista de Usuarios</h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                  <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th>Fecha Registro</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>USER-001</td>
+                    <td>María González</td>
+                    <td>maria@bigbite.com</td>
+                    <td><span class="badge role-owner">Dueño</span></td>
+                    <td>15/01/2024</td>
+                    <td><span class="badge bg-success">Activo</span></td>
+                    <td class="table-actions">
+                      <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#modalUsuario">
+                        <i class="bi bi-pencil-fill me-1"></i> Editar
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                        data-bs-target="#modalEliminarUsuario">
+                        <i class="bi bi-trash-fill me-1"></i> Eliminar
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>USER-002</td>
+                    <td>Carlos López</td>
+                    <td>carlos@bigbite.com</td>
+                    <td><span class="badge role-admin">Administrador</span></td>
+                    <td>20/02/2024</td>
+                    <td><span class="badge bg-success">Activo</span></td>
+                    <td class="table-actions">
+                      <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#modalUsuario">
+                        <i class="bi bi-pencil-fill me-1"></i> Editar
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                        data-bs-target="#modalEliminarUsuario">
+                        <i class="bi bi-trash-fill me-1"></i> Eliminar
+                      </button>
+                    </td>
+                  </tr>
+                  </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalUsuario" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalEliminarUsuario" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        </div>
+    </div>
+  </div>
+
+  <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100">
+    <div id="toastExitoUsuario" class="toast align-items-center text-bg-success border-0" role="alert">
+      </div>
+    <div id="toastEliminadoUsuario" class="toast align-items-center text-bg-danger border-0" role="alert">
+      </div>
+  </div>
+
+  </body>
+</html>
