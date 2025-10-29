@@ -98,7 +98,7 @@
                                             </button>
                                         </td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td>CLI-002</td>
                                         <td>Laura Mendoza</td>
                                         <td>laura.m@email.com</td>
@@ -152,7 +152,11 @@
                     </div>
                 </div>
 
-            </div> </div> </div> <div class="modal fade" id="modalCliente" tabindex="-1">
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="modalCliente" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -174,7 +178,7 @@
                                     <span class="input-group-text" id="togglePass" style="cursor: pointer;">
                                         <i class="bi bi-eye-slash"></i>
                                     </span>
-                                     <div class="invalid-feedback">Por favor, ingrese una contraseña.</div>
+                                    <div class="invalid-feedback">Por favor, ingrese una contraseña.</div>
                                 </div>
                             </div>
 
@@ -259,119 +263,7 @@
                     console.error('Placeholder del sidebar no encontrado.');
                 }
             })
-            .catch(error => console.error('Error cargando el sidebar:', error));
-
-        // --- Lógica del Modal y Formulario ---
-        function guardarCliente() {
-            const form = document.getElementById('formCliente');
-            if (!form || !form.checkValidity()) { 
-                form?.classList.add('was-validated'); 
-                return;
-            }
-            form.classList.remove('was-validated'); 
-
-            const modalEl = document.getElementById('modalCliente');
-            if (modalEl) { 
-                 const modalInstance = bootstrap.Modal.getInstance(modalEl);
-                 if (modalInstance) modalInstance.hide();
-            }
-
-            const toastEl = document.getElementById('toastExitoCliente');
-            if (toastEl) {
-                 const toastInstance = bootstrap.Toast.getOrCreateInstance(toastEl);
-                 toastInstance.show();
-            }
-
-            console.log('Cliente guardado/actualizado correctamente');
-            // Aquí iría la lógica real para enviar datos
-        }
-
-        function verHistorial() {
-            alert('Funcionalidad pendiente: Ver historial de compras del cliente');
-        }
-
-        // --- Listeners y Lógica adicional que espera al DOM ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const modalCliente = document.getElementById('modalCliente');
-            if (modalCliente) {
-                // Limpiar modal al cerrar
-                modalCliente.addEventListener('hidden.bs.modal', event => {
-                    const form = document.getElementById('formCliente');
-                    if (form) { 
-                         form.classList.remove('was-validated');
-                         form.reset();
-                    }
-                    const titleElement = modalCliente.querySelector('.modal-title');
-                    if (titleElement) titleElement.textContent = 'Nuevo Cliente';
-                    
-                    const passInput = document.getElementById('pass');
-                    const toggleIcon = document.querySelector('#togglePass i');
-                    if (passInput) passInput.type = 'password';
-                    if (toggleIcon) toggleIcon.classList.replace('bi-eye', 'bi-eye-slash');
-                });
-            }
-
-            // Poblar modal al hacer clic en "Editar"
-            document.querySelectorAll('.table-actions .btn-outline-primary').forEach(button => {
-                button.addEventListener('click', (event) => {
-                    if (modalCliente) {
-                        const modalTitleEl = modalCliente.querySelector('.modal-title');
-                        if (modalTitleEl) modalTitleEl.textContent = 'Editar Cliente';
-
-                        const row = event.target.closest('tr');
-                        if (row && row.cells.length > 3) { 
-                            const id = row.cells[0]?.textContent;
-                            const nombre = row.cells[1]?.textContent;
-                            const email = row.cells[2]?.textContent;
-                            const telefono = row.cells[3]?.textContent;
-                            
-                            const emailInput = modalCliente.querySelector('input[type="email"]');
-                            const nombreInput = modalCliente.querySelector('input[type="text"][placeholder="Juan Pérez González"]');
-                            const telInput = modalCliente.querySelector('input[type="tel"]');
-                            const runInput = modalCliente.querySelector('input[type="text"][placeholder="12345678-9"]');
-                            const fechaInput = modalCliente.querySelector('input[type="date"]');
-                            const direccionInput = modalCliente.querySelector('textarea');
-                            
-                            if (emailInput) emailInput.value = email || '';
-                            if (nombreInput) nombreInput.value = nombre || ''; // Asumiendo que quieres poblar el opcional
-                            if (telInput) telInput.value = telefono || ''; // Asumiendo que quieres poblar el opcional
-                            // Poblar RUN, fecha y dirección si los obtienes de la tabla o API
-                            // if (runInput) runInput.value = runObtenido || '';
-                            // if (fechaInput) fechaInput.value = fechaObtenida || '';
-                            // if (direccionInput) direccionInput.value = direccionObtenida || '';
-
-
-                            const passInput = document.getElementById('pass');
-                            if (passInput) passInput.value = ''; // No poblar contraseña
-
-                            const form = document.getElementById('formCliente');
-                             if (form) form.classList.remove('was-validated');
-                        } else {
-                             console.error("No se pudo encontrar la fila o las celdas para editar.");
-                        }
-                    }
-                });
-            });
-
-            // Toggle para mostrar/ocultar contraseña
-            const togglePassElement = document.getElementById('togglePass');
-            const passInputElement = document.getElementById('pass');
-
-            if (togglePassElement && passInputElement) {
-                togglePassElement.addEventListener('click', () => {
-                    const icon = togglePassElement.querySelector('i');
-                    if (icon) { 
-                         if (passInputElement.type === 'password') {
-                            passInputElement.type = 'text';
-                            icon.classList.replace('bi-eye-slash', 'bi-eye');
-                        } else {
-                            passInputElement.type = 'password';
-                            icon.classList.replace('bi-eye', 'bi-eye-slash');
-                        }
-                    }
-                });
-            }
-        }); // Fin DOMContentLoaded
+            .catch(error => console.error('Error cargando el sidebar:', error));      
     </script>
 </body>
 

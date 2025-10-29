@@ -163,7 +163,11 @@
                     </div>
                 </div>
 
-            </div> </div> </div> <div class="modal fade" id="modalUsuario" tabindex="-1">
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="modalUsuario" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -310,157 +314,6 @@
             })
             .catch(error => console.error('Error cargando el sidebar:', error));
 
-        // --- Lógica del Modal y Formulario ---
-        function guardarUsuario() {
-            const form = document.getElementById('formUsuario');
-            const pass1Input = form?.querySelector('#pass1');
-            const pass2Input = form?.querySelector('#pass2');
-            let passwordsMatch = true;
-
-            // Solo validar coincidencia si se están creando (o si se ingresó algo en ambas)
-            if (pass1Input && pass2Input && (pass1Input.value || pass2Input.value) && pass1Input.value !== pass2Input.value) {
-                 passwordsMatch = false;
-                 // Podrías añadir un mensaje de error específico para la confirmación
-                 pass2Input.setCustomValidity("Las contraseñas no coinciden"); // Mensaje de validación HTML5
-            } else if(pass2Input) {
-                 pass2Input.setCustomValidity(""); // Limpiar error si coinciden o están vacías
-            }
-
-            if (!form || !form.checkValidity() || !passwordsMatch) {
-                form?.classList.add('was-validated');
-                return;
-            }
-            form.classList.remove('was-validated');
-
-            const modalEl = document.getElementById('modalUsuario');
-            if(modalEl) bootstrap.Modal.getInstance(modalEl)?.hide();
-
-            const toastEl = document.getElementById('toastExitoUsuario');
-            if (toastEl) bootstrap.Toast.getOrCreateInstance(toastEl).show();
-
-            console.log('Usuario guardado exitosamente');
-            // Aquí iría la lógica real (fetch)
-        }
-
-        function eliminarUsuario() {
-            const modalEl = document.getElementById('modalEliminarUsuario');
-            if(modalEl) bootstrap.Modal.getInstance(modalEl)?.hide();
-
-            const toastEl = document.getElementById('toastEliminadoUsuario');
-            if (toastEl) bootstrap.Toast.getOrCreateInstance(toastEl).show();
-
-            console.log('Usuario eliminado correctamente');
-             // Aquí iría la lógica real (fetch)
-        }
-
-        // --- Listeners y Lógica adicional que espera al DOM ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const modalUsuario = document.getElementById('modalUsuario');
-            if (modalUsuario) {
-                 // Limpiar modal al cerrar
-                 modalUsuario.addEventListener('hidden.bs.modal', event => {
-                     const form = document.getElementById('formUsuario');
-                     if (form) {
-                         form.classList.remove('was-validated');
-                         form.reset();
-                         // Resetear validación custom de contraseña
-                         form.querySelector('#pass2')?.setCustomValidity(""); 
-                     }
-                     const titleElement = modalUsuario.querySelector('.modal-title');
-                     if (titleElement) titleElement.textContent = 'Nuevo Usuario';
-                     
-                     // Resetear iconos de ojo y tipo de input
-                     modalUsuario.querySelectorAll('.toggle-password').forEach(span => {
-                         const icon = span.querySelector('i');
-                         const input = span.previousElementSibling;
-                         if (icon) icon.classList.replace('bi-eye', 'bi-eye-slash');
-                         if (input) input.type = 'password';
-                     });
-                     // Asegurar que campos de contraseña sean requeridos de nuevo
-                     const pass1Input = document.getElementById('pass1');
-                     const pass2Input = document.getElementById('pass2');
-                     if(pass1Input) pass1Input.required = true;
-                     if(pass2Input) pass2Input.required = true;
-                 });
-            }
-
-             // Poblar modal al hacer clic en "Editar"
-            document.querySelectorAll('.table-actions .btn-outline-primary').forEach(button => {
-                 button.addEventListener('click', (event) => {
-                     if (modalUsuario) {
-                         const modalTitleEl = modalUsuario.querySelector('.modal-title');
-                         if (modalTitleEl) modalTitleEl.textContent = 'Editar Usuario';
-
-                         const row = event.target.closest('tr');
-                         if (row && row.cells.length > 3) { // Asegura suficientes celdas
-                             const id = row.cells[0]?.textContent;
-                             const nombre = row.cells[1]?.textContent;
-                             const email = row.cells[2]?.textContent;
-                             const rol = row.cells[3]?.textContent; // Obtiene el texto del badge
-                             const estadoBadge = row.cells[5]?.querySelector('.badge');
-                             const activo = estadoBadge ? estadoBadge.classList.contains('bg-success') : true;
-                             // const telefono = row.cells[X]?.textContent; // Si tuvieras teléfono en tabla
-
-                             // Poblar el formulario
-                             const nombreInput = modalUsuario.querySelector('input[type="text"]'); 
-                             const emailInput = modalUsuario.querySelector('input[type="email"]');
-                             const rolSelect = modalUsuario.querySelector('select');
-                             const telInput = modalUsuario.querySelector('input[type="tel"]');
-                             const activoCheckbox = document.getElementById('usuarioActivo');
-                             
-                             if (nombreInput) nombreInput.value = nombre || '';
-                             if (emailInput) emailInput.value = email || '';
-                             if (rolSelect) {
-                                 // Busca la opción que coincida con el texto del rol y la selecciona
-                                 const optionToSelect = Array.from(rolSelect.options).find(opt => opt.text === rol);
-                                 if (optionToSelect) {
-                                     rolSelect.value = optionToSelect.value;
-                                 } else {
-                                     rolSelect.value = ""; // O maneja el caso si no se encuentra
-                                 }
-                             }
-                             if (telInput) telInput.value = ''; // Poblar si lo obtienes
-                             if (activoCheckbox) activoCheckbox.checked = activo;
-
-                             // Hacer contraseñas NO requeridas al editar y limpiar
-                             const pass1Input = document.getElementById('pass1');
-                             const pass2Input = document.getElementById('pass2');
-                             if (pass1Input) {
-                                 pass1Input.value = '';
-                                 pass1Input.required = false; // Ya no es obligatorio
-                                 pass1Input.placeholder = '(Dejar en blanco para no cambiar)'; // Nuevo placeholder
-                             }
-                             if (pass2Input) {
-                                 pass2Input.value = '';
-                                 pass2Input.required = false; // Ya no es obligatorio
-                                  pass2Input.placeholder = '(Dejar en blanco para no cambiar)';
-                             }
-                             
-                             const form = document.getElementById('formUsuario');
-                              if (form) form.classList.remove('was-validated');
-                         }
-                     }
-                 });
-             });
-
-             // Toggle para mostrar/ocultar contraseñas (para AMBOS campos)
-            document.querySelectorAll('.toggle-password').forEach(span => {
-                 span.addEventListener('click', () => {
-                     const input = span.previousElementSibling; 
-                     const icon = span.querySelector('i');
-                     if (input && icon) {
-                         if (input.type === 'password') {
-                             input.type = 'text';
-                             icon.classList.replace('bi-eye-slash', 'bi-eye');
-                         } else {
-                             input.type = 'password';
-                             icon.classList.replace('bi-eye', 'bi-eye-slash');
-                         }
-                     }
-                 });
-            });
-
-        }); // Fin DOMContentLoaded
     </script>
 </body>
 

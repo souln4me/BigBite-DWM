@@ -21,17 +21,19 @@
   <link rel="stylesheet" href="css/navbar.css">
 
   <style>
+    /* --- Estilos personalizados para la página de Contacto --- */
+
+    /* Estilo base para las tarjetas de formulario e información */
     div.card-contacto {
       background-color: #f5f5f5;
-      /* gris claro */
       border: 1px solid #e0e0e0;
-      /* borde sutil */
       border-radius: 40px;
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
       padding: 30px;
       transition: 0.3s ease;
     }
 
+    /* Efecto hover de elevación para las tarjetas */
     div.card-contacto:hover {
       transform: translateY(-3px);
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
@@ -42,15 +44,16 @@
       margin-bottom: 6px;
     }
 
+    /* Estilo general de inputs y textarea */
     input,
     textarea {
       border-radius: 12px;
       box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
     }
 
+    /* Estilo del botón principal "Enviar Mensaje" */
     button.btn-perfil {
       background-color: #ffc107;
-      /* amarillo similar a Bootstrap warning */
       color: black;
       font-weight: 600;
       border-radius: 40px;
@@ -73,6 +76,7 @@
       border-color: #ffc107 !important;
     }
 
+    /* Asegura bordes redondeados consistentes en los inputs */
     div .form-control {
       border-radius: 15px;
       padding: 12px;
@@ -153,13 +157,13 @@
   <div id="footer-placeholder"></div>
 
   <script>
-    // Cargar navbar
+    // --- Carga dinámica del Navbar (y lógica de login/carrito) ---
     fetch("components/navbar.html")
       .then(response => response.text())
       .then(data => {
         document.getElementById("navbar-placeholder").innerHTML = data;
 
-        // Detectar página actual y marcar enlace activo
+        // Marcar enlace activo del navbar
         const currentPage = window.location.pathname.split("/").pop();
         const links = document.querySelectorAll("nav a");
         links.forEach(link => {
@@ -169,7 +173,7 @@
           }
         });
 
-        // Usuario registrado
+        // Verificación de inicio de sesión para el link de "Perfil"
         const perfilLink = document.getElementById('perfil-link');
         if (perfilLink) {
           perfilLink.addEventListener('click', (e) => {
@@ -181,8 +185,7 @@
           });
         }
 
-        // ----------------------------
-        // Aquí aseguramos que el badge del carrito se actualice
+        // Actualización del contador del carrito
         setTimeout(() => {
           const badge = document.getElementById('cart-count');
           if (!badge) return;
@@ -194,6 +197,7 @@
       });
 
 
+    // --- Carga dinámica del Footer ---
     fetch("components/footer.html")
       .then(response => response.text())
       .then(data => {

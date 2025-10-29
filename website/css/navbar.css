@@ -4,7 +4,9 @@
    NAVBAR (archivo: navbar.css)
    ========================= */
 
-/* NAVBAR principal */
+/* --- Navbar principal ---
+   Define una barra superior fija con fuente gruesa, fondo oscuro
+   y alineación centrada. Mantiene visibilidad constante en pantalla. */
 .navbar {
   position: fixed;
   top: 0;
@@ -21,12 +23,14 @@
   align-items: center;
 }
 
-/* Deja espacio para la navbar fija */
+/* --- Espacio compensatorio ---
+   Evita que el contenido quede oculto bajo la navbar fija. */
 body {
   padding-top: 80px;
 }
 
-/* Contenedor interno */
+/* --- Contenedor interno ---
+   Organiza los elementos de la navbar con separación y alineación horizontal. */
 .navbar .container {
   display: flex;
   justify-content: space-between;
@@ -36,14 +40,16 @@ body {
   position: relative;
 }
 
-/* === NUEVO: agrupamos toggler y carrito === */
+/* --- Sección derecha ---
+   Agrupa el ícono del menú (hamburguesa) y el carrito para mantenerlos alineados. */
 .navbar .right-section {
   display: flex;
   align-items: center;
-  gap: 14px; /* espacio entre el menú y el carrito */
+  gap: 14px;
 }
 
-/* Logo / marca */
+/* --- Logo / marca ---
+   Controla el tamaño, color y alineación del logo y texto de marca. */
 .logo, .navbar-brand {
   display: flex;
   align-items: center;
@@ -66,7 +72,8 @@ body {
   line-height: 1;
 }
 
-/* NAV LINKS */
+/* --- Navegación principal ---
+   Crea una lista horizontal con espacio uniforme entre los enlaces. */
 .navbar-nav {
   display: flex;
   gap: 42px;
@@ -76,7 +83,8 @@ body {
   list-style: none;
 }
 
-/* usa clases de bootstrap .nav-link pero con tu estilo */
+/* --- Enlaces de navegación ---
+   Aplica un estilo minimalista y mayúsculas, con animación al pasar el mouse. */
 .navbar-nav .nav-link {
   color: #bdbdbd;
   text-transform: uppercase;
@@ -86,13 +94,12 @@ body {
   transition: color 0.18s ease;
 }
 
-/* hover + active */
+/* --- Hover y activo ---
+   Cambia color y muestra una línea animada sobre el enlace activo o al pasar. */
 .navbar-nav .nav-link:hover,
 .navbar-nav .nav-link.active {
   color: #fff;
 }
-
-/* línea animada encima del link */
 .navbar-nav .nav-link::before {
   content: '';
   display: block;
@@ -112,6 +119,9 @@ body {
 /* =========================
    HAMBURGER ICON (white SVG inline)
    ========================= */
+
+/* --- Botón hamburguesa ---
+   Personaliza el botón del menú móvil con un SVG blanco embebido. */
 .navbar-toggler {
   border: none;
   padding: 0.25rem 0.5rem;
@@ -119,7 +129,6 @@ body {
   border-radius: 6px;
   border: 1px solid rgba(255,255,255,0.06);
 }
-
 .navbar-toggler-icon {
   width: 30px;
   height: 30px;
@@ -132,17 +141,18 @@ body {
 /* =========================
    COLLAPSE BACKGROUND
    ========================= */
+
+/* --- Fondo del menú desplegable ---
+   Define la animación, color y bordes redondeados del menú móvil. */
 .navbar-collapse {
   background-color: #222;
   transition: height 0.18s ease, padding 0.18s ease;
   border-radius: 30px;
 }
-
 .navbar-collapse.collapse.show {
   padding: 12px 16px;
   border-radius: 30px;
 }
-
 .navbar-collapse .navbar-nav {
   align-items: center;
 }
@@ -150,6 +160,9 @@ body {
 /* =========================
    RESPONSIVE
    ========================= */
+
+/* --- Adaptación móvil ---
+   Ajusta proporciones, espaciado y tipografía en pantallas pequeñas. */
 @media (max-width: 992px) {
   .navbar {
     height: 64px;
@@ -176,8 +189,6 @@ body {
   .navbar-collapse {
     box-shadow: none;
   }
-
-  /* === Ajuste extra: carrito y toggler mantienen su espacio === */
   .navbar .right-section {
     gap: 10px;
   }
@@ -186,20 +197,20 @@ body {
 /* =========================
    Pequeñas mejoras visuales
    ========================= */
+
+/* --- Enlaces y scroll ---
+   Quita efectos indeseados al enfocar y asegura estabilidad visual. */
 .nav-link:focus {
   outline: none;
   box-shadow: none;
 }
-
 html {
   overflow-y: scroll;
   scrollbar-gutter: stable;
 }
-
 body.modal-open {
   padding-right: 0 !important;
 }
-
 body.modal-open .navbar {
   padding-right: 0 !important;
 }
@@ -207,23 +218,24 @@ body.modal-open .navbar {
 /* =========================
    CARRITO
    ========================= */
+
+/* --- Ícono del carrito ---
+   Mantiene coherencia visual con los links de la navbar,
+   incluyendo bordes, color y hover. */
 .navbar .navbar-cart {
   display: flex;
   align-items: center;
   border-left: 1px solid rgba(255, 255, 255, 0.3);
   padding-left: 18px;
 }
-
 .navbar .navbar-cart a {
   color: #bdbdbd;
   text-decoration: none;
 }
-
 .navbar .navbar-cart a:hover {
   color: #fff;
   transition: color 0.18s ease;
 }
-
 .navbar .navbar-cart a.active {
   color: #fff;
 }

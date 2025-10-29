@@ -160,7 +160,11 @@
                     </div>
                 </div>
 
-            </div> </div> </div> <div class="modal fade" id="modalProducto" tabindex="-1">
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="modalProducto" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -298,108 +302,6 @@
             })
             .catch(error => console.error('Error cargando el sidebar:', error));
 
-        // --- Lógica del Modal y Formulario ---
-        function guardarProducto() {
-            const form = document.getElementById('formProducto');
-            if (!form || !form.checkValidity()) {
-                form?.classList.add('was-validated');
-                return;
-            }
-            form.classList.remove('was-validated');
-
-            const modalEl = document.getElementById('modalProducto');
-             if (modalEl) {
-                 const modalInstance = bootstrap.Modal.getInstance(modalEl);
-                 if (modalInstance) modalInstance.hide();
-             }
-
-            const toastEl = document.getElementById('toastExito');
-            if (toastEl) {
-                 const toastInstance = bootstrap.Toast.getOrCreateInstance(toastEl);
-                 toastInstance.show();
-             }
-
-            console.log('Producto guardado exitosamente');
-            // Aquí iría la lógica real (fetch)
-        }
-
-        function eliminarProducto() {
-            const modalEl = document.getElementById('modalEliminar');
-             if (modalEl) {
-                 const modalInstance = bootstrap.Modal.getInstance(modalEl);
-                 if (modalInstance) modalInstance.hide();
-             }
-
-            const toastEl = document.getElementById('toastEliminado');
-             if (toastEl) {
-                 const toastInstance = bootstrap.Toast.getOrCreateInstance(toastEl);
-                 toastInstance.show();
-             }
-
-            console.log('Producto eliminado correctamente');
-             // Aquí iría la lógica real (fetch)
-        }
-
-        // --- Listeners y Lógica adicional que espera al DOM ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const modalProducto = document.getElementById('modalProducto');
-            if (modalProducto) {
-                // Limpiar modal al cerrar
-                modalProducto.addEventListener('hidden.bs.modal', event => {
-                    const form = document.getElementById('formProducto');
-                     if (form) {
-                         form.classList.remove('was-validated');
-                         form.reset();
-                     }
-                    const titleElement = modalProducto.querySelector('.modal-title');
-                     if (titleElement) titleElement.textContent = 'Nuevo Producto';
-                });
-            }
-            
-            // Poblar modal al hacer clic en "Editar"
-            document.querySelectorAll('.table-actions .btn-outline-primary').forEach(button => {
-                 button.addEventListener('click', (event) => {
-                     if (modalProducto) {
-                         const modalTitleEl = modalProducto.querySelector('.modal-title');
-                         if (modalTitleEl) modalTitleEl.textContent = 'Editar Producto';
-
-                         const row = event.target.closest('tr');
-                         if (row && row.cells.length > 5) { // Verifica celdas (ID, Nombre, Cat, Precio, Stock, Estado)
-                             const id = row.cells[0]?.textContent;
-                             const nombre = row.cells[1]?.textContent;
-                             const categoria = row.cells[2]?.textContent;
-                             const precio = row.cells[3]?.textContent.replace(/\D/g,''); 
-                             const stock = row.cells[4]?.textContent;
-                             const estadoBadge = row.cells[5]?.querySelector('.badge');
-                             const activo = estadoBadge ? estadoBadge.classList.contains('bg-success') : true;
-
-                             // Poblar el formulario
-                             const nombreInput = modalProducto.querySelector('input[type="text"]');
-                             const categoriaSelect = modalProducto.querySelector('select');
-                             const precioInput = modalProducto.querySelector('input[type="number"][required][placeholder="Ej: 10000"]');
-                             const stockInput = modalProducto.querySelector('input[type="number"][required][placeholder="Ej: 50"]');
-                             const descTextarea = modalProducto.querySelector('textarea');
-                             const activoCheckbox = document.getElementById('productoActivo');
-                             const imagenInput = modalProducto.querySelector('input[type="file"]'); 
-
-                             if (nombreInput) nombreInput.value = nombre || '';
-                             if (categoriaSelect) categoriaSelect.value = categoria || '';
-                             if (precioInput) precioInput.value = precio || '';
-                             if (stockInput) stockInput.value = stock || '';
-                             if (descTextarea) descTextarea.value = ''; // Limpia descripción (o poblar si la tienes)
-                             if (activoCheckbox) activoCheckbox.checked = activo;
-                             if (imagenInput) imagenInput.value = ''; // Limpia input file
-
-                             const form = document.getElementById('formProducto');
-                              if (form) form.classList.remove('was-validated');
-                         } else {
-                              console.error("No se pudo encontrar la fila o las celdas para editar el producto.");
-                         }
-                     }
-                 });
-             });
-
-        }); // Fin DOMContentLoaded
     </script>
 </body>
 </html>

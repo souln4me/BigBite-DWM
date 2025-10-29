@@ -76,11 +76,15 @@
         // ==============
         // 1. NAVBAR Y FOOTER
         // ==============
-        // Cargar navbar
+
+        // Carga dinámica del Navbar
         fetch("components/navbar.html")
             .then(response => response.text())
             .then(data => {
                 document.getElementById("navbar-placeholder").innerHTML = data;
+
+                // --- Lógica de estado del Navbar ---
+                // (Marca el enlace "activo", protege "Perfil" si no hay login, y actualiza el contador del carrito)
 
                 // Detectar página actual y marcar enlace activo
                 const currentPage = window.location.pathname.split("/").pop();
@@ -92,7 +96,7 @@
                     }
                 });
 
-                // Usuario registrado
+                // Usuario registrado (protección de ruta)
                 const perfilLink = document.getElementById('perfil-link');
                 if (perfilLink) {
                     perfilLink.addEventListener('click', (e) => {
@@ -105,7 +109,7 @@
                 }
 
                 // ----------------------------
-                // Aquí aseguramos que el badge del carrito se actualice
+                // Actualiza el badge (contador) del carrito
                 setTimeout(() => {
                     const badge = document.getElementById('cart-count');
                     if (!badge) return;
@@ -116,7 +120,7 @@
                 // ----------------------------
             });
 
-
+        // Carga dinámica del Footer
         fetch("components/footer.html")
             .then(response => response.text())
             .then(data => {
@@ -127,19 +131,23 @@
         // 2. CARRITO
         // ==============
         // -------------------- CART LOGIC --------------------
+
+        // Constantes y clave de LocalStorage
         const SHIPPING_COST = 2000;
         const cartKey = 'carrito';
 
+        // Carga el carrito desde LocalStorage
         function loadCart() {
             try { return JSON.parse(localStorage.getItem(cartKey)) || []; }
             catch (e) { return []; }
         }
+        // Guarda el carrito en LocalStorage y dispara un evento
         function saveCart(cart) {
             localStorage.setItem(cartKey, JSON.stringify(cart));
-            window.dispatchEvent(new Event('cart-updated')); // notify other scripts if needed
+            window.dispatchEvent(new Event('cart-updated')); // Notifica a otros scripts
         }
 
-        // Ensure internal representation: array of unique items { name, price, quantity }
+        // Asegura que el carrito tenga un formato único (agrupa items duplicados)
         function normalizeCart(cartRaw) {
             const byName = {};
             cartRaw.forEach(it => {
@@ -153,7 +161,7 @@
             return Object.values(byName);
         }
 
-        // UI refs
+        // Referencias a los elementos del DOM
         const cartItemsContainer = document.getElementById('cart-items');
         const emptyMessage = document.getElementById('empty-message');
         const subtotalEl = document.getElementById('subtotal');
@@ -163,22 +171,26 @@
         const emptyBtn = document.getElementById('empty-cart');
         const checkoutBtn = document.getElementById('checkout');
 
-        // Current cart (normalized)
+        // Variable principal que contiene el estado del carrito
         let cart = normalizeCart(loadCart());
 
+        // Función principal: Dibuja los productos del carrito en el HTML
         function renderCart() {
-            cartItemsContainer.innerHTML = '';
+            cartItemsContainer.innerHTML = ''; // Limpia el contenedor
+
+            // Si el carrito está vacío, muestra el mensaje de vacío
             if (!cart || cart.length === 0) {
                 emptyMessage.style.display = 'block';
                 subtotalEl.textContent = '$0';
                 shippingEl.textContent = '$0';
                 totalEl.textContent = '$0';
-                saveCart([]); // keep localStorage consistent
+                saveCart([]); // Limpia el LocalStorage
                 return;
             }
-            emptyMessage.style.display = 'none';
+            emptyMessage.style.display = 'none'; // Oculta el mensaje de vacío
 
             let subtotal = 0;
+            // Itera sobre los productos y crea el HTML para cada uno
             cart.forEach((item, idx) => {
                 const itemTotal = item.price * item.quantity;
                 subtotal += itemTotal;
@@ -186,82 +198,86 @@
                 const div = document.createElement('div');
                 div.className = 'cart-item d-flex justify-content-between align-items-center';
                 div.dataset.name = item.name;
+                // Plantilla HTML para cada producto en el carrito
                 div.innerHTML = `
-                <div class="d-flex align-items-center justify-content-between">
-                    <!-- Imagen + Info del producto -->
-                    <div class="d-flex align-items-center gap-3">
-                        <img src="${item.image || 'img/productos/default.png'}" class="img-fluid carrito-img" alt="${item.name}">
-                        <div>
-                            <strong>${item.name}</strong><br>
-                            <small>${item.quantity} x ${item.price.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</small><br>
-                            <small class="text-muted"><strong>${itemTotal.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</strong></small>
-                        </div>
-                    </div>
-
-                    <!-- Controles al extremo derecho -->
-                    <div class="d-flex align-items-center gap-1 cart-controls">
-                        <button class="btn btn-warning decrease" title="Quitar 1"><i class="fa-solid fa-minus"></i></button>
-                        <span>${item.quantity}</span>
-                        <button class="btn btn-warning increase" title="Agregar 1"><i class="fa-solid fa-plus"></i></button>
-                        <button class="btn btn-danger remove" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
-                    </div>
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+                <img src="${item.image || 'img/productos/default.png'}" class="img-fluid carrito-img" alt="${item.name}">
+                <div>
+                    <strong>${item.name}</strong><br>
+                    <small>${item.quantity} x ${item.price.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</small><br>
+                    <small class="text-muted"><strong>${itemTotal.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</strong></small>
                 </div>
-                `;
+            </div>
+
+            <div class="d-flex align-items-center gap-1 cart-controls">
+                <button class="btn btn-warning decrease" title="Quitar 1"><i class="fa-solid fa-minus"></i></button>
+                <span>${item.quantity}</span>
+                <button class="btn btn-warning increase" title="Agregar 1"><i class="fa-solid fa-plus"></i></button>
+                <button class="btn btn-danger remove" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+            </div>
+        </div>
+        `;
                 cartItemsContainer.appendChild(div);
 
-                // Wire listeners per-row (use item name as identifier)
+                // Asigna los eventos (+, -, X) a los botones de esta fila
                 div.querySelector('.increase').addEventListener('click', () => changeQuantity(item.name, +1));
                 div.querySelector('.decrease').addEventListener('click', () => changeQuantity(item.name, -1));
                 div.querySelector('.remove').addEventListener('click', () => removeItem(item.name));
             });
 
-            updateSummary(subtotal);
-            // persist normalized cart to localStorage (so products page reads unique items)
-            saveCart(cart);
+            updateSummary(subtotal); // Actualiza los totales
+            saveCart(cart); // Guarda el carrito normalizado en LocalStorage
         }
 
-        // change quantity of a single product (by name)
+        // Cambia la cantidad (sumar o restar)
         function changeQuantity(name, delta) {
             cart = cart.map(it => {
                 if (it.name === name) return { ...it, quantity: Math.max(0, (it.quantity || 1) + delta) };
                 return it;
-            }).filter(it => it.quantity > 0);
+            }).filter(it => it.quantity > 0); // Elimina el item si la cantidad llega a 0
             renderCart();
         }
 
+        // Elimina un producto por completo
         function removeItem(name) {
             cart = cart.filter(it => it.name !== name);
             renderCart();
         }
 
+        // Actualiza el resumen (Subtotal, Envío, Total)
         function updateSummary(subtotal) {
-            const shipping = subtotal > 0 ? SHIPPING_COST : 0;
+            const shipping = subtotal > 0 ? SHIPPING_COST : 0; // Solo cobra envío si hay productos
             const total = subtotal + shipping;
             subtotalEl.textContent = subtotal.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
             shippingEl.textContent = shipping.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
             totalEl.textContent = total.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
         }
 
+        // Evento para el botón "Vaciar carrito"
         emptyBtn.addEventListener('click', () => {
             cart = [];
             renderCart();
         });
 
+        // Evento para el botón "Proceder al pago" (Simulación)
         checkoutBtn.addEventListener('click', () => {
             if (!cart.length) {
                 paymentMessage.textContent = 'El carrito está vacío.';
                 return;
             }
+            // Simula un resultado de pago aleatorio
             const estados = ['Pago realizado con éxito', 'Pago rechazado', 'Pago cancelado'];
             const random = estados[Math.floor(Math.random() * estados.length)];
             paymentMessage.textContent = random;
+            // Si el pago fue exitoso, vacía el carrito
             if (random === 'Pago realizado con éxito') {
                 cart = [];
                 renderCart();
             }
         });
 
-        // sync with other tabs/pages: when storage changes, reload normalized cart and re-render
+        // Sincroniza el carrito si cambia en OTRA pestaña
         window.addEventListener('storage', (e) => {
             if (e.key === cartKey) {
                 cart = normalizeCart(loadCart());
@@ -269,13 +285,13 @@
             }
         });
 
-        // also listen to custom event triggered by saveCart in other scripts
+        // Sincroniza si otra parte del JS (ej. productos.js) guarda el carrito
         window.addEventListener('cart-updated', () => {
             cart = normalizeCart(loadCart());
             renderCart();
         });
 
-        // initialize
+        // Función inicial: Carga y dibuja el carrito al entrar a la página
         (function init() {
             cart = normalizeCart(loadCart());
             renderCart();

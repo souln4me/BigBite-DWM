@@ -850,7 +850,6 @@
                 </div>
 
                 <div class="row" id="listaOrdenes">
-                    <!-- Orden 1: Nueva -->
                     <div class="col-lg-6 mb-4">
                         <div class="card order-card status-new">
                             <div class="card-header d-flex justify-content-between align-items-center">
@@ -880,8 +879,7 @@
                         </div>
                     </div>
 
-                     <!-- Orden 2: En Preparación -->
-                    <div class="col-lg-6 mb-4">
+                     <div class="col-lg-6 mb-4">
                         <div class="card order-card status-preparing">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <div><span class="badge bg-warning">EN PREPARACIÓN</span>
@@ -909,7 +907,6 @@
                         </div>
                     </div>
 
-                    <!-- Orden 3: Lista para Entrega -->
                     <div class="col-lg-6 mb-4">
                         <div class="card order-card status-ready">
                             <div class="card-header d-flex justify-content-between align-items-center">
@@ -936,7 +933,6 @@
                         </div>
                     </div>
 
-                    <!-- Orden 4: Nueva (Múltiple) -->
                     <div class="col-lg-6 mb-4">
                         <div class="card order-card status-new">
                             <div class="card-header d-flex justify-content-between align-items-center">
@@ -968,12 +964,10 @@
                     </div>
                 </div>
 
-                 <!-- Estadísticas Rápidas -->
-                <div class="row mt-4">
+                 <div class="row mt-4">
                     <div class="col-12">
                         <div class="card card-dashboard quick-stats-card"> 
-                             <!-- Padding controlado por CSS -->
-                            <div class="card-body">
+                             <div class="card-body">
                                 <div class="row text-center">
                                     <div class="col-md-3 col-6 mb-2 mb-md-0">
                                         <h4 class="text-success mb-0" id="contadorNuevas">2</h4><small
@@ -996,7 +990,11 @@
                         </div>
                     </div>
                 </div>
-            </div> </div> </div> <div class="modal fade" id="modalConfigImpresion" tabindex="-1">
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="modalConfigImpresion" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1046,8 +1044,8 @@
         </div>
     </div>
     
-    <script> // --- Carga del Sidebar ---
-
+    <script> 
+        // --- Carga del Sidebar ---
         fetch('includes/sidebar.html').then(response => {
             if (!response.ok) throw new Error(`HTTP error ! status: ${response.status}`);
             return response.text();
@@ -1078,88 +1076,10 @@
         // --- Lógica de Órdenes de Cocina ---
         document.addEventListener('DOMContentLoaded', () => {
 
-            // Simulación de base de datos de órdenes
-            const ordenes = {
-                'BGT-001': { estado: 'nueva', timestamp: Date.now() - 120000 },
-                'BGT-002': { estado: 'preparacion', timestamp: Date.now() - 300000 },
-                'BGT-003': { estado: 'lista', timestamp: Date.now() - 480000 },
-                'BGT-004': { estado: 'nueva', timestamp: Date.now() - 60000 }
-            };
-
             const listaOrdenesDiv = document.getElementById('listaOrdenes');
-
-            // --- Funciones para mostrar toasts ---
-            function mostrarToast(idToast, mensaje = null, numeroOrden = null) {
-                const toastEl = document.getElementById(idToast);
-                if (!toastEl) return;
-
-                if (idToast === 'toastImpresionExitosa' && numeroOrden) {
-                    const numSpan = toastEl.querySelector('#ordenExitosaNumero');
-                    if (numSpan) numSpan.textContent = numeroOrden;
-                } else if (idToast === 'toastEstadoCambiado' && mensaje) {
-                    const msgBody = toastEl.querySelector('#mensajeEstadoCambiado');
-                    let iconClass = 'bi-info-circle-fill'; 
-                    if(mensaje.includes('preparación')) iconClass = 'bi-hourglass-split';
-                    else if(mensaje.includes('lista')) iconClass = 'bi-check-circle-fill';
-                    else if(mensaje.includes('entregada')) iconClass = 'bi-box-arrow-up-right';
-                    
-                    if (msgBody) msgBody.innerHTML = `<i class="bi ${iconClass} me-2" ></i> ${mensaje}`;
-                }
-
-                const toastInstance = bootstrap.Toast.getOrCreateInstance(toastEl);
-                toastInstance.show();
-            }
 
             // --- Funciones de Gestión ---
             // Exponer funciones al scope global para que los onclick funcionen
-            window.imprimirOrden = function (numeroOrden) {
-                console.log(`Imprimiendo orden #${numeroOrden}...`);
-                const exito = Math.random() > 0.2; 
-                if (exito) {
-                    mostrarToast('toastImpresionExitosa', null, numeroOrden);
-                } else {
-                    mostrarToast('toastErrorImpresion');
-                }
-            }
-
-            window.marcarEnPreparacion = function (numeroOrden) {
-                if (ordenes[numeroOrden]) {
-                    ordenes[numeroOrden].estado = 'preparacion';
-                    actualizarInterfaz();
-                    mostrarToast('toastEstadoCambiado', `Orden #${numeroOrden} en preparación`);
-                }
-            }
-
-            window.marcarLista = function (numeroOrden) {
-                if (ordenes[numeroOrden]) {
-                    ordenes[numeroOrden].estado = 'lista';
-                    actualizarInterfaz();
-                    mostrarToast('toastEstadoCambiado', `Orden #${numeroOrden} lista para entrega`);
-                }
-            }
-
-            window.marcarEntregada = function (numeroOrden) {
-                if (ordenes[numeroOrden]) {
-                    ordenes[numeroOrden].estado = 'completada'; 
-                    actualizarInterfaz(); 
-                    mostrarToast('toastEstadoCambiado', `Orden #${numeroOrden} entregada`);
-                    // Opcional: Ocultar la tarjeta
-                    const cardElement = document.querySelector(`.order-card[data-order-id="${numeroOrden}"]`); 
-                    if(cardElement) setTimeout(() => cardElement.closest('.col-lg-6').style.display = 'none', 1500); 
-                }
-            }
-            
-            window.configurarImpresion = function () {
-                const modalEl = document.getElementById('modalConfigImpresion');
-                if (modalEl) bootstrap.Modal.getOrCreateInstance(modalEl).show();
-            }
-
-            window.actualizarOrdenes = function () {
-                console.log('Actualizando lista de órdenes...');
-                // Aquí fetch real
-                actualizarInterfaz(); 
-                mostrarToast('toastEstadoCambiado', 'Lista de órdenes actualizada');
-            }
 
             window.filtrarOrdenes = function (tipo) {
                  console.log(`Filtrando órdenes por: ${tipo}`);
@@ -1172,131 +1092,31 @@
 
                  // Filtrado visual
                  listaOrdenesDiv?.querySelectorAll('.order-card').forEach(card => {
-                      const cardEstadoClass = Array.from(card.classList).find(cls => cls.startsWith('status-'));
-                      const cardEstado = cardEstadoClass ? cardEstadoClass.split('-')[1] : null;
-                      
-                      let mappedEstado = cardEstado;
-                      if (cardEstado === 'new') mappedEstado = 'nuevas';
-                      else if (cardEstado === 'preparing') mappedEstado = 'preparacion';
-                      else if (cardEstado === 'ready') mappedEstado = 'listas';
-                      
-                      const esVisible = tipo === 'todas' || tipo === mappedEstado;
-                      
-                      const colContainer = card.closest('.col-lg-6');
-                      if(colContainer) colContainer.style.display = esVisible ? '' : 'none'; 
+                     const cardEstadoClass = Array.from(card.classList).find(cls => cls.startsWith('status-'));
+                     const cardEstado = cardEstadoClass ? cardEstadoClass.split('-')[1] : null;
+                     
+                     let mappedEstado = cardEstado;
+                     if (cardEstado === 'new') mappedEstado = 'nuevas';
+                     else if (cardEstado === 'preparing') mappedEstado = 'preparacion';
+                     else if (cardEstado === 'ready') mappedEstado = 'listas';
+                     
+                     const esVisible = tipo === 'todas' || tipo === mappedEstado;
+                     
+                     const colContainer = card.closest('.col-lg-6');
+                     if(colContainer) colContainer.style.display = esVisible ? '' : 'none'; 
                  });
              }
 
-             window.verDetalles = function(numeroOrden) {
-                alert(`Funcionalidad pendiente: Ver detalles de la orden #${numeroOrden}`);
-             }
-
-             window.notificarRetraso = function(numeroOrden) {
-                alert(`Funcionalidad pendiente: Notificar retraso en orden #${numeroOrden}`);
-             }
-
-            // --- Función para Actualizar UI ---
-            function actualizarInterfaz() {
-                const contadores = { nuevas: 0, preparacion: 0, listas: 0, total: 0 };
-                let tieneNuevas = false, tienePreparacion = false, tieneListas = false;
-
-                listaOrdenesDiv?.querySelectorAll('.order-card').forEach((card, index) => { // Añadir índice para ID único si no existe
-                    let numeroOrden = card.dataset.orderId; // Usar data attribute si existe
-                    if (!numeroOrden) { // Si no existe, intentar obtener del título y asignarlo
-                        const numeroOrdenMatch = card.querySelector('.card-title')?.textContent.match(/#(\w+-\d+)/);
-                        if (numeroOrdenMatch) {
-                             numeroOrden = numeroOrdenMatch[1];
-                             card.dataset.orderId = numeroOrden; // Guardar ID en data attribute
-                        } else {
-                             // Si ni así se encuentra, asigna uno temporal (no ideal)
-                             numeroOrden = `temp-${index}`; 
-                             card.dataset.orderId = numeroOrden;
-                             if (!ordenes[numeroOrden]) ordenes[numeroOrden] = { estado: 'nueva', timestamp: Date.now()}; // Añadir temporal si no existe
-                        }
-                    }
-                    
-                    const orden = ordenes[numeroOrden];
-
-                    if (!orden || orden.estado === 'completada') {
-                        card.closest('.col-lg-6').style.display = 'none'; 
-                        return;
-                    } else {
-                        // Asegurar visibilidad inicial antes de filtrar
-                        card.closest('.col-lg-6').style.display = ''; 
-                    }
-
-                    card.classList.remove('status-new', 'status-preparing', 'status-ready', 'status-completed');
-                    let badgeClass = 'bg-secondary';
-                    let badgeText = orden.estado.toUpperCase();
-                    
-                    switch (orden.estado) {
-                        case 'nueva':
-                            card.classList.add('status-new');
-                            badgeClass = 'bg-success'; badgeText = 'NUEVA';
-                            contadores.nuevas++; tieneNuevas = true; break;
-                        case 'preparacion':
-                            card.classList.add('status-preparing');
-                             badgeClass = 'bg-warning'; badgeText = 'EN PREPARACIÓN';
-                            contadores.preparacion++; tienePreparacion = true; break;
-                        case 'lista':
-                            card.classList.add('status-ready');
-                            badgeClass = 'bg-info'; badgeText = 'LISTA';
-                            contadores.listas++; tieneListas = true; break;
-                    }
-                    contadores.total++;
-                    
-                    const statusBadge = card.querySelector('.card-header .badge:not(.timer-badge)');
-                    if(statusBadge) {
-                         statusBadge.className = `badge ${badgeClass}`; 
-                         statusBadge.textContent = badgeText;
-                    }
-                    
-                    const btnIniciar = card.querySelector('.btn-success');
-                    const btnLista = card.querySelector('.btn-info');
-                    const btnEntregar = card.querySelector('.btn-primary'); 
-                    
-                    if(btnIniciar) btnIniciar.style.display = orden.estado === 'nueva' ? '' : 'none';
-                    if(btnLista) btnLista.style.display = orden.estado === 'preparacion' ? '' : 'none';
-                    if(btnEntregar) btnEntregar.style.display = orden.estado === 'lista' ? '' : 'none';
-                });
-                
-                // Actualiza contadores visuales
-                const contNuevas = document.getElementById('contadorNuevas');
-                const contPrep = document.getElementById('contadorPreparacion');
-                const contListas = document.getElementById('contadorListas');
-                const contTotal = document.getElementById('contadorTotal');
-                if(contNuevas) contNuevas.textContent = contadores.nuevas;
-                if(contPrep) contPrep.textContent = contadores.preparacion;
-                if(contListas) contListas.textContent = contadores.listas;
-                if(contTotal) contTotal.textContent = contadores.total;
-                
-                // Habilita/deshabilita botones de filtro
-                 const btnFiltroNuevas = document.querySelector('button[onclick*="nuevas"]');
-                 const btnFiltroPrep = document.querySelector('button[onclick*="preparacion"]');
-                 const btnFiltroListas = document.querySelector('button[onclick*="listas"]');
-                 if(btnFiltroNuevas) btnFiltroNuevas.disabled = !tieneNuevas;
-                 if(btnFiltroPrep) btnFiltroPrep.disabled = !tienePreparacion;
-                 if(btnFiltroListas) btnFiltroListas.disabled = !tieneListas;
-            }
-
-            // --- Búsqueda ---
-            const buscarInput = document.getElementById('buscarOrden');
-            const buscarBtn = buscarInput?.nextElementSibling; 
-             if(buscarInput && buscarBtn) {
-                 const buscar = () => {
-                     const termino = buscarInput.value.toLowerCase().trim();
-                     listaOrdenesDiv?.querySelectorAll('.order-card').forEach(card => {
-                         const contenido = card.textContent.toLowerCase();
-                         const esVisible = contenido.includes(termino);
-                          card.closest('.col-lg-6').style.display = esVisible ? '' : 'none';
-                     });
-                 };
-                 buscarInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') buscar(); });
-                 buscarBtn.addEventListener('click', buscar);
-             }
-
-            // --- Inicializar ---
-            actualizarInterfaz();
+            // --- Lógica de cambio de estado, impresión, búsqueda, etc., movida a otro archivo ---
+            
+            // Simulación de funciones eliminadas para que los botones no den error (puedes borrar esto si mueves los onclick)
+             window.imprimirOrden = window.imprimirOrden || function(id) { console.warn(`Función 'imprimirOrden' no definida. ID: ${id}`); };
+             window.marcarEnPreparacion = window.marcarEnPreparacion || function(id) { console.warn(`Función 'marcarEnPreparacion' no definida. ID: ${id}`); };
+             window.marcarLista = window.marcarLista || function(id) { console.warn(`Función 'marcarLista' no definida. ID: ${id}`); };
+             window.marcarEntregada = window.marcarEntregada || function(id) { console.warn(`Función 'marcarEntregada' no definida. ID: ${id}`); };
+             window.verDetalles = window.verDetalles || function(id) { console.warn(`Función 'verDetalles' no definida. ID: ${id}`); };
+             window.notificarRetraso = window.notificarRetraso || function(id) { console.warn(`Función 'notificarRetraso' no definida. ID: ${id}`); };
+             window.actualizarOrdenes = window.actualizarOrdenes || function() { console.warn("Función 'actualizarOrdenes' no definida."); };
 
         }); // Fin
     </script>

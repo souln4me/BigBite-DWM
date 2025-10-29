@@ -6,14 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Big Bite - Registro</title>
 
-  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-  <!-- Icono -->
   <link rel="icon" type="image/png" sizes="32x32" href="img/logo/cropped_circle_image.png">
 
   <style>
@@ -21,6 +18,7 @@
       background-color: #fff4e6;
     }
 
+    /* Estilo principal de la tarjeta de registro */
     .card {
       border-radius: 50px;
       max-width: 1200px;
@@ -28,6 +26,7 @@
       box-shadow: 0 4px 14px rgb(0, 0, 0, 0.5);
     }
 
+    /* Botón de registro personalizado (color amarillo) */
     .btn-register {
       color: black;
       background-color: #ffc107;
@@ -37,12 +36,12 @@
       box-shadow: 0 4px 14px rgb(0, 0, 0, 0.15);
     }
 
+    /* Efecto hover de elevación para el botón */
     .btn-register:hover {
       background-color: #ecb100;
       border-color: #ecb100;
       color: black;
       transform: translateY(-1px);
-      /* efecto de "subir" al pasar el mouse */
     }
 
     .btn-register:active,
@@ -53,21 +52,25 @@
       border-color: #ffc107 !important;
     }
 
+    /* Bordes redondeados para botones secundarios */
     a.btn-outline-secondary {
       border-radius: 40px;
     }
 
+    /* Asegura que la columna de la imagen tenga los bordes redondeados a la izquierda */
     .col-md-6.d-none.d-md-block {
       border-top-left-radius: 50px;
       border-bottom-left-radius: 50px;
       overflow: hidden;
     }
 
+    /* Estilo del ícono "ojo" para la contraseña */
     .input-group-text {
       border-radius: 0 15px 15px 0;
       cursor: pointer;
     }
 
+    /* Estilo general de los inputs */
     .form-control {
       border-radius: 15px;
       padding: 12px;
@@ -85,13 +88,11 @@
     <div class="card">
       <div class="row g-0">
 
-        <!-- Imagen a la izquierda -->
         <div class="col-md-6 d-none d-md-block">
           <img src="img/productos/Combo Clásico.jpg" alt="Hamburguesa" class="img-fluid h-100 rounded-start-4"
             style="object-fit: cover;">
         </div>
 
-        <!-- Formulario a la derecha -->
         <div class="col-md-6 p-5">
           <div class="text-center mb-4">
             <img src="img/logo/cropped_circle_image.png" alt="Logo Big Bite" width="100">
@@ -130,11 +131,18 @@
       </div>
     </div>
   </div>
+
   <script>
+    /**
+     * Función para alternar la visibilidad de la contraseña (mostrar/ocultar)
+     * y cambiar el ícono del ojo correspondiente.
+     */
     function togglePassword(inputId, iconId) {
       const input = document.getElementById(inputId);
+      // Selecciona el ícono <i> dentro del elemento clickable
       const icon = document.getElementById(iconId).querySelector('i');
 
+      // Agrega el evento de clic al contenedor del ícono
       icon.parentElement.addEventListener('click', () => {
         if (input.type === 'password') {
           input.type = 'text';
@@ -146,6 +154,7 @@
       });
     }
 
+    // Aplicar la función al campo de contraseña de esta página
     togglePassword('pass', 'togglePass');
   </script>
 </body>

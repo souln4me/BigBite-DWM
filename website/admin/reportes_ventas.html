@@ -191,7 +191,11 @@
                     </div>
                 </div>
 
-            </div> </div> </div> <script>
+            </div>
+        </div>
+    </div>
+    
+    <script>
         // --- Carga del Sidebar ---
         fetch('includes/sidebar.html')
             .then(response => {
@@ -224,78 +228,6 @@
                 }
             })
             .catch(error => console.error('Error cargando el sidebar:', error));
-            
-        // --- Lógica del Reporte ---
-        document.addEventListener('DOMContentLoaded', () => { // Esperar al DOM
-            const generarBtn = document.getElementById('generarReporte');
-            const fechaDesdeInput = document.getElementById('fechaDesde');
-            const fechaHastaInput = document.getElementById('fechaHasta');
-            const msgSinResultados = document.getElementById('mensajeSinResultados');
-            const msgRangoInvalido = document.getElementById('mensajeRangoInvalido');
-            const reporteVentasDiv = document.getElementById('reporteVentas');
-            const resumenGeneralDiv = document.getElementById('resumenGeneral');
-            const reportDateRangeSpan = document.getElementById('report-date-range');
-            const reportOrderCountSpan = document.getElementById('report-order-count');
-
-            if (generarBtn) {
-                 generarBtn.addEventListener('click', function () {
-                    const fechaDesde = fechaDesdeInput.value;
-                    const fechaHasta = fechaHastaInput.value;
-
-                    // Ocultar mensajes
-                    if(msgSinResultados) msgSinResultados.classList.add('d-none');
-                    if(msgRangoInvalido) msgRangoInvalido.classList.add('d-none');
-
-                    // Validación
-                    if (!fechaDesde || !fechaHasta) {
-                        if(msgRangoInvalido) msgRangoInvalido.classList.remove('d-none');
-                        return;
-                    }
-                    if (fechaDesde > fechaHasta) {
-                        if(msgRangoInvalido) msgRangoInvalido.classList.remove('d-none');
-                        return;
-                    }
-
-                    // --- Simulación de Carga de Datos ---
-                    console.log('Generando reporte desde:', fechaDesde, 'hasta:', fechaHasta);
-                    // Aquí iría la llamada a la API (fetch) para obtener datos reales
-                    
-                    // Ejemplo: Actualizar dinámicamente el título y conteo (simulado)
-                    if(reportDateRangeSpan) {
-                         // Formatear fechas para mostrar (opcional, pero mejora la UX)
-                         const options = { year: 'numeric', month: 'long', day: 'numeric' };
-                         const desdeFormatted = new Date(fechaDesde + 'T00:00:00').toLocaleDateString('es-CL', options);
-                         const hastaFormatted = new Date(fechaHasta + 'T00:00:00').toLocaleDateString('es-CL', options);
-                         reportDateRangeSpan.textContent = `${desdeFormatted} al ${hastaFormatted}`;
-                    }
-                    if(reportOrderCountSpan) reportOrderCountSpan.textContent = "85"; // Actualizar con datos reales
-
-                    // Mostrar secciones de resultados (asumiendo que hay datos)
-                    if(reporteVentasDiv) reporteVentasDiv.classList.remove('d-none');
-                    if(resumenGeneralDiv) resumenGeneralDiv.classList.remove('d-none');
-
-                    // Simulación de "Sin Resultados" (ejemplo)
-                    /*
-                    if (fechaDesde === "2024-04-01") { // Si eliges Abril 2024 (sin datos simulados)
-                        if(msgSinResultados) msgSinResultados.classList.remove('d-none');
-                        if(reporteVentasDiv) reporteVentasDiv.classList.add('d-none');
-                        if(resumenGeneralDiv) resumenGeneralDiv.classList.add('d-none');
-                    }
-                    */
-                    // --- Fin Simulación ---
-                });
-            }
-            
-            // Lógica para botones Exportar (simulada)
-             document.querySelectorAll('.btn-export-pdf, .btn-export-excel').forEach(button => {
-                 button.addEventListener('click', () => {
-                     const format = button.classList.contains('btn-export-pdf') ? 'PDF' : 'Excel';
-                     alert(`Funcionalidad pendiente: Exportar reporte a ${format}`);
-                     // Aquí iría la lógica real de exportación (librería como jsPDF, SheetJS, o llamada a backend)
-                 });
-             });
-
-        }); // Fin DOMContentLoaded
     </script>
 </body>
 

@@ -1,123 +1,118 @@
 /* ====== CARD DEL CARRITO ====== */
 .container .card-cart {
-    background-color: #fff3e0;
-    /* gradiente cálido */
-    border: 1px solid #e0e0e0;
-    border-radius: 40px;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
-    padding: 30px;
-    transition: transform 0.3s, box-shadow 0.3s;
+  background-color: #fff3e0;
+  border: 1px solid #e0e0e0;
+  border-radius: 40px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+  padding: 30px;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .container .card-cart:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.2);
 }
 
 /* ====== RESUMEN DEL CARRITO ====== */
 #cart-summary {
-    background-color: #fff3e0;
-    border: 1px solid #e0e0e0;
-    border-radius: 40px;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
-    padding: 30px;
-    transition: transform 0.3s, box-shadow 0.3s;
+  background-color: #fff3e0;
+  border: 1px solid #e0e0e0;
+  border-radius: 40px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+  padding: 30px;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 #cart-summary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
 }
 
 /* ====== ITEMS DEL CARRITO ====== */
 .cart-item {
-    border-bottom: 1px dashed #ffb74d;
-    /* línea punteada cálida */
-    padding: 1rem 0;
+  border-bottom: 1px dashed #ffb74d;
+  padding: 1rem 0;
 }
 
 .cart-item > .d-flex {
-    width: 100%;
+  width: 100%;
 }
 
 .cart-item:last-child {
-    border-bottom: none;
+  border-bottom: none; /* Elimina borde del último item */
 }
 
 /* ====== BOTONES DE CONTROL (cantidad y eliminar) ====== */
 .cart-controls button {
-    margin: 0 0.25rem;
-    border-radius: 12px;
-    padding: 4px 8px;
-    transition: transform 0.2s, background-color 0.2s;
+  margin: 0 0.25rem;
+  border-radius: 12px;
+  padding: 4px 8px;
+  transition: transform 0.2s, background-color 0.2s;
 }
 
 .cart-controls button:hover {
-    background-color: #ffcc80;
-    transform: translateY(-2px);
-    cursor: pointer;
+  background-color: #ffcc80;
+  transform: translateY(-2px);
+  cursor: pointer;
 }
 
 /* ====== BOTONES PRINCIPALES ====== */
 #empty-cart,
 #checkout,
 a.btn-continue {
-    border-radius: 40px;
-    font-weight: 600;
-    padding: 10px 25px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s, box-shadow 0.2s;
+  border-radius: 40px;
+  font-weight: 600;
+  padding: 10px 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 #empty-cart {
-    background-color: #dc3545;
-    border-color: #dc3545;
-    color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: #fff;
 }
 
 #empty-cart:hover {
-    background-color: #e53935;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  background-color: #e53935;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 #checkout {
-    background-color: #43a047;
-    border: none;
-    color: #fff;
+  background-color: #43a047;
+  border: none;
+  color: #fff;
 }
 
 #checkout:hover {
-    background-color: #388e3c;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  background-color: #388e3c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 a.btn-continue {
-    background-color: #ff9800;
-    color: #fff;
-    border: none;
-    text-decoration: none;
+  background-color: #ff9800;
+  color: #fff;
+  border: none;
+  text-decoration: none;
 }
 
 a.btn-continue:hover {
-    background-color: #fb8c00;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  background-color: #fb8c00;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Imagen pequeña a la izquierda dentro del carrito */
+/* ====== IMAGEN DEL PRODUCTO EN CARRITO ====== */
 .carrito-img {
-    width: 70px;       /* ajustable */
-    height: 70px;
-    object-fit: cover;  /* mantiene proporción y recorta si es necesario */
-    border-radius: 8px;
+  width: 70px; /* Ancho ajustable */
+  height: 70px;
+  object-fit: cover; /* Mantiene proporción y recorta si es necesario */
+  border-radius: 8px;
 }
 
+/* Ajuste de padding si se usa col-auto para la imagen */
 .cart-item .col-auto {
-    padding-right: 10px;
+  padding-right: 10px;
 }
-
-
-/* ====== TIP: ICONOS YA INCLUIDOS CON FA EN HTML ====== */
-/* No necesitas CSS extra, solo usar <i class="fa-solid fa-plus"></i> etc */

@@ -133,7 +133,7 @@
                     }
                 });
 
-                // Usuario registrado
+                // Usuario registrado (Protección de ruta)
                 const perfilLink = document.getElementById('perfil-link');
                 if (perfilLink) {
                     perfilLink.addEventListener('click', (e) => {
@@ -155,6 +155,7 @@
                 }, 0);
             });
 
+        // Cargar footer
         fetch("components/footer.html")
             .then(response => response.text())
             .then(data => {
@@ -164,6 +165,7 @@
         // Selecciona el botón de cerrar sesión
         const btnCerrarSesion = document.querySelector('.btn-perfil:last-child'); // último btn-perfil
 
+        // Asigna el evento de clic para cerrar sesión
         btnCerrarSesion.addEventListener('click', () => {
             // Borra el localStorage
             localStorage.removeItem('usuarioLogueado');
@@ -188,6 +190,7 @@
             });
         }
 
+        // Aplicar la función a los tres campos de contraseña de esta página
         togglePassword('current-pass', 'toggleCurrentPass');
         togglePassword('new-pass', 'toggleNewPass');
         togglePassword('confirm-pass', 'toggleConfirmPass');

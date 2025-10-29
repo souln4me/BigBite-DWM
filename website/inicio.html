@@ -28,13 +28,11 @@
   <main class="flex-grow-1">
     <div id="demo" class="carousel slide" data-bs-ride="carousel">
 
-      <!-- Indicators/dots -->
       <div class="carousel-indicators">
         <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
         <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
       </div>
 
-      <!-- The slideshow/carousel -->
       <div class="carousel-inner">
         <div class="carousel-item active">
           <img src="img/banners/Banner01.png" alt="Promo Cupón" class="d-block" class="d-block w-100">
@@ -44,7 +42,6 @@
         </div>
       </div>
 
-      <!-- Left and right controls/icons -->
       <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
         <span class="carousel-control-prev-icon"></span>
       </button>
@@ -135,13 +132,13 @@
 
 
   <script>
-    // Cargar navbar
+    // --- Carga dinámica del Navbar (y lógica de login/carrito) ---
     fetch("components/navbar.html")
       .then(response => response.text())
       .then(data => {
         document.getElementById("navbar-placeholder").innerHTML = data;
 
-        // Detectar página actual y marcar enlace activo
+        // Marcar enlace activo del navbar
         const currentPage = window.location.pathname.split("/").pop();
         const links = document.querySelectorAll("nav a");
         links.forEach(link => {
@@ -151,7 +148,7 @@
           }
         });
 
-        // Usuario registrado
+        // Verificación de inicio de sesión para el link de "Perfil"
         const perfilLink = document.getElementById('perfil-link');
         if (perfilLink) {
           perfilLink.addEventListener('click', (e) => {
@@ -163,8 +160,7 @@
           });
         }
 
-        // ----------------------------
-        // Aquí aseguramos que el badge del carrito se actualice
+        // Actualización del contador del carrito
         setTimeout(() => {
           const badge = document.getElementById('cart-count');
           if (!badge) return;
@@ -176,6 +172,7 @@
       });
 
 
+    // --- Carga dinámica del Footer ---
     fetch("components/footer.html")
       .then(response => response.text())
       .then(data => {

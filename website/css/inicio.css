@@ -1,18 +1,21 @@
 /* ===== Carrusel ===== */
+/* Estilo general de las imágenes del carrusel */
 .carousel-inner img {
-    width: 100%;
-    height: 500px;
-    object-fit: cover;
-    border-radius: 0;
+    width: 100%; /* Imagen ocupa todo el ancho del contenedor */
+    height: 500px; /* Altura fija para mantener consistencia */
+    object-fit: cover; /* Recorta la imagen sin deformarla */
+    border-radius: 0; /* Sin bordes redondeados */
 }
 
+/* Estilos para los íconos de control del carrusel (flechas) */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    filter: invert(1);
-    width: 60px !important;
+    filter: invert(1); /* Invierte colores para que se vean sobre fondo claro u oscuro */
+    width: 60px !important; /* Aumenta tamaño de los íconos */
     height: 60px !important;
 }
 
+/* Hace que los indicadores (puntos) del carrusel también se inviertan */
 .carousel-indicators {
     filter: invert(1);
 }
@@ -21,17 +24,19 @@
 #inicio-promociones {
     margin-top: 80px;
     margin-bottom: 80px;
-    text-align: center;
+    text-align: center; /* Centra todo el contenido */
 }
 
+/* Título principal de la sección de promociones */
 #inicio-promociones h2 {
     font-size: 2.2rem;
     font-weight: bold;
     color: #212529;
     position: relative;
-    display: inline-block;
+    display: inline-block; /* Permite aplicar pseudo-elemento decorativo debajo */
 }
 
+/* Línea decorativa amarilla debajo del título */
 #inicio-promociones h2::after {
     content: "";
     display: block;
@@ -43,41 +48,47 @@
 }
 
 /* ===== Cards de Productos ===== */
+/* Estilo base de las tarjetas de productos y promociones */
 #inicio-promociones .card,
 .inicio-producto .card {
-    border-radius: 20px;
-    overflow: hidden;
-    background-color: #fff8f0;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    border-radius: 20px; /* Bordes redondeados */
+    overflow: hidden; /* Oculta contenido que sobresalga */
+    background-color: #fff8f0; /* Fondo beige claro */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Sombra suave */
+    transition: transform 0.25s ease, box-shadow 0.25s ease; /* Animación suave al hover */
     margin: 20px auto;
 }
 
+/* Efecto al pasar el mouse sobre la card */
 #inicio-promociones .card:hover,
 .inicio-producto .card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    transform: translateY(-6px); /* Eleva la tarjeta ligeramente */
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2); /* Aumenta la sombra */
 }
 
+/* Imagen superior de la card */
 #inicio-promociones .card-img-top,
 .inicio-producto .card-img-top {
-    height: 290px;
-    object-fit: cover;
+    height: 290px; /* Altura fija */
+    object-fit: cover; /* Recorta sin deformar */
 }
 
+/* Cuerpo de la card */
 #inicio-promociones .card-body {
     background-color: #fff8f0;
     padding: 1rem;
 }
 
+/* Título dentro de la card */
 #inicio-promociones .card-title {
     font-size: 1.1rem;
     font-weight: 700;
     color: #212529;
 }
 
+/* Precio o texto destacado dentro de la card */
 #inicio-promociones .card-text {
-    color: #28a745;
+    color: #28a745; /* Verde para precios */
     font-weight: 700;
     font-size: 1.05rem;
 }
@@ -92,6 +103,7 @@
     transition: all 0.25s ease;
 }
 
+/* Efecto hover del botón */
 #inicio-promociones a.btn:hover {
     background-color: #e6b800;
     color: #000;
@@ -108,6 +120,7 @@
     background-color: #fff8f0;
 }
 
+/* Título dentro del bloque de llamado a la acción */
 #inicio-promociones .cta h2 {
     font-size: 2rem;
     color: #212529;
@@ -115,6 +128,7 @@
     font-weight: bold;
 }
 
+/* Texto descriptivo dentro del bloque de llamado a la acción */
 #inicio-promociones .cta p {
     font-size: 1.1rem;
     max-width: 600px;
@@ -123,6 +137,7 @@
 }
 
 /* ===== Local ===== */
+/* Sección informativa sobre el local o tienda física */
 #inicio-local {
   background-color: #fff8f0;
   border-radius: 40px;
@@ -131,11 +146,12 @@
   margin-bottom: 3rem;
 }
 
+/* Centra verticalmente el contenido de la fila */
 #inicio-local .row {
     align-items: center;
-
 }
 
+/* Imagen del local */
 #inicio-local img {
   border-radius: 40px;
   max-height: 650px;
@@ -145,12 +161,13 @@
   width: 100%;
 }
 
+/* Título de la sección local */
 #inicio-local h2 {
   font-weight: 700;
   margin-left: 50px;
-
 }
 
+/* Línea decorativa debajo del título */
 #inicio-local h2::after {
   content: "";
   display: block;
@@ -162,11 +179,13 @@
   margin-top: 10px;
 }
 
+/* Texto descriptivo */
 #inicio-local p {
   color: #444;
   margin-left: 50px;
 }
 
+/* Botón de acción dentro de la sección del local */
 #inicio-local .btn {
     border-radius: 40px;
     font-weight: bold;
@@ -178,33 +197,37 @@
     margin-top: 20px;
 }
 
+/* Efecto hover del botón */
 #inicio-local .btn:hover {
     background-color: #e6b800;
     color: #000;
     transform: translateY(-2px);
 }
 
+/* Estilo al hacer clic (active) en el botón */
 #inicio-local .btn:active {
     border: 1px solid #000 !important;
 }
 
 /* ===== Responsivo ===== */
+/* Ajustes para pantallas medianas (tablets, etc.) */
 @media (max-width: 992px) {
     .carousel-inner img {
-        height: 400px;
+        height: 400px; /* Reduce la altura del carrusel */
     }
 
     #inicio-promociones .card {
-        max-width: 280px;
+        max-width: 280px; /* Limita ancho de cards */
     }
 
     #inicio-promociones .cta {
-        margin-top: 40px;
+        margin-top: 40px; /* Ajusta espaciado superior */
     }
 }
 
+/* Ajustes para pantallas pequeñas (celulares) */
 @media (max-width: 576px) {
     #inicio-promociones h2 {
-        font-size: 1.8rem;
+        font-size: 1.8rem; /* Reduce tamaño del título */
     }
 }

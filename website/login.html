@@ -17,10 +17,12 @@
   <link rel="icon" type="image/png" sizes="32x32" href="img/logo/cropped_circle_image.png">
 
   <style>
+    /* --- Estilos CSS personalizados --- */
     body {
       background-color: #fff4e6;
     }
 
+    /* Estilo principal de la tarjeta de login */
     .card {
       border-radius: 50px;
       max-width: 1200px;
@@ -28,6 +30,7 @@
       box-shadow: 0 4px 14px rgb(0, 0, 0, 0.5);
     }
 
+    /* Estilo del botón principal de login (amarillo) */
     .btn-login {
       color: black;
       background-color: #ffc107;
@@ -37,6 +40,7 @@
       box-shadow: 0 4px 14px rgb(0, 0, 0, 0.15);
     }
 
+    /* Efecto hover para el botón de login (elevación) */
     .btn-login:hover {
       background-color: #ecb100;
       border-color: #ecb100;
@@ -52,25 +56,32 @@
       border-color: #ffc107 !important;
     }
 
+    /* Bordes redondeados para botones secundarios */
     a.btn-outline-secondary {
       border-radius: 40px;
     }
 
+    /* Estilo para la columna de la imagen (lado izquierdo) */
     .col-md-6.d-none.d-md-block {
       border-top-left-radius: 50px;
       border-bottom-left-radius: 50px;
       overflow: hidden;
+      /* Asegura que la imagen no se salga de los bordes redondeados */
     }
 
+    /* Efecto hover para el enlace de "olvidé contraseña" */
     .forgot-btn:hover {
-        text-decoration: underline;
+      text-decoration: underline;
     }
 
+    /* Estilo para el ícono "ojo" de la contraseña */
     .input-group-text {
       border-radius: 0 15px 15px 0;
+      /* Redondea solo el lado derecho */
       cursor: pointer;
     }
 
+    /* Estilo general de los campos de input */
     .form-control {
       border-radius: 15px;
       padding: 12px;
@@ -117,7 +128,8 @@
           </div>
 
           <div class="forgot-btn text-center mb-3">
-            <a href="recuperar_contraseña_1.html" class="text-decoration-none text-secondary">¿Olvidaste tu contraseña?</a>
+            <a href="recuperar_contraseña_1.html" class="text-decoration-none text-secondary">¿Olvidaste tu
+              contraseña?</a>
           </div>
 
           <div class="d-grid gap-2 d-md-flex justify-content-center">
@@ -133,23 +145,35 @@
     </div>
   </div>
   <script>
-  function togglePassword(inputId, iconId) {
-    const input = document.getElementById(inputId);
-    const icon = document.getElementById(iconId).querySelector('i');
+    /**
+     * Función para alternar la visibilidad de la contraseña (mostrar/ocultar)
+     * y cambiar el ícono del ojo correspondiente.
+     * @param {string} inputId - El ID del <input> de contraseña.
+     * @param {string} iconId - El ID del <span> que contiene el ícono.
+     */
+    function togglePassword(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      // Selecciona el ícono <i> dentro del span
+      const icon = document.getElementById(iconId).querySelector('i');
 
-    icon.parentElement.addEventListener('click', () => {
-      if (input.type === 'password') {
-        input.type = 'text';
-        icon.classList.replace('bi-eye-slash', 'bi-eye');
-      } else {
-        input.type = 'password';
-        icon.classList.replace('bi-eye', 'bi-eye-slash');
-      }
-    });
-  }
+      // Añade el evento de clic al <span> que envuelve el ícono
+      icon.parentElement.addEventListener('click', () => {
+        // Comprueba el tipo actual del input
+        if (input.type === 'password') {
+          // Si está oculto ('password'), lo cambia a visible ('text')
+          input.type = 'text';
+          icon.classList.replace('bi-eye-slash', 'bi-eye');
+        } else {
+          // Si está visible ('text'), lo cambia a oculto ('password')
+          input.type = 'password';
+          icon.classList.replace('bi-eye', 'bi-eye-slash');
+        }
+      });
+    }
 
-  togglePassword('pass', 'togglePass');
-</script>
+    // Activa la función para el campo de contraseña de esta página
+    togglePassword('pass', 'togglePass');
+  </script>
 </body>
 
 </html>
