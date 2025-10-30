@@ -17,12 +17,10 @@
   <link rel="icon" type="image/png" sizes="32x32" href="img/logo/cropped_circle_image.png">
 
   <style>
-    /* --- Estilos CSS personalizados --- */
     body {
       background-color: #fff4e6;
     }
 
-    /* Estilo principal de la tarjeta de login */
     .card {
       border-radius: 50px;
       max-width: 1200px;
@@ -30,7 +28,6 @@
       box-shadow: 0 4px 14px rgb(0, 0, 0, 0.5);
     }
 
-    /* Estilo del botón principal de login (amarillo) */
     .btn-login {
       color: black;
       background-color: #ffc107;
@@ -40,7 +37,6 @@
       box-shadow: 0 4px 14px rgb(0, 0, 0, 0.15);
     }
 
-    /* Efecto hover para el botón de login (elevación) */
     .btn-login:hover {
       background-color: #ecb100;
       border-color: #ecb100;
@@ -56,36 +52,44 @@
       border-color: #ffc107 !important;
     }
 
-    /* Bordes redondeados para botones secundarios */
     a.btn-outline-secondary {
       border-radius: 40px;
     }
 
-    /* Estilo para la columna de la imagen (lado izquierdo) */
     .col-md-6.d-none.d-md-block {
       border-top-left-radius: 50px;
       border-bottom-left-radius: 50px;
       overflow: hidden;
-      /* Asegura que la imagen no se salga de los bordes redondeados */
     }
 
-    /* Efecto hover para el enlace de "olvidé contraseña" */
     .forgot-btn:hover {
       text-decoration: underline;
     }
 
-    /* Estilo para el ícono "ojo" de la contraseña */
     .input-group-text {
-      border-radius: 0 15px 15px 0;
-      /* Redondea solo el lado derecho */
+      border-radius: 0 15px 15px 0 !important;
       cursor: pointer;
     }
 
-    /* Estilo general de los campos de input */
     .form-control {
       border-radius: 15px;
       padding: 12px;
       box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .invalid-feedback {
+      min-height: 20px;
+      display: block;
+      visibility: hidden;
+      opacity: 0;
+      margin-top: 4px;
+      line-height: 1;
+      transition: opacity 0.25s ease-in-out;
+    }
+
+    .is-invalid~.invalid-feedback {
+      visibility: visible;
+      opacity: 1;
     }
   </style>
 </head>
@@ -95,13 +99,11 @@
     <div class="card">
       <div class="row g-0">
 
-        <!-- Imagen a la izquierda -->
         <div class="col-md-6 d-none d-md-block">
           <img src="img/productos/Combo Clásico.jpg" alt="Hamburguesa" class="img-fluid h-100 rounded-start-4"
             style="object-fit: cover;">
         </div>
 
-        <!-- Formulario a la derecha -->
         <div class="col-md-6 p-5">
           <div class="text-center mb-4">
             <img src="img/logo/cropped_circle_image.png" alt="Logo Big Bite" width="100">
@@ -111,6 +113,7 @@
           <div class="mb-3">
             <label for="email" class="form-label">Correo electrónico:</label>
             <input type="email" class="form-control" id="email" placeholder="ejemplo@correo.com">
+            <div id="emailError" class="invalid-feedback"></div>
           </div>
 
           <div class="mb-5">
@@ -120,16 +123,16 @@
               <span class="input-group-text" id="togglePass">
                 <i class="bi-eye-slash"></i>
               </span>
+              <div id="passError" class="invalid-feedback"></div>
             </div>
           </div>
 
           <div class="d-grid mb-3">
-            <button type="button" class="btn btn-lg btn-login mb-4">Iniciar sesión</button>
+            <button type="button" id="btnLogin" class="btn btn-lg btn-login mb-4">Iniciar sesión</button>
           </div>
 
           <div class="forgot-btn text-center mb-3">
-            <a href="recuperar_contraseña_1.html" class="text-decoration-none text-secondary">¿Olvidaste tu
-              contraseña?</a>
+            <a href="recuperar_contraseña_1.html" class="text-decoration-none text-secondary">¿Olvidaste tu contraseña?</a>
           </div>
 
           <div class="d-grid gap-2 d-md-flex justify-content-center">
@@ -144,35 +147,101 @@
       </div>
     </div>
   </div>
+
   <script>
-    /**
-     * Función para alternar la visibilidad de la contraseña (mostrar/ocultar)
-     * y cambiar el ícono del ojo correspondiente.
-     * @param {string} inputId - El ID del <input> de contraseña.
-     * @param {string} iconId - El ID del <span> que contiene el ícono.
-     */
     function togglePassword(inputId, iconId) {
       const input = document.getElementById(inputId);
-      // Selecciona el ícono <i> dentro del span
       const icon = document.getElementById(iconId).querySelector('i');
-
-      // Añade el evento de clic al <span> que envuelve el ícono
       icon.parentElement.addEventListener('click', () => {
-        // Comprueba el tipo actual del input
         if (input.type === 'password') {
-          // Si está oculto ('password'), lo cambia a visible ('text')
           input.type = 'text';
           icon.classList.replace('bi-eye-slash', 'bi-eye');
         } else {
-          // Si está visible ('text'), lo cambia a oculto ('password')
           input.type = 'password';
           icon.classList.replace('bi-eye', 'bi-eye-slash');
         }
       });
     }
 
-    // Activa la función para el campo de contraseña de esta página
     togglePassword('pass', 'togglePass');
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnLogin = document.getElementById('btnLogin');
+      const emailInput = document.getElementById('email');
+      const emailError = document.getElementById('emailError');
+      const passInput = document.getElementById('pass');
+      const passError = document.getElementById('passError');
+
+      btnLogin.addEventListener('click', () => {
+        emailInput.classList.remove('is-invalid');
+        emailError.textContent = '';
+        passInput.classList.remove('is-invalid');
+        passError.textContent = '';
+
+        const email = emailInput.value.trim();
+        const password = passInput.value.trim();
+        let isValid = true;
+
+        if (email === '') {
+          emailInput.classList.add('is-invalid');
+          emailError.textContent = 'Por favor, ingresa un correo electrónico.';
+          isValid = false;
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          emailInput.classList.add('is-invalid');
+          emailError.textContent = 'Correo no válido. Ejemplo: usuario@dominio.com';
+          isValid = false;
+        }
+
+        if (password === '') {
+          passInput.classList.add('is-invalid');
+          passError.textContent = 'Por favor, ingresa una contraseña.';
+          isValid = false;
+        } else if (password.length < 8) {
+          passInput.classList.add('is-invalid');
+          passError.textContent = 'La contraseña debe tener al menos 8 caracteres.';
+          isValid = false;
+        } else if (!/[A-Z]/.test(password)) {
+          passInput.classList.add('is-invalid');
+          passError.textContent = 'Debe contener al menos una letra mayúscula.';
+          isValid = false;
+        } else if (!/[0-9]/.test(password)) {
+          passInput.classList.add('is-invalid');
+          passError.textContent = 'Debe contener al menos un número.';
+          isValid = false;
+        }
+
+        if (isValid) {
+          // Aquí iría la lógica de login real
+          alert('Inicio de sesión exitoso (demo)');
+        }
+      });
+
+      emailInput.addEventListener('input', () => {
+        emailInput.classList.remove('is-invalid');
+        emailError.textContent = '';
+        const email = emailInput.value.trim();
+        if (email.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          emailInput.classList.add('is-invalid');
+          emailError.textContent = 'Correo no válido. Ejemplo: usuario@dominio.com';
+        }
+      });
+
+      passInput.addEventListener('input', () => {
+        passInput.classList.remove('is-invalid');
+        passError.textContent = '';
+        const password = passInput.value.trim();
+        if (password.length > 0 && password.length < 8) {
+          passInput.classList.add('is-invalid');
+          passError.textContent = 'La contraseña debe tener al menos 8 caracteres.';
+        } else if (password.length >= 8 && !/[A-Z]/.test(password)) {
+          passInput.classList.add('is-invalid');
+          passError.textContent = 'Debe contener al menos una letra mayúscula.';
+        } else if (password.length >= 8 && !/[0-9]/.test(password)) {
+          passInput.classList.add('is-invalid');
+          passError.textContent = 'Debe contener al menos un número.';
+        }
+      });
+    });
   </script>
 </body>
 

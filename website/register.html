@@ -66,7 +66,7 @@
 
     /* Estilo del ícono "ojo" para la contraseña */
     .input-group-text {
-      border-radius: 0 15px 15px 0;
+      border-radius: 0 15px 15px 0 !important;
       cursor: pointer;
     }
 
@@ -79,6 +79,21 @@
 
     .already-btn:hover {
       text-decoration: underline;
+    }
+
+    .invalid-feedback {
+      min-height: 20px;
+      display: block;
+      visibility: hidden;
+      opacity: 0;
+      margin-top: 4px;
+      line-height: 1;
+      transition: opacity 0.25s ease-in-out;
+    }
+
+    .is-invalid~.invalid-feedback {
+      visibility: visible;
+      opacity: 1;
     }
   </style>
 </head>
@@ -102,6 +117,7 @@
           <div class="mb-3">
             <label for="email" class="form-label">Correo electrónico:</label>
             <input type="email" class="form-control" id="email" placeholder="ejemplo@correo.com">
+            <div id="emailError" class="invalid-feedback"></div>
           </div>
 
           <div class="mb-5">
@@ -111,11 +127,12 @@
               <span class="input-group-text" id="togglePass">
                 <i class="bi bi-eye-slash"></i>
               </span>
+              <div id="passError" class="invalid-feedback"></div>
             </div>
           </div>
 
           <div class="d-grid mb-3">
-            <button type="button" class="btn btn-lg btn-register mb-4">Crear cuenta</button>
+            <button type="button" id="btnCrearCuenta" class="btn btn-lg btn-register mb-4">Crear cuenta</button>
           </div>
 
           <div class="already-btn text-center mb-3">
@@ -156,6 +173,95 @@
 
     // Aplicar la función al campo de contraseña de esta página
     togglePassword('pass', 'togglePass');
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Seleccionar los elementos (incluyendo los nuevos divs de error)
+      const btnRegistro = document.getElementById('btnCrearCuenta');
+      const emailInput = document.getElementById('email');
+      const emailError = document.getElementById('emailError');
+      const passInput = document.getElementById('pass');
+      const passError = document.getElementById('passError');
+
+      // 2. Agregar el evento de clic al botón
+      btnRegistro.addEventListener('click', () => {
+        // --- INICIO: Reseteo de errores ---
+        // (Importante para que los errores desaparezcan si el usuario corrige)
+        emailInput.classList.remove('is-invalid');
+        emailError.textContent = '';
+        passInput.classList.remove('is-invalid');
+        passError.textContent = '';
+        // --- FIN: Reseteo de errores ---
+
+        // 3. Obtener y "limpiar" los valores
+        const email = emailInput.value.trim();
+        const password = passInput.value.trim();
+
+        // 4. Validar (con una variable de control)
+        let isValid = true;
+
+        if (email === '') {
+          emailInput.classList.add('is-invalid');
+          emailError.textContent = 'Por favor, ingresa un correo electrónico.';
+          isValid = false;
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          emailInput.classList.add('is-invalid');
+          emailError.textContent = 'Por favor, ingresa un correo electrónico válido (ejemplo@dominio.com).';
+          isValid = false;
+        }
+
+        if (password === '') {
+          passInput.classList.add('is-invalid');
+          passError.textContent = 'Por favor, ingresa una contraseña.';
+          isValid = false;
+        } else if (password.length < 8) {
+          passInput.classList.add('is-invalid');
+          passError.textContent = 'La contraseña debe tener al menos 8 caracteres.';
+          isValid = false;
+        } else if (!/[A-Z]/.test(password)) {
+          passInput.classList.add('is-invalid');
+          passError.textContent = 'Debe contener al menos una letra mayúscula.';
+          isValid = false;
+        } else if (!/[0-9]/.test(password)) {
+          passInput.classList.add('is-invalid');
+          passError.textContent = 'Debe contener al menos un número.';
+          isValid = false;
+        }
+
+        // 5. Si todo está correcto (isValid sigue en true), redirigir
+        if (isValid) {
+          window.location.href = 'confirmar_correo.html';
+        }
+      });
+      passInput.addEventListener('input', () => {
+        passInput.classList.remove('is-invalid');
+        passError.textContent = '';
+
+        const password = passInput.value.trim();
+
+        if (password.length > 0 && password.length < 8) {
+          passInput.classList.add('is-invalid');
+          passError.textContent = 'La contraseña debe tener al menos 8 caracteres.';
+        } else if (password.length >= 8 && !/[A-Z]/.test(password)) {
+          passInput.classList.add('is-invalid');
+          passError.textContent = 'Debe contener al menos una letra mayúscula.';
+        } else if (password.length >= 8 && !/[0-9]/.test(password)) {
+          passInput.classList.add('is-invalid');
+          passError.textContent = 'Debe contener al menos un número.';
+        }
+      });
+
+      emailInput.addEventListener('input', () => {
+        emailInput.classList.remove('is-invalid');
+        emailError.textContent = '';
+
+        const email = emailInput.value.trim();
+
+        if (email.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          emailInput.classList.add('is-invalid');
+          emailError.textContent = 'Correo no válido. Ejemplo: usuario@dominio.com';
+        }
+      });
+    });
   </script>
 </body>
 
