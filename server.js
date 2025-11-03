@@ -2,15 +2,16 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-const {ApolloServer, gql} = require('apollo-server-express');
+const {ApolloServer, gql, UserInputError} = require('apollo-server-express');
+const {Types} = require('mongoose');
 
 const Usuario = require('./models/usuario');
-const Perfil = require('./models/perfil');
+const Rol = require('./models/rol');
 
 mongoose.connect('mongodb://localhost:27017/bd-bigbite');
 
 const typeDefs = gql`
-type Perfil {
+type Rol {
     id: ID!
     nombre: String!
 }
@@ -18,14 +19,14 @@ type Usuario {
     id: ID!
     nombre: String!
     pass: String!
-    perfil: Perfil!
+    rol: Rol!
 }
 input UsuarioInput {
     nombre: String!
     pass: String!
-    perfil: String!
+    rol: String!
 }
-input PerfilInput {
+input RolInput {
     nombre: String!
 }
 type Response {
@@ -34,19 +35,19 @@ type Response {
 }
 type Query {
     getUsuarios: [Usuario]
-    getUsuariosPerfil: [Usuario]
+    getUsuariosRol: [Usuario]
     getUsuarioById(id: ID!): Usuario
-    getUsuarioByIdPerfil(id: ID!): Usuario 
-    getPerfiles: [Perfil]
-    getPerfilById(id: ID!): Perfil 
+    getUsuarioByIdRol(id: ID!): Usuario
+    getRoles: [Rol]
+    getRolById(id: ID!): Rol
 }
 type Mutation {
     addUsuario(input: UsuarioInput): Usuario
     updUsuario(id: ID!, input: UsuarioInput): Usuario
     delUsuario(id: ID!): Response
-    addPerfil(input: PerfilInput): Perfil
-    updPerfil(id: ID!, input: PerfilInput): Perfil
-    delPerfil(id: ID!): Perfil
+    addRol(input: RolInput): Rol
+    updRol(id: ID!, input: RolInput): Rol
+    delRol(id: ID!): Response
 }
 `;
 
@@ -56,8 +57,8 @@ const resolvers = {
             const usuarios = await Usuario.find();
             return usuarios;
         },
-        async getUsuariosPerfil(obj){
-            const usuarios = await Usuario.find().populate('perfil');
+        async getUsuariosRol(obj){
+            const usuarios = await Usuario.find().populate('rol');
             return usuarios;
         },
         async getUsuarioById(obj, {id}){
@@ -68,91 +69,130 @@ const resolvers = {
                 return usuarioBus;
             }
         },
-        async getUsuarioByIdPerfil(obj, {id}){
-            const usuarioBus = await Usuario.findById(id).populate('perfil');
+        async getUsuarioByIdRol(obj, {id}){
+            const usuarioBus = await Usuario.findById(id).populate('rol');
             if (usuarioBus == null){
                 return null;
             } else {
                 return usuarioBus;
             }
         },
-        async getPerfiles(obj){
-            const perfiles = await Perfil.find();
-            return perfiles;
+        async getRoles(obj){
+            const roles = await Rol.find();
+            return roles;
         },
-        async getPerfilById(obj, {id}){
-            const perfilBus = await Perfil.findById(id);
-            if (perfilBus == null){
+        async getRolById(obj, {id}){
+            const rolBus = await Rol.findById(id);
+            if (rolBus == null){
                 return null;
             } else {
-                return perfilBus;
+                return rolBus;
             }
         },
     },
     Mutation: {
         async addUsuario(obj, {input}){
-            const nombre = input.nombre;
-            const pass = input.pass;
-            const perfilId = input.perfil;
-            let perfilBus = await Perfil.findById(perfilId);
-            if (perfilBus == null) {
-                return null;
+            const {nombre, pass, rol} = input;
+            const rolId = rol;
+
+            // Validar el ID del rol
+            if (!rolId) {
+                throw new UserInputError('El ID del rol no puede estar vacío');
+            }
+
+            if (!Types.ObjectId.isValid(rolId)) {
+                throw new UserInputError('El ID del rol no es válido');
+            }
+            // Fin validación
+
+            let rolBus = await Rol.findById(rolId);
+            if (rolBus == null) {
+                throw new UserInputError(`El rol con ID ${rolId} no existe`);
             } else {
-                const usuario = new Usuario({nombre: nombre, pass: pass, perfil: perfilBus});
+                const usuario = new Usuario({nombre: nombre, pass: pass, rol: rolBus});
                 await usuario.save();
                 return usuario;                
             }
         },
-        async addPerfil(obj, {input}){
-            const perfil = new Perfil(input);
-            await perfil.save();
-            return perfil;
-        },       
+        async addRol(obj, {input}){
+            const rol = new Rol(input);
+            await rol.save();
+            return rol;
+        },
         async updUsuario(obj, {id, input}){
-            const nombre = input.nombre;
-            const pass = input.nombre;
-            const perfilId = input.perfil;
-            let perfilBus = await Perfil.findById(perfilId);
-            if (perfilBus == null) {
-                return null;
+            const {nombre, pass, rol} = input;
+            const rolId = rol;
+
+            // Validar el ID del rol
+            if (!rolId || !Types.ObjectId.isValid(rolId)) {
+                throw new UserInputError('El ID de rol proporcionado no es válido.');
+            }
+
+            let rolBus = await Rol.findById(rolId);
+            if (rolBus == null) {
+                throw new UserInputError(`El rol con ID ${rolId} no existe`);
             } else {
-                const usuario = await Usuario.findByIdAndUpdate(id, {nombre: nombre, pass: pass, perfil: perfilBus});
-                return usuario;                
+                const usuario = await Usuario.findByIdAndUpdate(id,
+                    {nombre: nombre, pass: pass, rol: rolBus},
+                    {new: true}
+                );
+                return usuario;
             }
         },
         async delUsuario(obj, {id}){
-            await Usuario.deleteOne({_id: id});
+            if (!Types.ObjectId.isValid(id)) {
+                throw new UserInputError(`El ID ${id} no es válido.`);
+            }
+
+            const res = await Usuario.deleteOne({_id: id});
+
+            if (res.deletedCount === 0) {
+                throw new UserInputError(`Usuario con ID ${id} no encontrado.`)
+            }
+
             return {
                 status: "200",
                 message: "Usuario eliminado"
             }
         },
-        async delPerfil(obj, {id}){
-            await Perfil.deleteOne({_id: id});
+        async delRol(obj, {id}){
+            if (!Types.ObjectId.isValid(id)) {
+                throw new UserInputError(`El ID ${id} no es válido.`)
+            }
+
+            const res = await Rol.deleteOne({_id: id});
+
+            if (res.deletedCount === 0) {
+                throw new UserInputError(`Rol con ID ${id} no encontrado.`)
+            }
+
             return {
                 status: "200",
-                message: "Perfil eliminado"
+                message: "Rol eliminado"
             }
         }        
     }
 }
 
-let apolloServer = null;
-
-const corsOptions = {
-    origin: "http://localhost:8157",
-    credentials: false
-};
+// ---------------------
+// INICIO DEL SERVIDOR
+// ---------------------
+const app = express();
+app.use(cors()); 
 
 async function startServer() {
-    apolloServer = new ApolloServer({typeDefs, resolvers, corsOptions});
+    const apolloServer = new ApolloServer({
+        typeDefs, 
+        resolvers,
+    });
+
     await apolloServer.start();
-    apolloServer.applyMiddleware({app, cors: false});
+
+    apolloServer.applyMiddleware({ app, path: '/graphql', cors: false });
+
+    app.listen(8157, () => {
+        console.log("Servidor Iniciado en http://localhost:8157/graphql");
+    });
 }
 
 startServer();
-const app = express();
-app.use(cors());
-app.listen(8157, function(){
-    console.log("Servidor Iniciado");
-});

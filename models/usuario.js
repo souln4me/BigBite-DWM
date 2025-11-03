@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const usuarioSchema = mongoose.Schema({
     nombre: String,
     pass: String,
-    perfil: {type: mongoose.Schema.ObjectId, ref: 'perfil'}
+    rol: {type: mongoose.Schema.ObjectId, ref: 'rol'}
 });
 
 module.exports = mongoose.model('Usuario', usuarioSchema);
