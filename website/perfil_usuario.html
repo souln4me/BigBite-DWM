@@ -28,11 +28,12 @@
 
         <div class="col-lg-8 mb-4 mt-4">
           <div class="card">
-            <div class="container"> <h5 class="mb-5">Información de la cuenta:</h5>
+            <div class="container">
+              <h5 class="mb-5">Información de la cuenta:</h5>
 
               <div class="row mb-4">
                 <div class="col-md-4">
-                  <label for="run">RUN:</label>
+                  <label for="run">RUT:</label>
                   <input type="text" id="run" class="form-control" placeholder="12.345.678-9">
                 </div>
                 <div class="col-md-8">
@@ -42,21 +43,66 @@
               </div>
 
               <div class="row mb-4">
-                <div class="col-12">
+                <div class="col-6">
                   <label for="direccion">Dirección:</label>
-                  <input type="text" id="direccion" class="form-control"
-                    placeholder="Calle cualquiera 123, Cualquier lugar">
+                  <input type="text" id="direccion" class="form-control" placeholder="Calle cualquiera 123">
+                </div>
+                <div class="col-6">
+                  <label for="region">Región:</label>
+                  <select id="region" class="form-select">
+                    <option value="" selected disabled>Selecciona tu región...</option>
+                    <option value="arica_y_parinacota">Arica y Parinacota</option>
+                    <option value="tarapaca">Tarapacá</option>
+                    <option value="atacama">Atacama</option>
+                    <option value="coquimbo">Coquimbo</option>
+                    <option value="valparaiso">Valparaíso</option>
+                    <option value="metropolitana">Metropolitana de Santiago</option>
+                    <option value="ohiggins">O'Higgins</option>
+                    <option value="maule">Maule</option>
+                    <option value="ñuble">Ñuble</option>
+                    <option value="biobio">Biobío</option>
+                    <option value="araucania">Araucanía</option>
+                    <option value="los_rios">Los Ríos</option>
+                    <option value="los_lagos">Los Lagos</option>
+                    <option value="aysen">Aysén</option>
+                    <option value="magallanes">Magallanes</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row mb-4">
+                <div class="col-6">
+                  <label for="provincia">Provincia:</label>
+                  <select id="provincia" class="form-select" disabled>
+                    <option value="" selected disabled>Selecciona tu provincia...</option>
+                  </select>
+                </div>
+                <div class="col-6">
+                  <label for="comuna">Comuna:</label>
+                  <select id="comuna" class="form-select" disabled>
+                    <option value="" selected disabled>Selecciona tu comuna...</option>
+                  </select>
                 </div>
               </div>
 
               <div class="row mb-5">
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <label for="fecha">Fecha de nacimiento:</label>
                   <input type="date" id="fecha" class="form-control">
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <label for="num">Número de teléfono:</label>
                   <input type="text" id="num" class="form-control" placeholder="9 1234 5678">
+                </div>
+                <div class="col-md-4">
+                  <label for="sexo">Sexo:</label>
+                  <select id="sexo" class="form-select">
+                    <option value="" selected disabled>Seleccionar...</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="femenino">Femenino</option>
+                    <option value="otro">Otro</option>
+                    <option value="no_especifica">Prefiero no decirlo</option>
+                  </select>
                 </div>
               </div>
 
@@ -72,7 +118,6 @@
                   </button>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -92,7 +137,6 @@
             <i class="bi bi-box-arrow-right me-2"></i> Cerrar sesión
           </button>
         </div>
-
       </div>
     </div>
   </main>
@@ -100,6 +144,109 @@
   <div id="footer-placeholder"></div>
 
   <script>
+    // ----------------------------------------------------------------
+    // --- LÓGICA PARA SELECTS DINÁMICOS (REGIÓN/PROVINCIA/COMUNA) ---
+    // ----------------------------------------------------------------
+
+    // 1. Objeto de datos
+    const locationData = {
+      "metropolitana": {
+        "santiago": ["Cerrillos", "Cerro Navia", "Conchalí", "El Bosque", "Estación Central", "Huechuraba", "Independencia", "La Cisterna", "La Florida", "La Granja", "La Pintana", "La Reina", "Las Condes", "Lo Barnechea", "Lo Espejo", "Lo Prado", "Macul", "Maipú", "Ñuñoa", "Pedro Aguirre Cerda", "Peñalolén", "Providencia", "Pudahuel", "Quilicura", "Quinta Normal", "Recoleta", "Renca", "San Joaquín", "San Miguel", "San Ramón", "Santiago", "Vitacura"],
+        "cordillera": ["Puente Alto", "Pirque", "San José de Maipo"],
+        "maipo": ["San Bernardo", "Buin", "Calera de Tango", "Paine"],
+        "talagante": ["Talagante", "El Monte", "Isla de Maipo", "Padre Hurtado", "Peñaflor"],
+        "melipilla": ["Melipilla", "Alhué", "Curacaví", "María Pinto", "San Pedro"],
+        "chacabuco": ["Colina", "Lampa", "Tiltil"]
+      },
+      "valparaiso": {
+        "valparaiso": ["Valparaíso", "Viña del Mar", "Concón", "Quintero", "Puchuncaví", "Casablanca", "Juan Fernández"],
+        "isla_de_pascua": ["Isla de Pascua"],
+        "los_andes": ["Los Andes", "San Esteban", "Calle Larga", "Rinconada"],
+        "marga_marga": ["Quilpué", "Villa Alemana", "Limache", "Olmué"],
+        "quillota": ["Quillota", "La Calera", "Hijuelas", "La Cruz", "Nogales"],
+        "san_antonio": ["San Antonio", "Algarrobo", "Cartagena", "El Quisco", "El Tabo", "Santo Domingo"],
+        "san_felipe": ["San Felipe", "Llaillay", "Putaendo", "Santa María", "Catemu", "Panquehue"],
+        "petorca": ["La Ligua", "Petorca", "Cabildo", "Zapallar", "Papudo"]
+      },
+    };
+
+    // 2. Seleccionar los 3 dropdowns
+    const regionSelect = document.getElementById('region');
+    const provinciaSelect = document.getElementById('provincia');
+    const comunaSelect = document.getElementById('comuna');
+
+    // (Tu const locationData = {...} va aquí arriba)
+    // (Tu const ...Select = ... va aquí arriba)
+
+    // Lista de palabras a mantener en minúscula (si no son la primera palabra)
+    const stopWords = ['de', 'del', 'la', 'las', 'los', 'y', 'en'];
+
+    // 3. Función para llenar Provincias (CORREGIDA)
+    regionSelect.addEventListener('change', (e) => {
+      const selectedRegion = e.target.value; // ej: "metropolitana"
+
+      // Limpiar selects
+      provinciaSelect.innerHTML = '<option value="" selected disabled>Selecciona tu provincia...</option>';
+      comunaSelect.innerHTML = '<option value="" selected disabled>Selecciona tu comuna...</option>';
+
+      // Habilitar/Deshabilitar
+      provinciaSelect.disabled = true;
+      comunaSelect.disabled = true;
+
+      if (locationData[selectedRegion]) {
+        const provincias = locationData[selectedRegion]; // Obtiene las provincias de esa región
+
+        // Llenar el select de Provincias
+        for (const provinciaKey in provincias) { // ej: "isla_de_pascua"
+
+          // --- INICIO DE LA CORRECCIÓN ---
+          const textWithSpaces = provinciaKey.replace(/_/g, ' '); // "isla de pascua"
+
+          // Pone en mayúscula cada palabra, EXCEPTO las stopWords
+          const optionText = textWithSpaces.split(' ').map((word, index) => {
+            const lowerWord = word.toLowerCase();
+            // Si es una stopWord Y NO es la primera palabra, mantener minúscula
+            if (index > 0 && stopWords.includes(lowerWord)) {
+              return lowerWord; // ej: "de"
+            }
+            // Si es la primera palabra O no es stopWord, capitalizar
+            return word.charAt(0).toUpperCase() + word.slice(1);
+          }).join(' '); // "Isla de Pascua"
+          // --- FIN DE LA CORRECCIÓN ---
+
+          const option = new Option(optionText, provinciaKey);
+          provinciaSelect.add(option);
+        }
+        provinciaSelect.disabled = false; // Habilitar
+      }
+    });
+
+    // 4. Función para llenar Comunas
+    provinciaSelect.addEventListener('change', (e) => {
+      const selectedRegion = regionSelect.value;
+      const selectedProvincia = e.target.value; // ej: "santiago"
+
+      // Limpiar comunas
+      comunaSelect.innerHTML = '<option value="" selected disabled>Selecciona tu comuna...</option>';
+      comunaSelect.disabled = true;
+
+      if (locationData[selectedRegion] && locationData[selectedRegion][selectedProvincia]) {
+        const comunas = locationData[selectedRegion][selectedProvincia]; // Obtiene el array de comunas
+
+        // Llenar el select de Comunas
+        comunas.forEach(comuna => {
+          // Crea un valor amigable (ej: "cerro_navia")
+          const optionValue = comuna.toLowerCase().replace(/ /g, '_');
+          const option = new Option(comuna, optionValue);
+          comunaSelect.add(option);
+        });
+        comunaSelect.disabled = false; // Habilitar
+      }
+    });
+    // ----------------------------------------------------------------
+    // --- FIN LÓGICA DE SELECTS DINÁMICOS ---
+    // ----------------------------------------------------------------
+
     // --- Carga dinámica del Navbar ---
     fetch("components/navbar.html")
       .then(response => response.text())
@@ -167,7 +314,7 @@
     btnCerrarSesion.addEventListener('click', () => {
       // Borra el indicador de sesión del almacenamiento local
       localStorage.removeItem('usuarioLogueado');
-      
+
       // Redirige al inicio
       window.location.href = 'inicio.html';
     });
@@ -175,4 +322,3 @@
 </body>
 
 </html>
-```
