@@ -35,7 +35,15 @@ const pedidoSchema = new Schema({
     estado_pedido: {
         type: String,
         required: true,
-        enum: ['NUEVO', 'EN_PREPARACION', 'LISTA', 'EN_DESPACHO', 'PAGADO', 'PAGO_CANCELADO', 'PAGO_FALLIDO'],
+        enum: [
+            'NUEVO', 
+            'EN_PREPARACION', 
+            'LISTA', 
+            'EN_DESPACHO', 
+            'PAGADO', 
+            'PAGO_CANCELADO', 
+            'PAGO_FALLIDO', 
+            'ANULADO'],
         default: 'NUEVO' 
     }
 }, { 

@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 
 const { ApolloServer, gql, UserInputError } = require('apollo-server-express');
 const { Types } = require('mongoose');
@@ -14,6 +16,12 @@ const Categoria = require('./models/categoria');
 const CarritoCompras = require('./models/carritoCompras');
 const Pedido = require('./models/pedido');
 const Transaccion = require('./models/transaccion');
+const Boleta = require('./models/boleta');
+const AnulacionPedido = require('./models/anulacionPedido');
+const TokenConfirmacion = require('./models/tokenConfirmacion');
+const Sesion = require('./models/sesion');
+
+const JWT_SECRET = "1234"; // ¡Recuerda cambiar esto por algo seguro!
 
 mongoose.connect('mongodb://localhost:27017/bd-bigbite');
 
@@ -143,6 +151,7 @@ input PedidoInput {
     usuarioId: ID!
 }
 
+# --- (Tipos de Transaccion) ---
 type Transaccion {
     id: ID!
     pedido: Pedido!
@@ -152,7 +161,6 @@ type Transaccion {
     mensaje_pasarela: String
     createdAt: String!
 }
-
 input TransaccionInput {
     pedidoId: ID!
     id_pasarela: String!
@@ -161,8 +169,44 @@ input TransaccionInput {
     mensaje_pasarela: String
 }
 
+# --- (Tipos de Boleta) ---
+type Boleta {
+    id: ID!
+    pedido: Pedido!
+    transaccion: Transaccion!
+    subtotal: Float!
+    iva: Float!
+    total: Float!
+    metodo_de_pago: String!
+    createdAt: String!
+}
+input BoletaInput {
+    pedidoId: ID!
+    transaccionId: ID!
+    metodo_de_pago: String!
+}
 
-# --- QUERY (Actualizada) ---
+# --- (Tipos de Anulacion) ---
+type AnulacionPedido {
+    id: ID!
+    pedido: Pedido!
+    motivo: String!
+    createdAt: String!
+}
+
+input AnulacionInput {
+    pedidoId: ID!
+    motivo: String!
+}
+
+# --- (Tipos de Autenticación) ---
+type AuthPayload {
+    token: String!
+    usuario: Usuario!
+}
+
+
+# --- QUERY ---
 type Query {
     # Usuarios y Roles
     getUsuarios: [Usuario]
@@ -187,12 +231,20 @@ type Query {
     getPedidoById(id: ID!): Pedido
     getPedidos(estado: String): [Pedido]
 
-    # Transaccion
+    # Transacciones
     getTransaccionesPorPedido(pedidoId: ID!): [Transaccion]
-    getTransacciones(estado: String!): [Transaccion]
+    getTransacciones(estado: String): [Transaccion]
+
+    # Boletas
+    getBoletaPorPedido(pedidoId: ID!): Boleta
+    getBoletas: [Boleta]
+
+    # Anulaciones
+    getAnulacionesPorPedido(pedidoId: ID!): AnulacionPedido
+    getAnulaciones: [AnulacionPedido]
 }
 
-# --- MUTATION (Actualizada) ---
+# --- MUTATION ---
 type Mutation {
     # Usuarios y Roles
     addUsuario(input: UsuarioInput): Usuario
@@ -219,13 +271,24 @@ type Mutation {
     crearPedidoDesdeCarrito(input: PedidoInput!): Pedido
     actualizarEstadoPedido(id: ID!, estado: String!): Pedido
     
-    # Transaccion
+    # Transacciones
     crearTransaccion(input: TransaccionInput!): Transaccion
+
+    # Boletas
+    crearBoleta(input: BoletaInput!): Boleta
+
+    # Anulaciones
+    crearAnulacionPedido(input: AnulacionInput!): AnulacionPedido
+
+    # Autenticación
+    login(email: String!, pass: String!): AuthPayload
+    confirmarEmail(token: String!): Response
+    reenviarConfirmacion(email: String!): Response
 }
 `;
 
 // ---------------------
-// --- 3. RESOLVERS (Actualizados) ---
+// --- 3. RESOLVERS ---
 // ---------------------
 
 // --- Funciones Helper para Popular ---
@@ -243,17 +306,56 @@ const popularPedido = (pedidoDocument) => {
     ]);
 };
 
-// ¡NUEVO HELPER PARA TRANSACCION!
 const popularTransaccion = (transaccionDocument) => {
     return transaccionDocument.populate({
         path: 'pedido',
-        populate: [ // Populamos en cascada
+        populate: [
             { path: 'usuario' },
             { path: 'items.producto' }
         ]
     });
 };
 
+const popularBoleta = (boletaDocument) => {
+    return boletaDocument.populate([
+        { 
+            path: 'pedido',
+            populate: { path: 'usuario' } // <-- CORREGIDO
+        },
+        { path: 'transaccion' }
+    ]);
+};
+
+const popularAnulacion = (anulacionDocument) => {
+    return anulacionDocument.populate({
+        path: 'pedido',
+        populate: { path: 'usuario' }
+    });
+};
+
+// Constante para el IVA (19% en Chile)
+const IVA_PERCENT = 0.19;
+
+const crearYEnviarTokenConfirmacion = async (usuario) => {
+    const valorToken = crypto.randomBytes(32).toString('hex');
+    const fechaExpiracion = new Date();
+    fechaExpiracion.setHours(fechaExpiracion.getHours() + 24); // TEST
+    const nuevoToken = new TokenConfirmacion({
+        usuario: usuario._id,
+        valor_token: valorToken,
+        tipo_token: 'EMAIL_CONFIRMACION',
+        fecha_expiracion: fechaExpiracion
+    });
+    await nuevoToken.save();
+
+    console.log('---------------------------------')
+    console.log(`Simulando envío de email a: ${usuario.email}`)
+    console.log(`Token: ${valorToken}`)
+    console.log(`Link: http://localhost:8157/confirmar-email?token=${valorToken}`)
+    console.log('---------------------------------');
+
+    return true
+}
 
 const resolvers = {
     Query: {
@@ -352,34 +454,65 @@ const resolvers = {
             );
             return pedidosPopulados;
         },
+        // --- Resolvers de Transaccion ---
         async getTransaccionesPorPedido(obj, { pedidoId }) {
             if (!Types.ObjectId.isValid(pedidoId)) {
                 throw new UserInputError(`El ID de pedido ${pedidoId} no es válido.`);
             }
             const transacciones = await Transaccion.find({ pedido: pedidoId }).sort({ createdAt: -1 });
-            
-            // Populamos cada transacción
             const transaccionesPopuladas = await Promise.all(
                 transacciones.map(transaccion => popularTransaccion(transaccion))
             );
             return transaccionesPopuladas;
         },
         async getTransacciones(obj, { estado }) {
-            
             const filtro = {};
             if (estado) {
                 filtro.estado_transaccion = estado;
             }
-
             const transacciones = await Transaccion.find(filtro).sort({ createdAt: -1 });
-
             const transaccionesPopuladas = await Promise.all(
                 transacciones.map(transaccion => popularTransaccion(transaccion))
             );
-            
             return transaccionesPopuladas;
+        },
+        // --- Resolvers de Boleta ---
+        async getBoletaPorPedido(obj, { pedidoId }) {
+            if (!Types.ObjectId.isValid(pedidoId)) {
+                throw new UserInputError(`El ID de pedido ${pedidoId} no es válido.`);
+            }
+            const boleta = await Boleta.findOne({ pedido: pedidoId });
+            if (!boleta) {
+                throw new UserInputError('No se encontró una boleta para este pedido.');
+            }
+            return popularBoleta(boleta);
+        },
+        async getBoletas(obj) {
+            const boletas = await Boleta.find().sort({ createdAt: -1 });
+            const boletasPopuladas = await Promise.all(
+                boletas.map(boleta => popularBoleta(boleta))
+            );
+            return boletasPopuladas;
+        },
+        
+        // --- Resolvers de Anulacion ---
+        async getAnulacionesPorPedido(obj, { pedidoId }) {
+            if (!Types.ObjectId.isValid(pedidoId)) {
+                throw new UserInputError(`El ID de pedido ${pedidoId} no es válido.`);
+            }
+            const anulacion = await AnulacionPedido.findOne({ pedido: pedidoId });
+            if (!anulacion) {
+                 throw new UserInputError('No se encontró una anulación para este pedido.');
+            }
+            return popularAnulacion(anulacion);
+        },
+        async getAnulaciones(obj) {
+            const anulaciones = await AnulacionPedido.find().sort({ createdAt: -1 });
+            const anulacionesPopuladas = await Promise.all(
+                anulaciones.map(anulacion => popularAnulacion(anulacion))
+            );
+            return anulacionesPopuladas;
         }
-
     },
     Mutation: {
         // --- Resolvers de Usuario y Rol ---
@@ -418,6 +551,10 @@ const resolvers = {
                 rol: rolAsignadoId
             });
             await usuario.save();
+            
+            // Lógica de Token de Email
+            await crearYEnviarTokenConfirmacion(usuario);
+            
             return usuario.populate('rol');
         },
         async addRol(obj, { input }) {
@@ -604,6 +741,10 @@ const resolvers = {
                 if (!item.producto) {
                     throw new Error('Producto en el carrito no encontrado. Datos corruptos.');
                 }
+                // --- Validar Stock ---
+                if (item.producto.stock < item.cantidad) {
+                    throw new UserInputError(`Stock insuficiente para ${item.producto.nombre}. Quedan ${item.producto.stock}.`);
+                }
                 const subtotal = item.producto.precio * item.cantidad;
                 totalPedido += subtotal;
                 return {
@@ -612,6 +753,14 @@ const resolvers = {
                     precio_unit_pagado: item.producto.precio
                 };
             });
+            
+            // --- Descontar Stock (¡Importante!) ---
+            for (const item of carrito.items) {
+                await Producto.findByIdAndUpdate(item.producto._id, {
+                    $inc: { stock: -item.cantidad }
+                });
+            }
+
             const nuevoPedido = new Pedido({
                 usuario: usuarioId,
                 items: itemsPedido,
@@ -642,9 +791,8 @@ const resolvers = {
             return popularPedido(pedido);
         },
         
-        // --- ¡NUEVA MUTACION DE TRANSACCION! ---
+        // --- Resolvers de Transaccion ---
         async crearTransaccion(obj, { input }) {
-            // 1. Validar el pedidoId
             if (!Types.ObjectId.isValid(input.pedidoId)) {
                 throw new UserInputError('El ID de Pedido no es válido.');
             }
@@ -652,15 +800,9 @@ const resolvers = {
             if (!pedido) {
                 throw new UserInputError('El Pedido asociado no existe.');
             }
-            
-            // 2. Validar que el monto de la transacción coincida con el total del pedido
             if (pedido.total_pagado !== input.monto) {
-                // Podríamos rechazarlo, o solo registrarlo. Por ahora, lo registraremos
-                // pero podrías lanzar un error aquí si lo prefieres.
                 console.warn(`Alerta: Monto de transacción (${input.monto}) no coincide con total del pedido (${pedido.total_pagado}).`);
             }
-            
-            // 3. Crear la transacción
             const nuevaTransaccion = new Transaccion({
                 pedido: input.pedidoId,
                 id_pasarela: input.id_pasarela,
@@ -668,10 +810,7 @@ const resolvers = {
                 estado_transaccion: input.estado_transaccion,
                 mensaje_pasarela: input.mensaje_pasarela
             });
-
             await nuevaTransaccion.save();
-
-            // 4. (¡IMPORTANTE!) Actualizar el estado del Pedido
             if (input.estado_transaccion === 'APROBADA') {
                 pedido.estado_pedido = 'PAGADO';
                 await pedido.save();
@@ -679,9 +818,159 @@ const resolvers = {
                 pedido.estado_pedido = 'PAGO_FALLIDO';
                 await pedido.save();
             }
-
-            // 5. Devolver la transacción populada
             return popularTransaccion(nuevaTransaccion);
+        },
+
+        // --- Resolver de Boleta ---
+        async crearBoleta(obj, { input }) {
+            const { pedidoId, transaccionId, metodo_de_pago } = input;
+
+            if (!Types.ObjectId.isValid(pedidoId)) throw new UserInputError(`ID de Pedido no válido.`);
+            if (!Types.ObjectId.isValid(transaccionId)) throw new UserInputError(`ID de Transacción no válido`);
+
+            const pedido = await Pedido.findById(pedidoId);
+            if (!pedido) throw new UserInputError('Pedido no encontrado.');
+            
+            const transaccion = await Transaccion.findById(transaccionId);
+            if (!transaccion) throw new UserInputError('Transacción no encontrada.');
+
+            const boletaExiste = await Boleta.findOne({ pedido: pedidoId });
+            if (boletaExiste) {
+                throw new UserInputError('Ya existe una boleta para este pedido.')
+            }
+
+            const total = pedido.total_pagado;
+            const subtotal = Math.round(total / (1 + IVA_PERCENT));
+            const iva = total - subtotal;
+
+            const nuevaBoleta = new Boleta({
+                pedido: pedidoId,
+                transaccion: transaccionId,
+                subtotal: subtotal,
+                iva: iva,
+                total: total,
+                metodo_de_pago: metodo_de_pago
+            });
+
+            await nuevaBoleta.save();
+            return popularBoleta(nuevaBoleta);
+        },
+
+        // --- Resolver de Anulacion ---
+        async crearAnulacionPedido(obj, { input }) {
+            const { pedidoId, motivo } = input;
+
+            if (!Types.ObjectId.isValid(pedidoId)) {
+                throw new UserInputError('El ID de Pedido no es válido.');
+            }
+            
+            const pedido = await Pedido.findById(pedidoId);
+            if (!pedido) {
+                throw new UserInputError('Pedido no encontrado.');
+            }
+
+            if (pedido.estado_pedido === 'ANULADO') {
+                throw new UserInputError('Este pedido ya ha sido anulado.');
+            }
+            
+            // Devolver Stock
+            await pedido.populate('items.producto');
+            for (const item of pedido.items) {
+                await Producto.findByIdAndUpdate(item.producto._id, {
+                    $inc: { stock: item.cantidad }
+                });
+            }
+
+            const anulacion = new AnulacionPedido({
+                pedido: pedidoId,
+                motivo: motivo
+            });
+            await anulacion.save();
+            
+            pedido.estado_pedido = 'ANULADO';
+            await pedido.save();
+            
+            return popularAnulacion(anulacion);
+        },
+        
+        // --- Resolvers de Autenticación ---
+        async login(obj, { email, pass }) {
+            const usuario = await Usuario.findOne({ email: email }).populate('rol');
+            if (!usuario) throw new UserInputError('Email o contraseña incorrectos.');
+
+            const esValida = await bcrypt.compare(pass, usuario.hash_pass);
+            if (!esValida) throw new UserInputError('Email o contraseña incorrectos.')
+
+            if (!usuario.email_confirmado) {
+                throw new UserInputError('Tu email no ha sido confirmado.')
+            }
+
+            const tokenPayLoad = {
+                id: usuario._id,
+                email: usuario.email,
+                rol: usuario.rol.nombre
+            };
+
+            const token = jwt.sign(tokenPayLoad, JWT_SECRET, {expiresIn: '30min'});
+
+            await Sesion.findOneAndUpdate(
+                { usuario: usuario._id },
+                { token_sesion: token, updatedAt: new Date() },
+                { upsert: true, new: true }
+            );
+
+            return {
+                token: token,
+                usuario: usuario
+            };
+        },
+        async confirmarEmail(obj, { token }) {
+            const tokenDoc = await TokenConfirmacion.findOne({
+                valor_token: token,
+                tipo_token: 'EMAIL_CONFIRMACION'
+            });
+
+            if (!tokenDoc) throw new UserInputError('Token no válido.');
+            
+            if (tokenDoc.fecha_expiracion < new Date()) {
+                throw new UserInputError('El token ha expirado. Por favor, solicita uno nuevo.');
+            }
+
+            if (tokenDoc.ha_sido_usado) {
+                throw new UserInputError('Este token ya ha sido utilizado.');
+            }
+
+            await Usuario.findByIdAndUpdate(tokenDoc.usuario, {
+                $set: { email_confirmado: true }
+            });
+
+            tokenDoc.ha_sido_usado = true;
+            await tokenDoc.save();
+
+            return {
+                status: "200",
+                message: "Email confirmado exitosamente."
+            };
+        },
+        async reenviarConfirmacion(obj, { email }) {
+            const usuario = await Usuario.findOne({ email: email });
+            if (!usuario) {
+                return {
+                    status: "200",
+                    message: "Si el email existe, se ha enviado un nuevo correo."
+                };
+            }
+            if (usuario.email_confirmado) {
+                return {
+                    status: "400",
+                    message: "Este email ya ha sido confirmado."
+                };
+            }
+            await crearYEnviarTokenConfirmacion(usuario);
+            return {
+                status: "200",
+                message: "Se ha enviado un nuevo correo de confirmación."
+            };
         }
     }
 }
