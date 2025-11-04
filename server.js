@@ -21,7 +21,7 @@ const AnulacionPedido = require('./models/anulacionPedido');
 const TokenConfirmacion = require('./models/tokenConfirmacion');
 const Sesion = require('./models/sesion');
 
-const JWT_SECRET = "1234"; // ¡Recuerda cambiar esto por algo seguro!
+const JWT_SECRET = "1234";
 
 mongoose.connect('mongodb://localhost:27017/bd-bigbite');
 
@@ -320,7 +320,7 @@ const popularBoleta = (boletaDocument) => {
     return boletaDocument.populate([
         { 
             path: 'pedido',
-            populate: { path: 'usuario' } // <-- CORREGIDO
+            populate: { path: 'usuario' }
         },
         { path: 'transaccion' }
     ]);
