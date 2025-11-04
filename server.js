@@ -6,13 +6,14 @@ const bcrypt = require('bcrypt');
 const { ApolloServer, gql, UserInputError } = require('apollo-server-express');
 const { Types } = require('mongoose');
 
-// --- 1. IMPORTAR MODELOS (AÑADIDO Pedido) ---
+// --- 1. IMPORTAR MODELOS ---
 const Usuario = require('./models/usuario');
 const Rol = require('./models/rol');
 const Producto = require('./models/producto');
 const Categoria = require('./models/categoria');
 const CarritoCompras = require('./models/carritoCompras');
 const Pedido = require('./models/pedido');
+const Transaccion = require('./models/transaccion');
 
 mongoose.connect('mongodb://localhost:27017/bd-bigbite');
 
@@ -123,13 +124,12 @@ type CarritoCompras {
     updatedAt: String!
 }
 
-# --- ¡NUEVOS TIPOS DE PEDIDO! ---
+# --- (Tipos de Pedido) ---
 type PedidoItem {
     producto: Producto!
     cantidad: Int!
     precio_unit_pagado: Float!
 }
-
 type Pedido {
     id: ID!
     usuario: Usuario!
@@ -139,13 +139,26 @@ type Pedido {
     createdAt: String!
     updatedAt: String!
 }
-
-# --- ¡NUEVO INPUT PARA CREAR PEDIDO! ---
-# Esto es lo que se envía al iniciar el checkout.
 input PedidoInput {
     usuarioId: ID!
-    # El resto de datos (items, total) los calculamos en el backend
-    # a partir del carrito del usuario.
+}
+
+type Transaccion {
+    id: ID!
+    pedido: Pedido!
+    id_pasarela: String!
+    monto: Float!
+    estado_transaccion: String!
+    mensaje_pasarela: String
+    createdAt: String!
+}
+
+input TransaccionInput {
+    pedidoId: ID!
+    id_pasarela: String!
+    monto: Float!
+    estado_transaccion: String!
+    mensaje_pasarela: String
 }
 
 
@@ -169,10 +182,14 @@ type Query {
     # Carrito
     getCarritoPorUsuario(usuarioId: ID!): CarritoCompras
 
-    # --- ¡NUEVAS QUERIES DE PEDIDO! ---
+    # Pedidos
     getPedidosPorUsuario(usuarioId: ID!): [Pedido]
     getPedidoById(id: ID!): Pedido
     getPedidos(estado: String): [Pedido]
+
+    # Transaccion
+    getTransaccionesPorPedido(pedidoId: ID!): [Transaccion]
+    getTransacciones(estado: String!): [Transaccion]
 }
 
 # --- MUTATION (Actualizada) ---
@@ -198,10 +215,12 @@ type Mutation {
     eliminarDelCarrito(usuarioId: ID!, productoId: ID!): CarritoCompras
     vaciarCarrito(usuarioId: ID!): CarritoCompras
     
-    # --- ¡NUEVAS MUTACIONES DE PEDIDO! ---
+    # Pedidos
     crearPedidoDesdeCarrito(input: PedidoInput!): Pedido
     actualizarEstadoPedido(id: ID!, estado: String!): Pedido
-    # (Tu 'AnulacionPedido' es un estado, así que lo manejamos con 'actualizarEstadoPedido')
+    
+    # Transaccion
+    crearTransaccion(input: TransaccionInput!): Transaccion
 }
 `;
 
@@ -217,12 +236,22 @@ const popularCarrito = (carritoDocument) => {
     ]);
 };
 
-// ¡NUEVO HELPER PARA PEDIDO!
 const popularPedido = (pedidoDocument) => {
     return pedidoDocument.populate([
         { path: 'usuario' },
         { path: 'items.producto' }
     ]);
+};
+
+// ¡NUEVO HELPER PARA TRANSACCION!
+const popularTransaccion = (transaccionDocument) => {
+    return transaccionDocument.populate({
+        path: 'pedido',
+        populate: [ // Populamos en cascada
+            { path: 'usuario' },
+            { path: 'items.producto' }
+        ]
+    });
 };
 
 
@@ -293,15 +322,12 @@ const resolvers = {
             }
             return popularCarrito(carrito);
         },
-
-        // --- ¡NUEVOS RESOLVERS DE PEDIDO! ---
+        // --- Resolvers de Pedido ---
         async getPedidosPorUsuario(obj, { usuarioId }) {
             if (!Types.ObjectId.isValid(usuarioId)) {
                 throw new UserInputError(`El ID de usuario ${usuarioId} no es válido.`);
             }
-            const pedidos = await Pedido.find({ usuario: usuarioId }).sort({ createdAt: -1 }); // Ordena por más reciente
-            
-            // Populamos cada pedido en la lista
+            const pedidos = await Pedido.find({ usuario: usuarioId }).sort({ createdAt: -1 });
             const pedidosPopulados = await Promise.all(
                 pedidos.map(pedido => popularPedido(pedido))
             );
@@ -325,7 +351,35 @@ const resolvers = {
                 pedidos.map(pedido => popularPedido(pedido))
             );
             return pedidosPopulados;
+        },
+        async getTransaccionesPorPedido(obj, { pedidoId }) {
+            if (!Types.ObjectId.isValid(pedidoId)) {
+                throw new UserInputError(`El ID de pedido ${pedidoId} no es válido.`);
+            }
+            const transacciones = await Transaccion.find({ pedido: pedidoId }).sort({ createdAt: -1 });
+            
+            // Populamos cada transacción
+            const transaccionesPopuladas = await Promise.all(
+                transacciones.map(transaccion => popularTransaccion(transaccion))
+            );
+            return transaccionesPopuladas;
+        },
+        async getTransacciones(obj, { estado }) {
+            
+            const filtro = {};
+            if (estado) {
+                filtro.estado_transaccion = estado;
+            }
+
+            const transacciones = await Transaccion.find(filtro).sort({ createdAt: -1 });
+
+            const transaccionesPopuladas = await Promise.all(
+                transacciones.map(transaccion => popularTransaccion(transaccion))
+            );
+            
+            return transaccionesPopuladas;
         }
+
     },
     Mutation: {
         // --- Resolvers de Usuario y Rol ---
@@ -538,17 +592,13 @@ const resolvers = {
             return popularCarrito(carrito);
         },
         
-        // --- ¡NUEVAS MUTACIONES DE PEDIDO! ---
+        // --- Resolvers de Pedido ---
         async crearPedidoDesdeCarrito(obj, { input }) {
             const { usuarioId } = input;
-
-            // 1. Buscar el carrito del usuario y populamos los productos
             const carrito = await CarritoCompras.findOne({ usuario: usuarioId }).populate('items.producto');
             if (!carrito || !carrito.items || carrito.items.length === 0) {
                 throw new UserInputError('El carrito está vacío. No se puede crear un pedido.');
             }
-
-            // 2. Transformar items del carrito en items de pedido (congelando el precio)
             let totalPedido = 0;
             const itemsPedido = carrito.items.map(item => {
                 if (!item.producto) {
@@ -556,55 +606,82 @@ const resolvers = {
                 }
                 const subtotal = item.producto.precio * item.cantidad;
                 totalPedido += subtotal;
-                
                 return {
                     producto: item.producto._id,
                     cantidad: item.cantidad,
                     precio_unit_pagado: item.producto.precio
                 };
             });
-
-            // 3. Crear el nuevo pedido con el estado 'NUEVO'
             const nuevoPedido = new Pedido({
                 usuario: usuarioId,
                 items: itemsPedido,
                 total_pagado: totalPedido,
-                estado_pedido: 'NUEVO' // Estado inicial de tu enum
+                estado_pedido: 'NUEVO'
             });
-
-            // 4. Guardar el pedido
             await nuevoPedido.save();
-
-            // 5. Vaciar el carrito
             carrito.items = [];
             await carrito.save();
-            
-            // 6. Devolver el pedido recién creado y populado
             return popularPedido(nuevoPedido);
         },
-
         async actualizarEstadoPedido(obj, { id, estado }) {
             if (!Types.ObjectId.isValid(id)) {
                 throw new UserInputError(`El ID de pedido ${id} no es válido.`);
             }
-
-            // Validar que el estado sea uno de los valores permitidos en el enum del modelo
             const estadosPermitidos = Pedido.schema.path('estado_pedido').enumValues;
             if (!estadosPermitidos.includes(estado)) {
                 throw new UserInputError(`El estado "${estado}" no es válido.`);
             }
-
             const pedido = await Pedido.findByIdAndUpdate(
                 id,
                 { $set: { estado_pedido: estado } },
                 { new: true }
             );
-
             if (!pedido) {
                 throw new UserInputError('Pedido no encontrado.');
             }
-
             return popularPedido(pedido);
+        },
+        
+        // --- ¡NUEVA MUTACION DE TRANSACCION! ---
+        async crearTransaccion(obj, { input }) {
+            // 1. Validar el pedidoId
+            if (!Types.ObjectId.isValid(input.pedidoId)) {
+                throw new UserInputError('El ID de Pedido no es válido.');
+            }
+            const pedido = await Pedido.findById(input.pedidoId);
+            if (!pedido) {
+                throw new UserInputError('El Pedido asociado no existe.');
+            }
+            
+            // 2. Validar que el monto de la transacción coincida con el total del pedido
+            if (pedido.total_pagado !== input.monto) {
+                // Podríamos rechazarlo, o solo registrarlo. Por ahora, lo registraremos
+                // pero podrías lanzar un error aquí si lo prefieres.
+                console.warn(`Alerta: Monto de transacción (${input.monto}) no coincide con total del pedido (${pedido.total_pagado}).`);
+            }
+            
+            // 3. Crear la transacción
+            const nuevaTransaccion = new Transaccion({
+                pedido: input.pedidoId,
+                id_pasarela: input.id_pasarela,
+                monto: input.monto,
+                estado_transaccion: input.estado_transaccion,
+                mensaje_pasarela: input.mensaje_pasarela
+            });
+
+            await nuevaTransaccion.save();
+
+            // 4. (¡IMPORTANTE!) Actualizar el estado del Pedido
+            if (input.estado_transaccion === 'APROBADA') {
+                pedido.estado_pedido = 'PAGADO';
+                await pedido.save();
+            } else if (input.estado_transaccion === 'RECHAZADA') {
+                pedido.estado_pedido = 'PAGO_FALLIDO';
+                await pedido.save();
+            }
+
+            // 5. Devolver la transacción populada
+            return popularTransaccion(nuevaTransaccion);
         }
     }
 }
