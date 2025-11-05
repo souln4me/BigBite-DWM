@@ -141,6 +141,7 @@ type PedidoItem {
 type Pedido {
     id: ID!
     usuario: Usuario!
+    cajero: Usuario
     items: [PedidoItem!]!
     total_pagado: Float!
     estado_pedido: String!
@@ -193,7 +194,6 @@ type AnulacionPedido {
     motivo: String!
     createdAt: String!
 }
-
 input AnulacionInput {
     pedidoId: ID!
     motivo: String!
@@ -205,6 +205,14 @@ type AuthPayload {
     usuario: Usuario!
 }
 
+# --- (Tipos de Orden de Cocina) ---
+type OrdenCocina {
+    id: ID!
+    pedido: Pedido!
+    estado_cocina: String!
+    createdAt: String!
+    updatedAt: String!
+}
 
 # --- QUERY ---
 type Query {
@@ -229,19 +237,22 @@ type Query {
     # Pedidos
     getPedidosPorUsuario(usuarioId: ID!): [Pedido]
     getPedidoById(id: ID!): Pedido
-    getPedidos(estado: String): [Pedido]
+    getPedidos(estado: String, fechaInicio: String, fechaFin: String): [Pedido]
 
     # Transacciones
     getTransaccionesPorPedido(pedidoId: ID!): [Transaccion]
-    getTransacciones(estado: String): [Transaccion]
+    getTransacciones(estado: String, fechaInicio: String, fechaFin: String): [Transaccion]
 
     # Boletas
     getBoletaPorPedido(pedidoId: ID!): Boleta
-    getBoletas: [Boleta]
+    getBoletas(fechaInicio: String, fechaFin: String): [Boleta]
 
     # Anulaciones
     getAnulacionesPorPedido(pedidoId: ID!): AnulacionPedido
-    getAnulaciones: [AnulacionPedido]
+    getAnulaciones(fechaInicio: String, fechaFin: String): [AnulacionPedido]
+    
+    # Ordenes de Cocina
+    getOrdenesCocina(estado: String): [OrdenCocina]
 }
 
 # --- MUTATION ---
@@ -284,6 +295,9 @@ type Mutation {
     login(email: String!, pass: String!): AuthPayload
     confirmarEmail(token: String!): Response
     reenviarConfirmacion(email: String!): Response
+    
+    # Orden de Cocina
+    actualizarEstadoOrdenCocina(id: ID!, estado: String!): OrdenCocina
 }
 `;
 
@@ -302,6 +316,7 @@ const popularCarrito = (carritoDocument) => {
 const popularPedido = (pedidoDocument) => {
     return pedidoDocument.populate([
         { path: 'usuario' },
+        { path: 'cajero' },
         { path: 'items.producto' }
     ]);
 };
@@ -311,6 +326,7 @@ const popularTransaccion = (transaccionDocument) => {
         path: 'pedido',
         populate: [
             { path: 'usuario' },
+            { path: 'cajero' },
             { path: 'items.producto' }
         ]
     });
@@ -333,13 +349,39 @@ const popularAnulacion = (anulacionDocument) => {
     });
 };
 
+const popularOrdenCocina = (ordenDocument) => {
+    return ordenDocument.populate({
+        path: 'pedido',
+        populate: [
+            { path: 'usuario' },
+            { path: 'items.producto' }
+        ]
+    });
+};
+
+// --- Helper para Filtro de Fecha ---
+const crearFiltroDeFecha = (fechaInicio, fechaFin) => {
+    const filtroCreatedAt = {};
+    if (fechaInicio) {
+        // $gte: greater than or equal (desde el inicio de ese día)
+        filtroCreatedAt.$gte = new Date(fechaInicio);
+    }
+    if (fechaFin) {
+        // $lte: less than or equal (hasta el final de ese día)
+        const fechaFinAjustada = new Date(fechaFin);
+        fechaFinAjustada.setHours(23, 59, 59, 999);
+        filtroCreatedAt.$lte = fechaFinAjustada;
+    }
+    return filtroCreatedAt;
+};
+
 // Constante para el IVA (19% en Chile)
 const IVA_PERCENT = 0.19;
 
 const crearYEnviarTokenConfirmacion = async (usuario) => {
     const valorToken = crypto.randomBytes(32).toString('hex');
     const fechaExpiracion = new Date();
-    fechaExpiracion.setHours(fechaExpiracion.getHours() + 24); // TEST
+    fechaExpiracion.setHours(fechaExpiracion.getHours() + 24);
     const nuevoToken = new TokenConfirmacion({
         usuario: usuario._id,
         valor_token: valorToken,
@@ -443,10 +485,13 @@ const resolvers = {
             if (!pedido) throw new UserInputError('Pedido no encontrado');
             return popularPedido(pedido);
         },
-        async getPedidos(obj, { estado }) {
+        async getPedidos(obj, { estado, fechaInicio, fechaFin }) {
             const filtro = {};
             if (estado) {
                 filtro.estado_pedido = estado;
+            }
+            if (fechaInicio || fechaFin) {
+                filtro.createdAt = crearFiltroDeFecha(fechaInicio, fechaFin);
             }
             const pedidos = await Pedido.find(filtro).sort({ createdAt: -1 });
             const pedidosPopulados = await Promise.all(
@@ -465,10 +510,13 @@ const resolvers = {
             );
             return transaccionesPopuladas;
         },
-        async getTransacciones(obj, { estado }) {
+        async getTransacciones(obj, { estado, fechaInicio, fechaFin }) {
             const filtro = {};
             if (estado) {
                 filtro.estado_transaccion = estado;
+            }
+            if (fechaInicio || fechaFin) {
+                filtro.createdAt = crearFiltroDeFecha(fechaInicio, fechaFin);
             }
             const transacciones = await Transaccion.find(filtro).sort({ createdAt: -1 });
             const transaccionesPopuladas = await Promise.all(
@@ -487,8 +535,12 @@ const resolvers = {
             }
             return popularBoleta(boleta);
         },
-        async getBoletas(obj) {
-            const boletas = await Boleta.find().sort({ createdAt: -1 });
+        async getBoletas(obj, { fechaInicio, fechaFin }) {
+            const filtro = {};
+            if (fechaInicio || fechaFin) {
+                filtro.createdAt = crearFiltroDeFecha(fechaInicio, fechaFin);
+            }
+            const boletas = await Boleta.find(filtro).sort({ createdAt: -1 });
             const boletasPopuladas = await Promise.all(
                 boletas.map(boleta => popularBoleta(boleta))
             );
@@ -506,12 +558,29 @@ const resolvers = {
             }
             return popularAnulacion(anulacion);
         },
-        async getAnulaciones(obj) {
-            const anulaciones = await AnulacionPedido.find().sort({ createdAt: -1 });
+        async getAnulaciones(obj, { fechaInicio, fechaFin }) {
+            const filtro = {};
+            if (fechaInicio || fechaFin) {
+                filtro.createdAt = crearFiltroDeFecha(fechaInicio, fechaFin);
+            }
+            const anulaciones = await AnulacionPedido.find(filtro).sort({ createdAt: -1 });
             const anulacionesPopuladas = await Promise.all(
                 anulaciones.map(anulacion => popularAnulacion(anulacion))
             );
             return anulacionesPopuladas;
+        },
+        
+        // --- Resolvers de Orden de Cocina ---
+        async getOrdenesCocina(obj, { estado }) {
+            const filtro = {};
+            if (estado) {
+                filtro.estado_cocina = estado;
+            }
+            const ordenes = await OrdenCocina.find(filtro).sort({ createdAt: 1 });
+            const ordenesPopuladas = await Promise.all(
+                ordenes.map(orden => popularOrdenCocina(orden))
+            );
+            return ordenesPopuladas;
         }
     },
     Mutation: {
@@ -552,7 +621,6 @@ const resolvers = {
             });
             await usuario.save();
             
-            // Lógica de Token de Email
             await crearYEnviarTokenConfirmacion(usuario);
             
             return usuario.populate('rol');
@@ -737,25 +805,27 @@ const resolvers = {
                 throw new UserInputError('El carrito está vacío. No se puede crear un pedido.');
             }
             let totalPedido = 0;
-            const itemsPedido = carrito.items.map(item => {
+            // Validar stock ANTES de descontar
+            for (const item of carrito.items) {
                 if (!item.producto) {
-                    throw new Error('Producto en el carrito no encontrado. Datos corruptos.');
+                    throw new Error(`Producto fantasma en el carrito (ID: ${item.producto}). Datos corruptos.`);
                 }
-                // --- Validar Stock ---
                 if (item.producto.stock < item.cantidad) {
                     throw new UserInputError(`Stock insuficiente para ${item.producto.nombre}. Quedan ${item.producto.stock}.`);
                 }
+            }
+
+            const itemsPedido = [];
+            for (const item of carrito.items) {
                 const subtotal = item.producto.precio * item.cantidad;
                 totalPedido += subtotal;
-                return {
+                itemsPedido.push({
                     producto: item.producto._id,
                     cantidad: item.cantidad,
                     precio_unit_pagado: item.producto.precio
-                };
-            });
-            
-            // --- Descontar Stock (¡Importante!) ---
-            for (const item of carrito.items) {
+                });
+                
+                // Descontar stock
                 await Producto.findByIdAndUpdate(item.producto._id, {
                     $inc: { stock: -item.cantidad }
                 });
@@ -791,7 +861,7 @@ const resolvers = {
             return popularPedido(pedido);
         },
         
-        // --- Resolvers de Transaccion ---
+        // --- Resolvers de Transaccion (Actualizado) ---
         async crearTransaccion(obj, { input }) {
             if (!Types.ObjectId.isValid(input.pedidoId)) {
                 throw new UserInputError('El ID de Pedido no es válido.');
@@ -803,6 +873,7 @@ const resolvers = {
             if (pedido.total_pagado !== input.monto) {
                 console.warn(`Alerta: Monto de transacción (${input.monto}) no coincide con total del pedido (${pedido.total_pagado}).`);
             }
+            
             const nuevaTransaccion = new Transaccion({
                 pedido: input.pedidoId,
                 id_pasarela: input.id_pasarela,
@@ -811,13 +882,30 @@ const resolvers = {
                 mensaje_pasarela: input.mensaje_pasarela
             });
             await nuevaTransaccion.save();
+
             if (input.estado_transaccion === 'APROBADA') {
+                // Asignar Cajero Virtual
+                const rolCajero = await Rol.findOne({ nombre: 'Cajero Virtual' });
+                if (rolCajero) {
+                    const cajeroVirtual = await Usuario.findOne({ rol: rolCajero._id });
+                    if (cajeroVirtual) {
+                        pedido.cajero = cajeroVirtual._id;
+                    }
+                }
+                
+                // Crear Orden de Cocina
+                const orden = new OrdenCocina({ pedido: pedido._id, estado_cocina: 'NUEVA' });
+                await orden.save();
+                
                 pedido.estado_pedido = 'PAGADO';
-                await pedido.save();
+                
             } else if (input.estado_transaccion === 'RECHAZADA') {
                 pedido.estado_pedido = 'PAGO_FALLIDO';
-                await pedido.save();
+            } else if (input.estado_transaccion === 'CANCELADA') {
+                pedido.estado_pedido = 'PAGO_CANCELADO';
             }
+            
+            await pedido.save();
             return popularTransaccion(nuevaTransaccion);
         },
 
@@ -876,9 +964,11 @@ const resolvers = {
             // Devolver Stock
             await pedido.populate('items.producto');
             for (const item of pedido.items) {
-                await Producto.findByIdAndUpdate(item.producto._id, {
-                    $inc: { stock: item.cantidad }
-                });
+                if (item.producto) {
+                    await Producto.findByIdAndUpdate(item.producto._id, {
+                        $inc: { stock: item.cantidad }
+                    });
+                }
             }
 
             const anulacion = new AnulacionPedido({
@@ -893,24 +983,47 @@ const resolvers = {
             return popularAnulacion(anulacion);
         },
         
-        // --- Resolvers de Autenticación ---
+        // --- Resolvers de Autenticación (Actualizados con Seguridad) ---
         async login(obj, { email, pass }) {
             const usuario = await Usuario.findOne({ email: email }).populate('rol');
-            if (!usuario) throw new UserInputError('Email o contraseña incorrectos.');
+            if (!usuario) {
+                throw new UserInputError('Email o contraseña incorrectos.');
+            }
+
+            if (usuario.fecha_bloqueo && usuario.fecha_bloqueo > new Date()) {
+                const tiempoRestanteMs = usuario.fecha_bloqueo.getTime() - new Date().getTime();
+                const minutosRestantes = Math.ceil(tiempoRestanteMs / 60000);
+                throw new UserInputError(`Cuenta temporalmente bloqueada. Intenta de nuevo en ${minutosRestantes} minutos.`);
+            }
 
             const esValida = await bcrypt.compare(pass, usuario.hash_pass);
-            if (!esValida) throw new UserInputError('Email o contraseña incorrectos.')
+
+            if (!esValida) {
+                usuario.intentos_fallidos += 1;
+                
+                if (usuario.intentos_fallidos >= 5) {
+                    usuario.fecha_bloqueo = new Date(Date.now() + 10 * 60 * 1000); // Bloqueo de 10 min
+                    usuario.intentos_fallidos = 0;
+                }
+                await usuario.save();
+
+                throw new UserInputError('Email o contraseña incorrectos.');
+            }
 
             if (!usuario.email_confirmado) {
-                throw new UserInputError('Tu email no ha sido confirmado.')
+                throw new UserInputError('Tu email no ha sido confirmado. Por favor, revisa tu correo.');
             }
+
+            usuario.intentos_fallidos = 0;
+            usuario.fecha_bloqueo = null;
+            await usuario.save();
 
             const tokenPayLoad = {
                 id: usuario._id,
                 email: usuario.email,
                 rol: usuario.rol.nombre
             };
-
+            
             const token = jwt.sign(tokenPayLoad, JWT_SECRET, {expiresIn: '30min'});
 
             await Sesion.findOneAndUpdate(
@@ -924,6 +1037,7 @@ const resolvers = {
                 usuario: usuario
             };
         },
+
         async confirmarEmail(obj, { token }) {
             const tokenDoc = await TokenConfirmacion.findOne({
                 valor_token: token,
@@ -966,11 +1080,45 @@ const resolvers = {
                     message: "Este email ya ha sido confirmado."
                 };
             }
+            
+            await TokenConfirmacion.deleteMany({ usuario: usuario._id, tipo_token: 'EMAIL_CONFIRMACION' });
+            
             await crearYEnviarTokenConfirmacion(usuario);
             return {
                 status: "200",
                 message: "Se ha enviado un nuevo correo de confirmación."
             };
+        },
+        
+        // --- Resolver de Orden de Cocina ---
+        async actualizarEstadoOrdenCocina(obj, { id, estado }) {
+            if (!Types.ObjectId.isValid(id)) {
+                throw new UserInputError(`El ID de la orden ${id} no es válido.`);
+            }
+
+            const estadosPermitidos = OrdenCocina.schema.path('estado_cocina').enumValues;
+            if (!estadosPermitidos.includes(estado)) {
+                throw new UserInputError(`El estado "${estado}" no es válido.`);
+            }
+
+            const orden = await OrdenCocina.findByIdAndUpdate(
+                id,
+                { $set: { estado_cocina: estado } },
+                { new: true }
+            );
+
+            if (!orden) {
+                throw new UserInputError('Orden de cocina no encontrada.');
+            }
+            
+            // Si la orden está 'LISTA', actualizamos el pedido principal
+            if (estado === 'LISTA') {
+                await Pedido.findByIdAndUpdate(orden.pedido, {
+                    $set: { estado_pedido: 'LISTA' } // Asume que 'LISTA' está en tu enum de Pedido
+                });
+            }
+            
+            return popularOrdenCocina(orden);
         }
     }
 }
@@ -985,6 +1133,9 @@ async function startServer() {
     const apolloServer = new ApolloServer({
         typeDefs,
         resolvers,
+        context: ({ req }) => {
+            return { IVA_PERCENT: IVA_PERCENT }
+        }
     });
 
     await apolloServer.start();

@@ -24,7 +24,10 @@ const pedidoSchema = new Schema({
         ref: 'Usuario',
         required: true
     },
-
+    cajero: {
+        type: Schema.Types.ObjectId,
+        ref: 'Usuario'
+    },
     items: [pedidoItemSchema],
 
     total_pagado: {
