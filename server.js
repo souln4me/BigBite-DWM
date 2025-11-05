@@ -21,7 +21,7 @@ const AnulacionPedido = require('./models/anulacionPedido');
 const TokenConfirmacion = require('./models/tokenConfirmacion');
 const Sesion = require('./models/sesion');
 
-const JWT_SECRET = "1234";
+const JWT_SECRET = "1234"; 
 
 mongoose.connect('mongodb://localhost:27017/bd-bigbite');
 
@@ -298,6 +298,11 @@ type Mutation {
     
     # Orden de Cocina
     actualizarEstadoOrdenCocina(id: ID!, estado: String!): OrdenCocina
+
+    # Control de contraseña
+    solicitarRecuperacion(email: String!): Response
+    cambiarPassword(passActual: String!, nuevaPass: String!): Response
+    resetearPassword(token: String!, nuevaPass: String!): Response
 }
 `;
 
@@ -363,11 +368,9 @@ const popularOrdenCocina = (ordenDocument) => {
 const crearFiltroDeFecha = (fechaInicio, fechaFin) => {
     const filtroCreatedAt = {};
     if (fechaInicio) {
-        // $gte: greater than or equal (desde el inicio de ese día)
         filtroCreatedAt.$gte = new Date(fechaInicio);
     }
     if (fechaFin) {
-        // $lte: less than or equal (hasta el final de ese día)
         const fechaFinAjustada = new Date(fechaFin);
         fechaFinAjustada.setHours(23, 59, 59, 999);
         filtroCreatedAt.$lte = fechaFinAjustada;
@@ -378,10 +381,18 @@ const crearFiltroDeFecha = (fechaInicio, fechaFin) => {
 // Constante para el IVA (19% en Chile)
 const IVA_PERCENT = 0.19;
 
+// --- Helper de validación de contraseña (B-01, B-07) ---
+const validarFormatoPassword = (pass) => {
+    // Mínimo 8 caracteres, 1 mayúscula, 1 dígito
+    const formatoValido = /^(?=.*[A-Z])(?=.*\d).{8,}$/.test(pass);
+    return formatoValido;
+}
+
+// --- Helpers de Tokens (Email y Reseteo) ---
 const crearYEnviarTokenConfirmacion = async (usuario) => {
     const valorToken = crypto.randomBytes(32).toString('hex');
     const fechaExpiracion = new Date();
-    fechaExpiracion.setHours(fechaExpiracion.getHours() + 24);
+    fechaExpiracion.setHours(fechaExpiracion.getHours() + 24); // Token dura 24 horas
     const nuevoToken = new TokenConfirmacion({
         usuario: usuario._id,
         valor_token: valorToken,
@@ -391,13 +402,53 @@ const crearYEnviarTokenConfirmacion = async (usuario) => {
     await nuevoToken.save();
 
     console.log('---------------------------------')
-    console.log(`Simulando envío de email a: ${usuario.email}`)
+    console.log(`(Simulación) Email de CONFIRMACIÓN enviado a: ${usuario.email}`)
     console.log(`Token: ${valorToken}`)
-    console.log(`Link: http://localhost:8157/confirmar-email?token=${valorToken}`)
     console.log('---------------------------------');
-
     return true
 }
+
+const crearYEnviarTokenReseteo = async (usuario) => {
+    // Borrar tokens de reseteo antiguos
+    await TokenConfirmacion.deleteMany({ usuario: usuario._id, tipo_token: 'RESETEO_PASSWORD' });
+    
+    const valorToken = crypto.randomBytes(32).toString('hex');
+    const fechaExpiracion = new Date(Date.now() + 60 * 60 * 1000); // 60 minutos
+    
+    const nuevoToken = new TokenConfirmacion({
+        usuario: usuario._id,
+        valor_token: valorToken,
+        tipo_token: 'RESETEO_PASSWORD',
+        fecha_expiracion: fechaExpiracion
+    });
+    await nuevoToken.save();
+
+    console.log('---------------------------------')
+    console.log(`(Simulación) Email de RESETEO enviado a: ${usuario.email}`)
+    console.log(`Token: ${valorToken}`)
+    console.log('---------------------------------');
+    return true
+}
+
+// --- Helper de validación de datos (B-03) ---
+const validarDatosPerfil = (input) => {
+    // 1. Validar RUT (Formato simple de Chile)
+    if (input.rut) {
+        const rutValido = /^[0-9]{1,2}\.[0-9]{3}\.[0-9]{3}-[0-9kK]{1}$/.test(input.rut);
+        if (!rutValido) {
+            throw new UserInputError('Datos inválidos, revise los campos (formato RUT: 12.345.678-9).');
+        }
+    }
+    // 2. Validar Fecha de Nacimiento (No futura)
+    if (input.fecha_nacimiento) {
+        const fecha = new Date(input.fecha_nacimiento);
+        if (fecha > new Date()) {
+            throw new UserInputError('Datos inválidos, revise los campos (la fecha de nacimiento no puede ser futura).');
+        }
+    }
+    return true;
+}
+
 
 const resolvers = {
     Query: {
@@ -588,6 +639,15 @@ const resolvers = {
         async addUsuario(obj, { input }) {
             const existeEmail = await Usuario.findOne({ email: input.email });
             if (existeEmail) throw new UserInputError('El email ya está registrado.');
+            
+            // Gap B-01: Validar formato de contraseña
+            if (!validarFormatoPassword(input.pass)) {
+                throw new UserInputError("La contraseña no cumple los requisitos (mín. 8 caracteres, 1 mayúscula, 1 dígito).");
+            }
+            
+            // Gap B-03: Validar datos
+            validarDatosPerfil(input);
+            
             if (input.rut) {
                 const existeRut = await Usuario.findOne({ rut: input.rut });
                 if (existeRut) throw new UserInputError('El RUT ya está registrado.');
@@ -640,7 +700,21 @@ const resolvers = {
             if (!rol) throw new UserInputError('Rol no encontrado');
             return rol;
         },
-        async updUsuario(obj, { id, input }) {
+        async updUsuario(obj, { id, input }, context) {
+            // Gap B-03: Validación de datos
+            validarDatosPerfil(input);
+            
+            // Gap B-03: Seguridad de ruta
+            // Solo un Admin o el propio usuario puede editar
+            const usuarioLogueado = context.usuario;
+            if (!usuarioLogueado) {
+                throw new UserInputError("No estás autenticado.");
+            }
+            // Si no es admin Y está intentando editar a OTRA persona
+            if (usuarioLogueado.rol !== 'Admin' && usuarioLogueado.id !== id) {
+                throw new UserInputError("No tienes permiso para editar este perfil.");
+            }
+            
             const updates = {};
             if (input.email) updates.email = input.email;
             if (input.rut) updates.rut = input.rut;
@@ -652,16 +726,27 @@ const resolvers = {
             if (input.fecha_nacimiento) updates.fecha_nacimiento = input.fecha_nacimiento;
             if (input.telefono) updates.telefono = input.telefono;
             if (input.sexo) updates.sexo = input.sexo;
+            
             if (input.pass) {
+                // Gap B-01: Validar formato
+                if (!validarFormatoPassword(input.pass)) {
+                    throw new UserInputError("La nueva contraseña no cumple los requisitos (mín. 8 caracteres, 1 mayúscula, 1 dígito).");
+                }
                 const salt = await bcrypt.genSalt(10);
                 updates.hash_pass = await bcrypt.hash(input.pass, salt);
             }
+            
+            // Solo un Admin puede cambiar el Rol
             if (input.rolId) {
+                if (usuarioLogueado.rol !== 'Admin') {
+                    throw new UserInputError("No tienes permiso para cambiar roles.");
+                }
                 if (!Types.ObjectId.isValid(input.rolId) || !(await Rol.findById(input.rolId))) {
                     throw new UserInputError('El ID de Rol proporcionado no es válido o no existe.');
                 }
                 updates.rol = input.rolId;
             }
+            
             const usuario = await Usuario.findByIdAndUpdate(
                 id,
                 { $set: updates },
@@ -861,7 +946,7 @@ const resolvers = {
             return popularPedido(pedido);
         },
         
-        // --- Resolvers de Transaccion (Actualizado) ---
+        // --- Resolvers de Transaccion ---
         async crearTransaccion(obj, { input }) {
             if (!Types.ObjectId.isValid(input.pedidoId)) {
                 throw new UserInputError('El ID de Pedido no es válido.');
@@ -884,7 +969,6 @@ const resolvers = {
             await nuevaTransaccion.save();
 
             if (input.estado_transaccion === 'APROBADA') {
-                // Asignar Cajero Virtual
                 const rolCajero = await Rol.findOne({ nombre: 'Cajero Virtual' });
                 if (rolCajero) {
                     const cajeroVirtual = await Usuario.findOne({ rol: rolCajero._id });
@@ -893,7 +977,6 @@ const resolvers = {
                     }
                 }
                 
-                // Crear Orden de Cocina
                 const orden = new OrdenCocina({ pedido: pedido._id, estado_cocina: 'NUEVA' });
                 await orden.save();
                 
@@ -961,7 +1044,6 @@ const resolvers = {
                 throw new UserInputError('Este pedido ya ha sido anulado.');
             }
             
-            // Devolver Stock
             await pedido.populate('items.producto');
             for (const item of pedido.items) {
                 if (item.producto) {
@@ -1111,14 +1193,100 @@ const resolvers = {
                 throw new UserInputError('Orden de cocina no encontrada.');
             }
             
-            // Si la orden está 'LISTA', actualizamos el pedido principal
             if (estado === 'LISTA') {
                 await Pedido.findByIdAndUpdate(orden.pedido, {
-                    $set: { estado_pedido: 'LISTA' } // Asume que 'LISTA' está en tu enum de Pedido
+                    $set: { estado_pedido: 'LISTA' }
                 });
             }
             
             return popularOrdenCocina(orden);
+        },
+        
+        async solicitarRecuperacion(obj, { email }) {
+            const usuario = await Usuario.findOne({ email: email });
+            if (!usuario) {
+                return { status: "200", message: "Si el email está registrado, se enviará un correo de recuperación." };
+            }
+            
+            await crearYEnviarTokenReseteo(usuario);
+
+            return { status: "200", message: "Si el email está registrado, se enviará un correo de recuperación." };
+        },
+        
+        async cambiarPassword(obj, { passActual, nuevaPass }, context) {
+            // Gap B-03: Seguridad. Esta mutación REQUIERE que el usuario esté logueado.
+            if (!context.usuario) {
+                throw new UserInputError("No estás autenticado. Debes iniciar sesión.");
+            }
+            const userId = context.usuario.id;
+
+            // Gap B-07: Validar formato
+            if (!validarFormatoPassword(nuevaPass)) {
+                throw new UserInputError("La nueva contraseña no cumple los requisitos (mín. 8 caracteres, 1 mayúscula, 1 dígito).");
+            }
+            
+            const usuario = await Usuario.findById(userId);
+            if (!usuario) throw new UserInputError("Usuario no encontrado.");
+
+            // Gap B-07: Validar contraseña actual
+            const esValida = await bcrypt.compare(passActual, usuario.hash_pass);
+            if (!esValida) throw new UserInputError("La contraseña actual es incorrecta.");
+            
+            // Gap B-07: Validar que no sea igual a la anterior
+            const esMismaPass = await bcrypt.compare(nuevaPass, usuario.hash_pass);
+            if (esMismaPass) throw new UserInputError("La nueva contraseña no puede ser igual a la anterior.");
+
+            // Hashear y guardar
+            const salt = await bcrypt.genSalt(10);
+            usuario.hash_pass = await bcrypt.hash(nuevaPass, salt);
+            await usuario.save();
+
+            return { status: "200", message: "Contraseña actualizada con éxito." };
+        },
+        
+        async resetearPassword(obj, { token, nuevaPass }) {
+            // Gap B-01/B-07: Validar formato
+            if (!validarFormatoPassword(nuevaPass)) {
+                throw new UserInputError("La nueva contraseña no cumple los requisitos (mín. 8 caracteres, 1 mayúscula, 1 dígito).");
+            }
+
+            // Gap B-06: Buscar token de reseteo
+            const tokenDoc = await TokenConfirmacion.findOne({
+                valor_token: token,
+                tipo_token: 'RESETEO_PASSWORD'
+            });
+
+            if (!tokenDoc) {
+                throw new UserInputError("Token inválido, revise su correo.");
+            }
+            
+            // Gap B-06: Validar expiración (60 min)
+            if (tokenDoc.fecha_expiracion < new Date()) {
+                throw new UserInputError('El token ha expirado, genere uno nuevo.');
+            }
+
+            if (tokenDoc.ha_sido_usado) {
+                throw new UserInputError('Este token ya ha sido utilizado.');
+            }
+
+            const usuario = await Usuario.findById(tokenDoc.usuario);
+            if (!usuario) {
+                throw new UserInputError("Usuario asociado al token no encontrado.");
+            }
+            
+            // Gap B-07: Validar que no sea igual a la anterior
+            const esMismaPass = await bcrypt.compare(nuevaPass, usuario.hash_pass);
+            if (esMismaPass) throw new UserInputError("La nueva contraseña no puede ser igual a la anterior.");
+
+            // Hashear y guardar
+            const salt = await bcrypt.genSalt(10);
+            usuario.hash_pass = await bcrypt.hash(nuevaPass, salt);
+            await usuario.save();
+
+            tokenDoc.ha_sido_usado = true;
+            await tokenDoc.save();
+
+            return { status: "200", message: "Contraseña actualizada con éxito." };
         }
     }
 }
@@ -1134,7 +1302,26 @@ async function startServer() {
         typeDefs,
         resolvers,
         context: ({ req }) => {
-            return { IVA_PERCENT: IVA_PERCENT }
+            // Lógica para autenticar al usuario en cada petición
+            const token = req.headers.authorization || '';
+            let usuario = null;
+            
+            if (token) {
+                try {
+                    // Verifica el token
+                    const decoded = jwt.verify(token.replace('Bearer ', ''), JWT_SECRET);
+                    usuario = decoded; // { id, email, rol }
+                } catch (e) {
+                    // Token expirado o inválido
+                    console.warn(`Token inválido o expirado detectado: ${e.message}`);
+                }
+            }
+            
+            // Pasa el IVA y el usuario (o null) al contexto
+            return { 
+                IVA_PERCENT: IVA_PERCENT,
+                usuario: usuario 
+            }
         }
     });
 
