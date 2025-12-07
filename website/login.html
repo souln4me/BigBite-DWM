@@ -387,10 +387,22 @@
               localStorage.setItem('token_bigbite', data.token);
               localStorage.setItem('usuario_bigbite', JSON.stringify(data.usuario));
 
-              const rol = data.usuario.rol.nombre;
-              if (['Dueño', 'Administrador'].includes(rol)) window.location.href = 'admin/reportes_ventas.html';
-              else if (['Cajero Virtual', 'Encargado Despachos'].includes(rol)) window.location.href = 'admin/ordenes_cocina.html';
-              else window.location.href = 'inicio.html';
+              // 2. Obtener Rol
+              const rol = data.usuario.rol.nombre.trim();
+
+              // 3. Redirección EXPLÍCITA
+              if (rol === 'Dueño' || rol === 'Administrador') {
+                window.location.href = 'admin/reportes_ventas.html';
+              }
+              else if (rol === 'Cajero Virtual') {
+                window.location.href = 'admin/ordenes_cocina.html';
+              }
+              else if (rol.includes('Despachos') || rol === 'Encargado Despachos') {
+                window.location.href = 'admin/despachos.html';
+              }
+              else {
+                window.location.href = 'inicio.html';
+              }
             }
           } catch (error) {
             console.error(error);

@@ -59,7 +59,7 @@ body::before {
     pointer-events: none;
 }
 
-/* Flechas y puntos (Negros para contrastar con fotos claras) */
+/* Flechas y puntos */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
     background-color: #000 !important;

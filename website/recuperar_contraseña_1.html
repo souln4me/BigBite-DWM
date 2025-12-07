@@ -8,183 +8,321 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
     <link rel="icon" type="image/png" sizes="32x32" href="img/logo/cropped_circle_image.png">
 
     <style>
         body {
-            background-color: #fff4e6;
-        }
+            background-image: url('img/local/FondoInicio.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Poppins', sans-serif;
 
-        .card {
-            border-radius: 40px;
-            padding: 40px;
-            max-width: 600px;
-            width: 100%;
-            box-shadow: 0 4px 14px rgb(0, 0, 0, 0.5);
-            background-color: #ffffff;
-        }
-
-        .btn-action {
-            border-radius: 40px;
-            padding: 10px 20px;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-
-        .step-number {
-            background: #ffc107;
-            color: black;
-            width: 25px;
-            height: 25px;
-            display: inline-flex;
+            min-height: 100vh;
+            display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
-            font-weight: bold;
-            margin-right: 10px;
-            font-size: 0.9rem;
         }
 
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: -1;
+        }
+
+        /* TARJETA */
+        .card-recovery {
+            background-color: #ffffff;
+            border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: none;
+            overflow: hidden;
+            max-width: 500px;
+            width: 100%;
+            margin: 20px;
+            padding: 2rem;
+        }
+
+        /* INPUTS Y OJOS (Igual que Login) */
         .form-control {
             border-radius: 15px;
-            padding: 10px;
+            padding: 12px 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            color: #212529;
+            transition: all 0.3s ease;
         }
 
-        /* Input Fusionado */
-        .input-group input {
-            border-radius: 15px 0 0 15px !important;
-            border-right: none !important;
-        }
-
-        .input-group span {
-            border-radius: 0 15px 15px 0 !important;
-            border-left: 1px solid #ced4da;
-            background-color: #fff;
-            border: 1px solid #ced4da;
-            border-left: 1px solid #ced4da !important;
-            cursor: pointer;
-        }
-
-        .input-group:focus-within input,
-        .input-group:focus-within span {
+        .form-control:focus {
+            background-color: #ffffff;
             border-color: #ffc107;
+            box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.2);
+            color: #000;
         }
 
-        .input-group:focus-within span {
-            border-left-color: #ffc107 !important;
+        .input-group .form-control {
+            border-right: none;
+            border-radius: 15px 0 0 15px;
         }
 
-        #btnCambiar {
-            transform: 0.2s ease;
+        .input-group-text {
+            border-radius: 0 15px 15px 0 !important;
+            background-color: #e9ecef;
+            border: 1px solid #dee2e6;
+            border-left: none;
+            cursor: pointer;
+            color: #6c757d;
+            transition: all 0.3s ease;
         }
 
-        #btnCambiar:hover {
+        .input-group-text:hover {
+            background-color: #dde0e3;
+            color: #000;
+        }
+
+        /* Foco Unificado */
+        .input-group:focus-within .form-control,
+        .input-group:focus-within .input-group-text {
+            border-color: #ffc107 !important;
+        }
+
+        .input-group:focus-within .input-group-text {
+            background-color: #fff3cd;
+            color: #ffc107;
+        }
+
+        .input-group:focus-within {
+            box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.2);
+            border-radius: 15px;
+        }
+
+        /* BOTÓN ACCIÓN */
+        .btn-action {
+            background-color: #ffc107;
+            color: #000;
+            font-weight: 700;
+            border-radius: 50px;
+            padding: 12px;
+            border: none;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+            transition: all 0.3s;
+        }
+
+        .btn-action:hover {
+            background-color: #e0a800;
             transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+        }
+
+        /* UTILIDADES */
+        .d-none-step {
+            display: none !important;
+        }
+
+        .animate-up {
+            animation: slideUpFade 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            opacity: 0;
+        }
+
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-link:hover {
+            text-decoration: underline !important;
+            color: #212529 !important;
         }
     </style>
 </head>
 
-<body class="d-flex align-items-center justify-content-center vh-100">
+<body>
 
-    <div class="card">
-        <div class="text-center mb-4">
-            <img src="img/logo/cropped_circle_image.png" alt="Logo" width="70">
-            <h3 class="mt-2 fw-bold">Recuperación de Acceso</h3>
+    <div class="card card-recovery text-center animate-up">
+
+        <div class="mb-4">
+            <img src="img/logo/cropped_circle_image.png" alt="Big Bite Logo" style="width: 80px;">
         </div>
 
-        <div class="p-3 bg-light rounded-4 border mb-4">
-            <h6 class="fw-bold"><span class="step-number">1</span>Solicitar Código</h6>
-            <p class="small text-muted mb-2">Ingresa tu correo para generar el token en el servidor.</p>
-            <div class="input-group">
-                <input type="email" id="emailGen" class="form-control" placeholder="correo@ejemplo.com">
-                <button class="btn btn-dark btn-action" id="btnGenerar">
-                    <i class="bi bi-code-square me-1"></i> Generar
-                </button>
-            </div>
-        </div>
+        <div id="step1-request">
+            <h3 class="fw-bold mb-3">Recuperar Contraseña</h3>
+            <p class="text-muted mb-4 small">Ingresa tu correo y te enviaremos un código.</p>
 
-        <div>
-            <h6 class="fw-bold mb-3"><span class="step-number">2</span>Restablecer Contraseña</h6>
+            <div id="alertError1"
+                class="alert alert-danger d-none py-2 small fw-bold border-0 bg-danger-subtle text-danger"></div>
+            <div id="alertSuccess1"
+                class="alert alert-success d-none py-2 small fw-bold border-0 bg-success-subtle text-success"></div>
 
-            <form id="formReset">
-                <div class="mb-3">
-                    <label class="form-label small text-muted fw-bold">Código (Token)</label>
-                    <input type="text" id="tokenInput"
-                        class="form-control text-center fw-bold bg-warning-subtle text-dark"
-                        placeholder="Pega aquí el token" required>
+            <form id="formRequestToken" onsubmit="return false;">
+                <div class="mb-4 text-start">
+                    <label class="form-label fw-bold small text-muted ms-1">CORREO ELECTRÓNICO</label>
+                    <input type="email" class="form-control" id="emailForToken" placeholder="ejemplo@correo.com"
+                        required>
                 </div>
 
-                <div class="row g-2 mb-4">
-                    <div class="col-md-6">
-                        <label class="form-label small text-muted fw-bold">Nueva Contraseña</label>
-                        <div class="input-group">
-                            <input type="password" id="pass1" class="form-control" required placeholder="••••••••">
-                            <span class="input-group-text toggle-password"><i class="bi bi-eye-slash"></i></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label small text-muted fw-bold">Confirmar</label>
-                        <div class="input-group">
-                            <input type="password" id="pass2" class="form-control" required placeholder="••••••••">
-                            <span class="input-group-text toggle-password"><i class="bi bi-eye-slash"></i></span>
-                        </div>
-                    </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-action" id="btnSendToken">
+                        Enviar Código <i class="bi bi-arrow-right-short"></i>
+                    </button>
                 </div>
-
-                <button type="submit" class="btn btn-warning btn-action w-100" id="btnCambiar">
-                    Cambiar Contraseña
-                </button>
             </form>
         </div>
 
-        <div class="text-center mt-4">
-            <a href="login.html" class="text-decoration-none text-secondary small">Volver al Login</a>
+        <div id="step2-reset" class="d-none-step animate-up">
+            <h3 class="fw-bold mb-3">Nueva Contraseña</h3>
+            <p class="text-muted mb-4 small">Ingresa el código que recibiste y tu nueva clave.</p>
+
+            <div id="alertError2"
+                class="alert alert-danger d-none py-2 small fw-bold border-0 bg-danger-subtle text-danger"></div>
+
+            <form id="formResetPass" onsubmit="return false;">
+
+                <div class="mb-3 text-start">
+                    <label class="form-label fw-bold small text-muted ms-1">CÓDIGO DE VERIFICACIÓN</label>
+                    <input type="text" class="form-control text-center fw-bold letter-spacing-2" id="resetToken"
+                        placeholder="123456" required maxlength="100" style="letter-spacing: 2px;">
+                </div>
+
+                <div class="mb-3 text-start">
+                    <label class="form-label fw-bold small text-muted ms-1">NUEVA CONTRASEÑA</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="newPassword" placeholder="Mínimo 8 caracteres">
+                        <span class="input-group-text" id="toggleNew"><i class="bi bi-eye-slash"></i></span>
+                    </div>
+                </div>
+
+                <div class="mb-4 text-start">
+                    <label class="form-label fw-bold small text-muted ms-1">CONFIRMAR CONTRASEÑA</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="confirmPassword"
+                            placeholder="Repite la contraseña">
+                        <span class="input-group-text" id="toggleConfirm"><i class="bi bi-eye-slash"></i></span>
+                    </div>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-action" id="btnResetPassword">
+                        Cambiar Contraseña
+                    </button>
+                </div>
+            </form>
         </div>
+
+        <div class="mt-4 pt-3 border-top">
+            <a href="login.html" class="text-decoration-none text-muted small fw-bold back-link">
+                <i class="bi bi-arrow-left me-1"></i> Volver al inicio de sesión
+            </a>
+        </div>
+
     </div>
 
     <script src="JS/config.js"></script>
-    <script>
-        // 1. GENERAR TOKEN (Solicitud)
-        document.getElementById('btnGenerar').addEventListener('click', async () => {
-            const email = document.getElementById('emailGen').value;
-            if (!email) return alert("Ingresa un correo primero.");
 
-            const btn = document.getElementById('btnGenerar');
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
-            btn.disabled = true;
+    <script>
+        if (typeof GRAPHQL_URL === 'undefined') {
+            alert("Error Crítico: No se pudo cargar la configuración (config.js).");
+            throw new Error("Falta config.js");
+        }
+
+        console.log("Conectando a:", GRAPHQL_URL);
+
+        let userEmail = '';
+
+        // Elementos UI
+        const step1 = document.getElementById('step1-request');
+        const step2 = document.getElementById('step2-reset');
+        const alert1 = document.getElementById('alertError1');
+        const success1 = document.getElementById('alertSuccess1');
+        const alert2 = document.getElementById('alertError2');
+        const btn1 = document.getElementById('btnSendToken');
+        const btn2 = document.getElementById('btnResetPassword');
+
+        // Helpers UI
+        function showMsg(el, msg, isError = true) {
+            el.textContent = msg;
+            el.classList.remove('d-none');
+            if (isError) {
+                // Animación shake
+                el.style.animation = 'none';
+                el.offsetHeight; /* trigger reflow */
+                el.style.animation = 'shake 0.3s';
+            }
+        }
+        function hideAlerts() {
+            alert1.classList.add('d-none');
+            success1.classList.add('d-none');
+            alert2.classList.add('d-none');
+        }
+
+        // --- PASO 1: SOLICITAR TOKEN ---
+        document.getElementById('formRequestToken').addEventListener('submit', async () => {
+            hideAlerts();
+            const emailIn = document.getElementById('emailForToken');
+            userEmail = emailIn.value.trim();
+
+            if (!userEmail) return showMsg(alert1, "Ingresa un correo.");
+
+            btn1.disabled = true; btn1.innerHTML = `<span class="spinner-border spinner-border-sm"></span> Enviando...`;
+
+            const mutation = `mutation Sol($e: String!) { solicitarRecuperacion(email: $e) { message } }`;
 
             try {
                 const res = await fetch(GRAPHQL_URL, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ query: `mutation { solicitarRecuperacion(email: "${email}") { message } }` })
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: mutation, variables: { e: userEmail } })
                 });
                 const json = await res.json();
 
-                if (json.data.solicitarRecuperacion) {
-                    alert("✅ Código generado.\n\nRevisa la TERMINAL de Visual Studio Code y copia el token.");
+                if (json.errors) {
+                    showMsg(alert1, json.errors[0].message);
+                    btn1.disabled = false; btn1.innerHTML = `Enviar Código <i class="bi bi-arrow-right-short"></i>`;
                 } else {
-                    alert("Error: No se pudo generar.");
+                    const mensajeExito = json.data.solicitarRecuperacion.message;
+                    showMsg(success1, mensajeExito, false);
+
+                    setTimeout(() => {
+                        hideAlerts();
+                        step1.classList.add('d-none-step');
+                        step2.classList.remove('d-none-step');
+                    }, 1500);
                 }
-            } catch (e) { console.error(e); }
-            finally {
-                btn.innerHTML = '<i class="bi bi-code-square me-1"></i> Generar';
-                btn.disabled = false;
+            } catch (e) {
+                console.error(e);
+                showMsg(alert1, "Error de conexión.");
+                btn1.disabled = false; btn1.innerHTML = `Enviar Código <i class="bi bi-arrow-right-short"></i>`;
             }
         });
 
-        // 2. CAMBIAR CONTRASEÑA (Reset)
-        document.getElementById('formReset').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const token = document.getElementById('tokenInput').value.trim();
-            const p1 = document.getElementById('pass1').value;
-            const p2 = document.getElementById('pass2').value;
-            const btn = document.getElementById('btnCambiar');
+        // --- PASO 2: RESETEAR ---
+        document.getElementById('formResetPass').addEventListener('submit', async () => {
+            hideAlerts();
+            const token = document.getElementById('resetToken').value.trim();
+            const p1 = document.getElementById('newPassword').value;
+            const p2 = document.getElementById('confirmPassword').value;
 
-            if (p1 !== p2) return alert("Las contraseñas no coinciden");
-            if (p1.length < 8) return alert("La contraseña es muy corta");
+            if (!token || !p1) return showMsg(alert2, "Completa los campos.");
+            if (p1.length < 8) return showMsg(alert2, "Mínimo 8 caracteres.");
+            if (p1 !== p2) return showMsg(alert2, "Las contraseñas no coinciden.");
 
-            btn.disabled = true; btn.textContent = "Procesando...";
+            btn2.disabled = true; btn2.innerHTML = `<span class="spinner-border spinner-border-sm"></span> Guardando...`;
 
             const query = `
                 mutation Reset($t: String!, $p: String!) {
@@ -200,25 +338,36 @@
                 const json = await res.json();
 
                 if (json.errors) {
-                    alert("❌ Error: " + json.errors[0].message);
-                    btn.disabled = false; btn.textContent = "Cambiar Contraseña";
+                    showMsg(alert2, json.errors[0].message);
+                    btn2.disabled = false; btn2.textContent = "Cambiar Contraseña";
                 } else {
-                    alert("🎉 ¡Éxito! Contraseña actualizada.");
-                    window.location.href = 'login.html';
+                    // ÉXITO TOTAL -> Redirigir a pantalla final
+                    window.location.href = 'recuperar_contraseña_3.html';
                 }
-            } catch (e) { console.error(e); }
+            } catch (e) { console.error(e); showMsg(alert2, "Error de conexión."); btn2.disabled = false; btn2.textContent = "Cambiar Contraseña"; }
         });
 
-        // Toggle Pass
-        document.querySelectorAll('.toggle-password').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const input = this.previousElementSibling;
-                const icon = this.querySelector('i');
-                if (input.type === "password") { input.type = "text"; icon.classList.replace("bi-eye-slash", "bi-eye"); }
-                else { input.type = "password"; icon.classList.replace("bi-eye", "bi-eye-slash"); }
+        // --- FUNCIÓN TOGGLE PASSWORD (OJOS) ---
+        function setupToggle(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const span = document.getElementById(iconId);
+            const icon = span.querySelector('i');
+
+            span.addEventListener('click', () => {
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.replace('bi-eye-slash', 'bi-eye');
+                } else {
+                    input.type = 'password';
+                    icon.classList.replace('bi-eye', 'bi-eye-slash');
+                }
             });
-        });
+        }
+        setupToggle('newPassword', 'toggleNew');
+        setupToggle('confirmPassword', 'toggleConfirm');
+
     </script>
+
 </body>
 
 </html>

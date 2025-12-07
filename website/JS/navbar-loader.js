@@ -12,7 +12,7 @@ function loadNavbar() {
         .then(data => {
             placeholder.innerHTML = data;
 
-            // 1. MARCAR LINK ACTIVO (Resaltar página actual)
+            // 1. MARCAR LINK ACTIVO
             const currentPage = window.location.pathname.split("/").pop();
             document.querySelectorAll("nav a").forEach(link => {
                 const href = link.getAttribute("href");
@@ -103,7 +103,7 @@ function updateCartBadge() {
     }, 50);
 }
 
-// Cargar Footer también (para ahorrar código en los HTML)
+// Cargar Footer también
 function loadFooter() {
     const f = document.getElementById("footer-placeholder");
     if (f) fetch("components/footer.html").then(r => r.text()).then(d => f.innerHTML = d);
