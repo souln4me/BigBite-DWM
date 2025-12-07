@@ -6,20 +6,232 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Big Bite - Carrito de Compras</title>
 
-    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 
-    <!-- Icono -->
     <link rel="icon" type="image/png" sizes="32x32" href="img/logo/cropped_circle_image.png">
-
-    <!-- CSS -->
     <link rel="stylesheet" href="css/navbar.css">
-    <link rel="stylesheet" href="css/carrito.css">
+
+    <style>
+        body {
+            background-image: url('img/local/Fondo7.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+        }
+
+        /* Overlay Oscuro */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        h1.text-center {
+            font-weight: 800;
+            font-size: 2.5rem;
+            color: #ffc107;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
+        }
+
+        hr {
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            opacity: 1;
+        }
+
+        /* ====== TARJETAS DE VIDRIO (Glassmorphism) ====== */
+        .card-cart,
+        #cart-summary {
+            background-color: rgba(33, 37, 41, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            color: #fff;
+            transition: transform 0.3s ease;
+        }
+
+        /* ====== LISTA DE PRODUCTOS ====== */
+        .cart-item {
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+            padding: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item h6 {
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .cart-item small {
+            color: #aaa;
+        }
+
+        /* Precio individual */
+        .item-price {
+            color: #ffc107;
+            /* Amarillo */
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        /* Imagen del producto */
+        .carrito-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ANIMACIÓN HOVER PARA EL CARRITO Y EL RESUMEN */
+        .card-cart,
+        #cart-summary {
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+                box-shadow 0.3s ease,
+                border-color 0.3s ease;
+        }
+
+        .card-cart:hover,
+        #cart-summary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            border-color: rgba(255, 193, 7, 0.4);
+        }
+
+        /* ====== CONTROLES DE CANTIDAD (+ -) ====== */
+        .cart-controls button {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-radius: 10px;
+            width: 32px;
+            height: 32px;
+            transition: all 0.2s;
+        }
+
+        .cart-controls button:hover {
+            background-color: #ffc107;
+            color: #000;
+            border-color: #ffc107;
+            transform: translateY(-3px);
+        }
+
+        .cart-controls .btn-del {
+            color: #dc3545;
+            border-color: rgba(220, 53, 69, 0.5);
+            margin-left: 10px;
+        }
+
+        .cart-controls .btn-del:hover {
+            background-color: #dc3545;
+            color: #fff;
+            border-color: #dc3545;
+        }
+
+        /* ====== RESUMEN DEL PEDIDO ====== */
+        #cart-summary h4 {
+            color: #ffc107;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #e0e0e0;
+        }
+
+        .summary-total {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #198754;
+            /* Verde Dinero */
+            text-shadow: 0 0 15px rgba(25, 135, 84, 0.4);
+        }
+
+        /* ====== BOTONES PRINCIPALES ====== */
+        #checkout {
+            background-color: #ffc107;
+            color: #000;
+            font-weight: 800;
+            border: none;
+            border-radius: 50px;
+            padding: 12px;
+            width: 100%;
+            box-shadow: 0 0 20px rgba(255, 193, 7, 0.3);
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        #checkout:hover {
+            background-color: #e0a800;
+            transform: scale(1.02);
+            box-shadow: 0 0 25px rgba(255, 193, 7, 0.3);
+        }
+
+        /* 2. Seguir Comprando (Outline Blanco) */
+        .btn-continue {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ccc;
+            border-radius: 50px;
+            padding: 10px;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-continue:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-color: #fff;
+        }
+
+        /* 3. Vaciar Carrito (Texto Rojo discreto) */
+        #empty-cart {
+            background: transparent;
+            border: none;
+            color: #dc3545;
+            font-size: 0.9rem;
+            width: 100%;
+            margin-top: 10px;
+            opacity: 0.7;
+            transition: 0.3s;
+        }
+
+        #empty-cart:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -27,277 +239,296 @@
 
     <main class="flex-grow-1">
         <h1 class="text-center mb-4 mt-4">Carrito de Compras</h1>
-        <hr class="mb-4">
+        <hr class="mb-5 container">
 
-        <div class="container mb-5 mt-5">
-            <!-- Card: Lista de productos -->
-            <div class="card card-cart p-4">
-                <div id="cart-items"></div>
-                <div id="empty-message">Carrito de compras vacío</div>
-            </div>
+        <div class="container mb-5">
+            <div class="row g-5">
 
-            <!-- Card: Subtotal y acciones -->
-            <div class="card p-4 mt-4" id="cart-summary">
-                <h4 class="mb-3 text-center">Resumen del pedido</h4>
-                <div class="d-flex flex-column gap-2">
-                    <div class="d-flex justify-content-between">
-                        <span>Subtotal:</span>
-                        <span id="subtotal">$0</span>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <span>Envío:</span>
-                        <span id="shipping">$2.000</span>
-                    </div>
-                    <div class="d-flex justify-content-between fw-bold">
-                        <span>Total:</span>
-                        <span id="total">$0</span>
+                <div class="col-lg-8">
+                    <div class="card-cart">
+
+                        <div id="cart-loader" class="text-center py-5 d-none">
+                            <div class="spinner-border text-warning" role="status"></div>
+                            <p class="mt-2 text-white-50">Sincronizando...</p>
+                        </div>
+
+                        <div id="cart-items"></div>
+
+                        <div id="empty-message" class="text-center py-5" style="display: none;">
+                            <i class="bi bi-basket display-1 text-white-50 mb-3"></i>
+                            <h4 class="text-warning">Tu carrito está vacío</h4>
+                            <p class="text-white-50">¿Hambre? ¡Agrega unas deliciosas hamburguesas!</p>
+                            <a href="productos.html" class="btn btn-outline-light rounded-pill mt-3 px-4">Ir al Menú</a>
+                        </div>
                     </div>
                 </div>
 
-                <div class="d-flex justify-content-between flex-wrap gap-2 mt-4">
-                    <button id="empty-cart" class="btn btn-warning flex-fill">
-                        <i class="bi bi-trash me-2"></i> Vaciar carrito
-                    </button>
-                    <a href="productos.html" class="btn btn-continue btn-secondary flex-fill">
-                        <i class="bi bi-bag me-2"></i> Seguir comprando</a>
-                    <button id="checkout" class="btn btn-success flex-fill">
-                        <i class="bi bi-wallet me-2"></i> Proceder al pago
-                    </button>
+                <div class="col-lg-4">
+                    <div id="cart-summary">
+                        <h4 class="text-center">Resumen del pedido</h4>
+
+                        <div class="summary-row mt-4">
+                            <span>Subtotal:</span>
+                            <span id="subtotal" class="fw-bold">$0</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Envío:</span>
+                            <span id="shipping" class="fw-bold">$2.000</span>
+                        </div>
+
+                        <hr style="opacity: 0.1; margin: 15px 0;">
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="h5 mb-0 text-white">Total:</span>
+                            <span id="total" class="summary-total">$0</span>
+                        </div>
+
+                        <button id="checkout">
+                            <i class="bi bi-wallet2 me-2"></i> Pagar Ahora
+                        </button>
+
+                        <div class="d-flex flex-column gap-2 mt-3">
+                            <a href="productos.html" class="btn-continue">
+                                <i class="bi bi-arrow-left me-2"></i> Seguir comprando
+                            </a>
+                            <button id="empty-cart">
+                                <i class="bi bi-trash me-2"></i> Vaciar carrito
+                            </button>
+                        </div>
+
+                        <div id="payment-message" class="mt-3 text-center small fw-bold"></div>
+                    </div>
                 </div>
 
-                <div id="payment-message" class="mt-3 text-center fw-semibold"></div>
             </div>
         </div>
     </main>
 
     <div id="footer-placeholder"></div>
 
+    <script src="JS/config.js"></script>
+    <script src="JS/navbar-loader.js"></script>
+
     <script>
-        // ==============
-        // 1. NAVBAR Y FOOTER
-        // ==============
-
-        // Carga dinámica del Navbar
-        fetch("components/navbar.html")
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("navbar-placeholder").innerHTML = data;
-
-                // --- Lógica de estado del Navbar ---
-                // (Marca el enlace "activo", protege "Perfil" si no hay login, y actualiza el contador del carrito)
-
-                // Detectar página actual y marcar enlace activo
-                const currentPage = window.location.pathname.split("/").pop();
-                const links = document.querySelectorAll("nav a");
-                links.forEach(link => {
-                    const href = link.getAttribute("href");
-                    if (href && currentPage.includes(href.replace('./', ''))) {
-                        link.classList.add("active");
-                    }
-                });
-
-                // Usuario registrado (protección de ruta)
-                const perfilLink = document.getElementById('perfil-link');
-                if (perfilLink) {
-                    perfilLink.addEventListener('click', (e) => {
-                        const usuarioLogueado = localStorage.getItem('usuarioLogueado');
-                        if (!usuarioLogueado) {
-                            e.preventDefault();
-                            window.location.href = 'register.html';
-                        }
-                    });
-                }
-
-                // ----------------------------
-                // Actualiza el badge (contador) del carrito
-                setTimeout(() => {
-                    const badge = document.getElementById('cart-count');
-                    if (!badge) return;
-                    const cart = JSON.parse(localStorage.getItem('carrito')) || [];
-                    const totalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
-                    badge.textContent = totalItems;
-                }, 0);
-                // ----------------------------
-            });
-
-        // Carga dinámica del Footer
-        fetch("components/footer.html")
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("footer-placeholder").innerHTML = data;
-            });
-
-        // ==============
-        // 2. CARRITO
-        // ==============
-        // -------------------- CART LOGIC --------------------
-
-        // Constantes y clave de LocalStorage
+        // 1. CONFIGURACIÓN
         const SHIPPING_COST = 2000;
         const cartKey = 'carrito';
 
-        // Carga el carrito desde LocalStorage
-        function loadCart() {
-            try { return JSON.parse(localStorage.getItem(cartKey)) || []; }
-            catch (e) { return []; }
-        }
-        // Guarda el carrito en LocalStorage y dispara un evento
-        function saveCart(cart) {
-            localStorage.setItem(cartKey, JSON.stringify(cart));
-            window.dispatchEvent(new Event('cart-updated')); // Notifica a otros scripts
+        // Helper para GraphQL
+        async function gqlRequest(query, variables = {}) {
+            const token = localStorage.getItem('token_bigbite');
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) headers['Authorization'] = `Bearer ${token}`;
+
+            try {
+                const response = await fetch(GRAPHQL_URL, {
+                    method: 'POST', headers,
+                    body: JSON.stringify({ query, variables })
+                });
+                const json = await response.json();
+                if (json.errors) throw new Error(json.errors[0].message);
+                return json.data;
+            } catch (e) {
+                console.error("Error API:", e);
+                return null;
+            }
         }
 
-        // Asegura que el carrito tenga un formato único (agrupa items duplicados)
-        function normalizeCart(cartRaw) {
-            const byName = {};
-            cartRaw.forEach(it => {
-                const name = it.name;
-                const price = Number(it.price) || Number(it.precio) || 0;
-                const qty = Number(it.quantity) || Number(it.cantidad) || 1;
-                const image = it.image || 'img/productos/default.png';
-                if (!byName[name]) byName[name] = { name, price, quantity: qty, image };
-                else byName[name].quantity += qty;
-            });
-            return Object.values(byName);
+        // 3. GESTIÓN DEL CARRITO
+        let cart = [];
+
+        async function initCart() {
+            const token = localStorage.getItem('token_bigbite');
+            const usuario = JSON.parse(localStorage.getItem('usuario_bigbite'));
+
+            if (token && usuario) {
+                document.getElementById('cart-loader').classList.remove('d-none');
+                document.getElementById('cart-items').innerHTML = '';
+
+                const query = `query GetCart($uid: ID!) { getCarritoPorUsuario(usuarioId: $uid) { items { cantidad producto { id, nombre, precio, img } } } }`;
+                const data = await gqlRequest(query, { uid: usuario.id });
+
+                if (data && data.getCarritoPorUsuario) {
+                    cart = data.getCarritoPorUsuario.items.map(i => ({
+                        id: i.producto.id, name: i.producto.nombre, price: i.producto.precio, quantity: i.cantidad, image: i.producto.img
+                    }));
+                    saveLocal(cart);
+                }
+                document.getElementById('cart-loader').classList.add('d-none');
+            } else {
+                cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+            }
+            renderCart();
         }
 
-        // Referencias a los elementos del DOM
+        function saveLocal(cartData) {
+            localStorage.setItem(cartKey, JSON.stringify(cartData));
+            window.dispatchEvent(new Event('cart-updated'));
+
+            if (typeof updateCartBadge === 'function') {
+                updateCartBadge();
+            }
+        }
+
+        // RENDERIZADO CON NUEVO ESTILO
         const cartItemsContainer = document.getElementById('cart-items');
         const emptyMessage = document.getElementById('empty-message');
-        const subtotalEl = document.getElementById('subtotal');
-        const shippingEl = document.getElementById('shipping');
-        const totalEl = document.getElementById('total');
-        const paymentMessage = document.getElementById('payment-message');
-        const emptyBtn = document.getElementById('empty-cart');
-        const checkoutBtn = document.getElementById('checkout');
 
-        // Variable principal que contiene el estado del carrito
-        let cart = normalizeCart(loadCart());
-
-        // Función principal: Dibuja los productos del carrito en el HTML
         function renderCart() {
-            cartItemsContainer.innerHTML = ''; // Limpia el contenedor
+            cartItemsContainer.innerHTML = '';
 
-            // Si el carrito está vacío, muestra el mensaje de vacío
             if (!cart || cart.length === 0) {
                 emptyMessage.style.display = 'block';
-                subtotalEl.textContent = '$0';
-                shippingEl.textContent = '$0';
-                totalEl.textContent = '$0';
-                saveCart([]); // Limpia el LocalStorage
+                updateSummary(0);
                 return;
             }
-            emptyMessage.style.display = 'none'; // Oculta el mensaje de vacío
+            emptyMessage.style.display = 'none';
 
             let subtotal = 0;
-            // Itera sobre los productos y crea el HTML para cada uno
-            cart.forEach((item, idx) => {
+            cart.forEach(item => {
                 const itemTotal = item.price * item.quantity;
                 subtotal += itemTotal;
 
                 const div = document.createElement('div');
-                div.className = 'cart-item d-flex justify-content-between align-items-center';
-                div.dataset.name = item.name;
-                // Plantilla HTML para cada producto en el carrito
-                div.innerHTML = `
-        <div class="d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center gap-3">
-                <img src="${item.image || 'img/productos/default.png'}" class="img-fluid carrito-img" alt="${item.name}">
-                <div>
-                    <strong>${item.name}</strong><br>
-                    <small>${item.quantity} x ${item.price.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</small><br>
-                    <small class="text-muted"><strong>${itemTotal.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}</strong></small>
-                </div>
-            </div>
+                div.className = 'cart-item';
 
-            <div class="d-flex align-items-center gap-1 cart-controls">
-                <button class="btn btn-warning decrease" title="Quitar 1"><i class="fa-solid fa-minus"></i></button>
-                <span>${item.quantity}</span>
-                <button class="btn btn-warning increase" title="Agregar 1"><i class="fa-solid fa-plus"></i></button>
-                <button class="btn btn-danger remove" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
-            </div>
-        </div>
-        `;
+                div.innerHTML = `
+                    <div class="d-flex align-items-center">
+                        <img src="${item.image || 'img/default.jpg'}" class="carrito-img me-3" alt="${item.name}">
+                        <div>
+                            <h6 class="mb-1">${item.name}</h6>
+                            <small>${item.quantity} x $${item.price.toLocaleString('es-CL')}</small>
+                            <div class="item-price mt-1">$${itemTotal.toLocaleString('es-CL')}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="cart-controls">
+                        <button class="btn-dec"><i class="bi bi-dash-lg"></i></button>
+                        <span class="fw-bold px-2">${item.quantity}</span>
+                        <button class="btn-inc"><i class="bi bi-plus-lg"></i></button>
+                        <button class="btn-del bg-transparent border-0"><i class="bi bi-trash3-fill"></i></button>
+                    </div>
+                `;
                 cartItemsContainer.appendChild(div);
 
-                // Asigna los eventos (+, -, X) a los botones de esta fila
-                div.querySelector('.increase').addEventListener('click', () => changeQuantity(item.name, +1));
-                div.querySelector('.decrease').addEventListener('click', () => changeQuantity(item.name, -1));
-                div.querySelector('.remove').addEventListener('click', () => removeItem(item.name));
+                div.querySelector('.btn-inc').onclick = () => modificarCantidad(item, 1);
+                div.querySelector('.btn-dec').onclick = () => modificarCantidad(item, -1);
+                div.querySelector('.btn-del').onclick = () => eliminarItem(item);
             });
 
-            updateSummary(subtotal); // Actualiza los totales
-            saveCart(cart); // Guarda el carrito normalizado en LocalStorage
+            updateSummary(subtotal);
         }
 
-        // Cambia la cantidad (sumar o restar)
-        function changeQuantity(name, delta) {
-            cart = cart.map(it => {
-                if (it.name === name) return { ...it, quantity: Math.max(0, (it.quantity || 1) + delta) };
-                return it;
-            }).filter(it => it.quantity > 0); // Elimina el item si la cantidad llega a 0
-            renderCart();
-        }
-
-        // Elimina un producto por completo
-        function removeItem(name) {
-            cart = cart.filter(it => it.name !== name);
-            renderCart();
-        }
-
-        // Actualiza el resumen (Subtotal, Envío, Total)
         function updateSummary(subtotal) {
-            const shipping = subtotal > 0 ? SHIPPING_COST : 0; // Solo cobra envío si hay productos
-            const total = subtotal + shipping;
-            subtotalEl.textContent = subtotal.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
-            shippingEl.textContent = shipping.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
-            totalEl.textContent = total.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
+            const shipping = subtotal > 0 ? SHIPPING_COST : 0;
+            document.getElementById('subtotal').textContent = '$' + subtotal.toLocaleString('es-CL');
+            document.getElementById('shipping').textContent = '$' + shipping.toLocaleString('es-CL');
+            document.getElementById('total').textContent = '$' + (subtotal + shipping).toLocaleString('es-CL');
         }
 
-        // Evento para el botón "Vaciar carrito"
-        emptyBtn.addEventListener('click', () => {
-            cart = [];
+        // Lógica de Modificación (Igual que antes)
+        async function modificarCantidad(item, delta) {
+            const nuevaCantidad = item.quantity + delta;
+            if (nuevaCantidad <= 0) return eliminarItem(item);
+
+            item.quantity = nuevaCantidad;
+            saveLocal(cart);
             renderCart();
+
+            const token = localStorage.getItem('token_bigbite');
+            const usuario = JSON.parse(localStorage.getItem('usuario_bigbite'));
+            if (token && usuario && item.id) {
+                const mutation = `mutation Upd($u:ID!, $p:ID!, $c:Int!){agregarAlCarrito(usuarioId:$u, productoId:$p, cantidad:$c){id}}`;
+                await gqlRequest(mutation, { u: usuario.id, p: item.id, c: nuevaCantidad });
+            }
+        }
+
+        async function eliminarItem(item) {
+            if (!confirm(`¿Sacar ${item.name}?`)) return;
+            cart = cart.filter(i => i.name !== item.name);
+            saveLocal(cart);
+            renderCart();
+
+            const token = localStorage.getItem('token_bigbite');
+            const usuario = JSON.parse(localStorage.getItem('usuario_bigbite'));
+            if (token && usuario && item.id) {
+                const mutation = `mutation Del($u:ID!, $p:ID!){eliminarDelCarrito(usuarioId:$u, productoId:$p){id}}`;
+                await gqlRequest(mutation, { u: usuario.id, p: item.id });
+            }
+        }
+
+        document.getElementById('empty-cart').addEventListener('click', async () => {
+            if (!cart.length) return;
+            if (!confirm("¿Vaciar todo el carrito?")) return;
+            cart = [];
+            saveLocal([]);
+            renderCart();
+
+            const token = localStorage.getItem('token_bigbite');
+            const usuario = JSON.parse(localStorage.getItem('usuario_bigbite'));
+            if (token && usuario) {
+                await gqlRequest(`mutation Clear($u:ID!){vaciarCarrito(usuarioId:$u){id}}`, { u: usuario.id });
+            }
         });
 
-        // Evento para el botón "Proceder al pago" (Simulación)
-        checkoutBtn.addEventListener('click', () => {
-            if (!cart.length) {
-                paymentMessage.textContent = 'El carrito está vacío.';
+        const checkoutBtn = document.getElementById('checkout');
+        const paymentMessage = document.getElementById('payment-message');
+
+        checkoutBtn.addEventListener('click', async () => {
+            if (!cart.length) return;
+
+            const token = localStorage.getItem('token_bigbite');
+            const usuario = JSON.parse(localStorage.getItem('usuario_bigbite'));
+
+            if (!token || !usuario) {
+                alert("Debes iniciar sesión para comprar.");
+                window.location.href = 'login.html';
                 return;
             }
-            // Simula un resultado de pago aleatorio
-            const estados = ['Pago realizado con éxito', 'Pago rechazado', 'Pago cancelado'];
-            const random = estados[Math.floor(Math.random() * estados.length)];
-            paymentMessage.textContent = random;
-            // Si el pago fue exitoso, vacía el carrito
-            if (random === 'Pago realizado con éxito') {
+
+            if (!confirm("¿Confirmar compra?")) return;
+
+            checkoutBtn.disabled = true;
+            checkoutBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Procesando...';
+            paymentMessage.innerHTML = '<span class="text-info">Enviando a cocina...</span>';
+
+            try {
+                const mutPedido = `mutation P($in:PedidoInput!){crearPedidoDesdeCarrito(input:$in){id, total_pagado}}`;
+                const resP = await gqlRequest(mutPedido, { in: { usuarioId: usuario.id } });
+
+                if (!resP || !resP.crearPedidoDesdeCarrito) throw new Error("Stock insuficiente.");
+                const pedido = resP.crearPedidoDesdeCarrito;
+
+                const mutPago = `mutation T($in:TransaccionInput!){crearTransaccion(input:$in){id, estado_transaccion}}`;
+                await gqlRequest(mutPago, {
+                    in: {
+                        pedidoId: pedido.id,
+                        id_pasarela: "PAY-" + Date.now(),
+                        monto: pedido.total_pagado,
+                        estado_transaccion: "APROBADA",
+                        mensaje_pasarela: "Pago Web"
+                    }
+                });
+
+                paymentMessage.innerHTML = '<span class="text-success">¡Pedido Exitoso! 🎉</span>';
                 cart = [];
+                saveLocal([]);
                 renderCart();
+
+                setTimeout(() => {
+                    window.location.href = `boleta_digital_exito.html?id=${pedido.id}`;
+                }, 1000);
+
+            } catch (e) {
+                console.error(e);
+                paymentMessage.innerHTML = `<span class="text-danger">Error: ${e.message}</span>`;
+                checkoutBtn.disabled = false;
+                checkoutBtn.innerHTML = '<i class="bi bi-wallet2 me-2"></i> Pagar Ahora';
             }
         });
 
-        // Sincroniza el carrito si cambia en OTRA pestaña
-        window.addEventListener('storage', (e) => {
-            if (e.key === cartKey) {
-                cart = normalizeCart(loadCart());
-                renderCart();
-            }
-        });
-
-        // Sincroniza si otra parte del JS (ej. productos.js) guarda el carrito
-        window.addEventListener('cart-updated', () => {
-            cart = normalizeCart(loadCart());
-            renderCart();
-        });
-
-        // Función inicial: Carga y dibuja el carrito al entrar a la página
-        (function init() {
-            cart = normalizeCart(loadCart());
-            renderCart();
-        })();
+        initCart();
     </script>
-
 </body>
 
 </html>

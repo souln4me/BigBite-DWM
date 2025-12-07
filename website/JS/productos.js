@@ -1,268 +1,273 @@
 // ==============
-// 1. NAVBAR Y FOOTER
+// 1. CONFIGURACIÓN Y NAVBAR
 // ==============
 
-// Función para actualizar el contador (badge) del carrito en el navbar
-function updateCartBadge() {
-  const badge = document.getElementById('cart-count');
-  if (!badge) return;
+// Helper para peticiones GraphQL simples
+async function gqlRequest(query, variables = {}) {
+  const token = localStorage.getItem('token_bigbite');
+  const headers = { 'Content-Type': 'application/json' };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
 
-  const cart = JSON.parse(localStorage.getItem('carrito')) || [];
-  const totalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
-
-  badge.textContent = totalItems;
+  try {
+    const response = await fetch(GRAPHQL_URL, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({ query, variables })
+    });
+    const json = await response.json();
+    if (json.errors) throw new Error(json.errors[0].message);
+    return json.data;
+  } catch (e) {
+    console.error("Error GQL:", e);
+    return null;
+  }
 }
 
-// Carga dinámica del Navbar
-fetch("components/navbar.html")
-  .then(response => response.text())
-  .then(data => {
-    const navbarPlaceholder = document.getElementById("navbar-placeholder");
-    navbarPlaceholder.innerHTML = data;
-
-    // Marca el enlace activo basado en la URL actual
-    const currentPage = window.location.pathname.split("/").pop();
-    const links = navbarPlaceholder.querySelectorAll("nav a");
-    links.forEach(link => {
-      const href = link.getAttribute("href");
-      if (href && currentPage.includes(href.replace('./', ''))) {
-        link.classList.add("active");
-      } else {
-        link.classList.remove("active");
-      }
-    });
-
-    // Actualiza el contador del carrito una vez cargado el navbar
-    updateCartBadge();
-
-    // Protege el enlace de "Perfil" si el usuario no ha iniciado sesión
-    const perfilLink = document.getElementById('perfil-link');
-    if (perfilLink) {
-      perfilLink.addEventListener('click', (e) => {
-        const usuarioLogueado = localStorage.getItem('usuarioLogueado');
-        if (!usuarioLogueado) {
-          e.preventDefault();
-          window.location.href = 'login.html';
-        }
-      });
-    }
-  });
-
-// Carga dinámica del Footer
-fetch("components/footer.html")
-  .then(response => response.text())
-  .then(data => {
-    document.getElementById("footer-placeholder").innerHTML = data;
-  });
-
-// Actualiza el badge si el carrito cambia en otra pestaña o al volver a la pestaña
-window.addEventListener('storage', updateCartBadge);
-window.addEventListener('visibilitychange', () => {
-  if (!document.hidden) updateCartBadge();
-});
-
 // ==============
-// 2. PRODUCTOS, MODAL Y CARRITO
+// 2. LÓGICA DE PRODUCTOS
 // ==============
 
-// Espera a que el DOM esté completamente cargado
 document.addEventListener('DOMContentLoaded', () => {
-  // Referencias a elementos del DOM
   const modalElement = document.getElementById('productModal');
   const bsModal = new bootstrap.Modal(modalElement);
+  const contenedorProductos = document.getElementById('contenedor-productos');
+  const noProductsMessage = document.getElementById('no-products-message');
   const goToCartBtn = document.getElementById('go-to-cart-btn');
-  const productCards = document.querySelectorAll('.product-card');
   const orderBar = document.getElementById('order-summary-bar');
   const leftColumn = document.getElementById('order-summary-left');
-  const noProductsMessage = document.getElementById('no-products-message');
 
-  // ========== FUNCIONES DEL CARRITO ==========
+  // --- A. AGREGAR AL CARRITO (LÓGICA CORREGIDA) ---
+  window.addToCart = async function (id, nombre, precio, img) {
+    const token = localStorage.getItem('token_bigbite');
+    const usuario = JSON.parse(localStorage.getItem('usuario_bigbite'));
 
-  // Carga el carrito desde LocalStorage
-  function loadCart() {
-    try {
-      return JSON.parse(localStorage.getItem('carrito')) || [];
-    } catch (e) {
-      return [];
-    }
-  }
-
-  // Guarda el carrito en LocalStorage y notifica (actualiza badge)
-  function saveCart(cart) {
-    localStorage.setItem('carrito', JSON.stringify(cart));
-    window.dispatchEvent(new Event('cart-updated')); // Evento para sincronización
-    updateCartBadge();
-  }
-
-  // Anima el botón "Agregar al carrito" en el modal
-  function animateAddButton() {
+    // 1. Feedback visual
     const btn = document.querySelector('#productModal .cart-btn');
-    if (!btn) return;
+    const originalText = '<i class="bi bi-cart3 me-2"></i> Agregar al carrito';
+    if (btn) {
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Agregando...';
+      btn.disabled = true;
+    }
+    
+    // Miramos el carrito local para saber cuántos hay y sumarle 1
+    const localCart = JSON.parse(localStorage.getItem('carrito')) || [];
+    const existingItem = localCart.find(i => i.id === id);
+    const cantidadFinal = existingItem ? existingItem.quantity + 1 : 1;
 
-    btn.classList.remove('animate');   // Limpia animación anterior
-    btn.getBoundingClientRect();      // Fuerza reflow
-    btn.classList.add('animate');     // Agrega clase de animación
+    // 2. ESCENARIO: USUARIO LOGUEADO -> Base de Datos
+    if (token && usuario) {
+      const mutation = `
+              mutation Add($u: ID!, $p: ID!, $c: Int!) {
+                  agregarAlCarrito(usuarioId: $u, productoId: $p, cantidad: $c) { id }
+              }
+          `;
 
-    // Quita el foco del botón después de la animación (usabilidad)
-    setTimeout(() => {
-        btn.blur();
-    }, 0);
+      // ¡AQUÍ ESTÁ EL CAMBIO! Enviamos 'cantidadFinal' en vez de '1'
+      await gqlRequest(mutation, { u: usuario.id, p: id, c: cantidadFinal });
 
-    // Limpia la clase de animación cuando termina
-    btn.addEventListener('animationend', function handler() {
-      btn.classList.remove('animate');
-      btn.removeEventListener('animationend', handler);
-    });
-  }
+      // Sincronizamos localmente
+      guardarEnLocal(id, nombre, precio, img);
+    }
+    // 3. ESCENARIO: INVITADO -> LocalStorage
+    else {
+      guardarEnLocal(id, nombre, precio, img);
+    }
 
-  // Añade un producto al carrito (o incrementa cantidad si ya existe)
-  function addToCart(productName, productPrice, productImage) {
-    const cart = loadCart();
-    const existing = cart.find(i => i.name === productName);
+    // 4. Feedback Final
+    if (btn) {
+      btn.classList.remove('btn-primary');
+      btn.classList.add('btn-success');
+      btn.innerHTML = '<i class="bi bi-check-lg me-2"></i> ¡Agregado!';
+
+      setTimeout(() => {
+        btn.classList.remove('btn-success');
+        btn.classList.add('btn-primary');
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+
+        const modalEl = document.getElementById('productModal');
+        if (modalEl) modalEl.focus();
+      }, 700);
+    }
+  };
+
+  function guardarEnLocal(id, name, price, image) {
+    const cart = JSON.parse(localStorage.getItem('carrito')) || [];
+    const existing = cart.find(i => i.id === id || i.name === name);
+
     if (existing) {
       existing.quantity = (existing.quantity || 1) + 1;
     } else {
-      cart.push({ name: productName, price: productPrice, quantity: 1, image: productImage });
+      cart.push({ id, name, price, quantity: 1, image });
     }
-    saveCart(cart);
-    updateOrderSummary(); // Actualiza la barra inferior
-    animateAddButton();   // Anima el botón del modal
+
+    localStorage.setItem('carrito', JSON.stringify(cart));
+    window.dispatchEvent(new Event('cart-updated'));
+    updateCartBadge();
+    updateOrderSummary();
   }
 
-  // Actualiza la barra inferior de resumen del pedido
-  function updateOrderSummary() {
-    const cart = loadCart();
-    // Si el carrito está vacío, oculta la barra
-    if (!cart || cart.length === 0) {
-      orderBar.classList.add('d-none');
-      return;
+  // --- B. RENDERIZADO ---
+  async function cargarProductosDesdeBD() {
+    const query = `
+      query {
+        getProductos {
+          id, nombre, descripcion, precio, stock, img, esta_activo
+          categoria { nombre }
+        }
+      }
+    `;
+    const data = await gqlRequest(query);
+    if (data && data.getProductos) {
+      renderizarProductos(data.getProductos);
+    } else {
+      if (contenedorProductos) contenedorProductos.innerHTML = '<h4 class="text-center text-danger">Error de conexión</h4>';
     }
+  }
 
-    // Agrupa productos por nombre y calcula subtotal
-    const agg = {};
-    let subtotal = 0;
-    cart.forEach(it => {
-      const qty = it.quantity || 1;
-      if (!agg[it.name]) agg[it.name] = { ...it };
-      else agg[it.name].quantity = (agg[it.name].quantity || 0) + qty;
-      subtotal += (it.price || 0) * qty;
+  function renderizarProductos(lista) {
+    if (!contenedorProductos) return;
+    contenedorProductos.innerHTML = '';
+
+    lista.forEach(prod => {
+      if (!prod.esta_activo) return;
+
+      const catClass = prod.categoria ? normalizarCategoria(prod.categoria.nombre) : 'otros';
+      const imgSrc = prod.img || 'img/default.jpg';
+
+      // Lógica Stock
+      const sinStock = prod.stock <= 0;
+      const unavailableClass = sinStock ? 'unavailable-product' : '';
+      const overlayHTML = sinStock
+        ? '<div class="unavailable-overlay">Agotado</div>'
+        : `<div class="ingredients-overlay">
+            <p class="ingredients-list">${prod.descripcion || ''}</p>
+            <div class="view-product">Ver producto</div>
+          </div>`;
+
+      // DATOS SEGUROS PARA HTML
+      const cardHTML = `
+        <div class="col-md-4 col-sm-6 mb-4 product-card ${catClass} ${unavailableClass} reveal" 
+             data-id="${prod.id}"
+             data-nombre="${prod.nombre}"
+             data-precio="${prod.precio}"
+             data-img="${imgSrc}"
+             data-desc="${prod.descripcion || ''}"
+             tabindex="0">
+          <div class="card h-100">
+             <div class="image-container">
+                <img src="${imgSrc}" class="card-img-top" alt="${prod.nombre}">
+                ${overlayHTML}
+             </div>
+             <div class="card-body">
+                <h5 class="category">${prod.categoria.nombre.toUpperCase()}</h5>
+                <h5 class="card-title">${prod.nombre}</h5>
+                <p class="card-text new-price">$${prod.precio.toLocaleString('es-CL')}</p>
+             </div>
+          </div>
+        </div>
+      `;
+      contenedorProductos.innerHTML += cardHTML;
+    });
+    activarAnimaciones();
+    activarEventosDeProductos();
+  }
+
+  // Función auxiliar para animaciones (asegúrate de tener el Observer en tu código)
+  function activarAnimaciones() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  }
+
+  function activarEventosDeProductos() {
+    // Filtros
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.product-card');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.dataset.category;
+        let visible = 0;
+        cards.forEach(card => {
+          if (cat === 'todos' || card.classList.contains(cat)) {
+            card.classList.remove('d-none'); visible++;
+          } else { card.classList.add('d-none'); }
+        });
+        if (noProductsMessage) {
+          if (visible === 0) noProductsMessage.classList.remove('d-none');
+          else noProductsMessage.classList.add('d-none');
+        }
+      });
     });
 
-    // Construye el texto del resumen (ej: "2x Hamburguesa, 1x Papas")
-    let text = '';
-    for (const [name, item] of Object.entries(agg)) {
-      text += `${item.quantity}x ${name}, `;
-    }
-    text = text.replace(/, $/, ''); // Elimina la última coma y espacio
+    // Click en Tarjeta -> Modal
+    cards.forEach(card => {
+      card.addEventListener('click', function () {
+        if (this.classList.contains('unavailable-product')) return;
 
-    // Actualiza el HTML de la barra y la muestra
-    leftColumn.innerHTML = `
-            <strong>${text}</strong> |
-            <span class="order-total">Subtotal: ${formatPrice(subtotal)}</span>
-        `;
+        const id = this.dataset.id;
+        const nombre = this.dataset.nombre;
+        const precio = parseInt(this.dataset.precio);
+        const img = this.dataset.img;
+        const desc = this.dataset.desc;
+
+        document.getElementById('modalTitle').textContent = nombre;
+        document.getElementById('modalPrice').textContent = '$' + precio.toLocaleString('es-CL');
+        document.getElementById('modalImage').src = img;
+        // Limpiamos descripción de etiquetas HTML si las hubiera
+        const descLimpia = desc.replace(/<[^>]*>?/gm, '');
+        document.getElementById('modalIngredients').textContent = descLimpia;
+
+        const addBtn = modalElement.querySelector('.cart-btn');
+
+        // Restauramos botón por si quedó verde de antes
+        addBtn.classList.remove('btn-success');
+        addBtn.classList.add('btn-primary');
+        addBtn.innerHTML = '<i class="bi bi-cart3 me-2"></i> Agregar al carrito';
+        addBtn.disabled = false;
+
+        // ASIGNAR FUNCION
+        addBtn.onclick = () => addToCart(id, nombre, precio, img);
+
+        bsModal.show();
+      });
+    });
+  }
+
+  function updateOrderSummary() {
+    const cart = JSON.parse(localStorage.getItem('carrito')) || [];
+    if (!cart.length || !orderBar) {
+      if (orderBar) orderBar.classList.add('d-none');
+      return;
+    }
+    let subtotal = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
+
+    // Resumen corto (ej: "2x Combo, 1x Bebida")
+    let itemsSummary = cart.map(i => `${i.quantity || 1}x ${i.name}`).join(', ');
+    if (itemsSummary.length > 50) itemsSummary = itemsSummary.substring(0, 50) + '...';
+
+    if (leftColumn) {
+      leftColumn.innerHTML = `<strong>${itemsSummary}</strong> | <span class="order-total">Total: $${subtotal.toLocaleString('es-CL')}</span>`;
+    }
     orderBar.classList.remove('d-none');
   }
 
-  // Funciones de utilidad para precios
-  function parsePriceString(s) { return parseInt((s || '').replace(/\D/g, ''), 10) || 0; }
-  function formatPrice(n) { return '$' + n.toLocaleString('es-CL'); }
+  function normalizarCategoria(nombre) {
+    if (!nombre) return 'otros';
+    return nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ñ/g, "n").replace(/\s+/g, "_");
+  }
 
-  // ========== FILTROS DE PRODUCTOS ==========
-
-  const filterButtons = document.querySelectorAll('.filter-btn');
-  const productCardsArr = Array.from(productCards); // Convierte NodeList a Array
-  filterButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      // Gestiona la clase 'active' en los botones de filtro
-      filterButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const cat = btn.dataset.category; // Obtiene la categoría del botón pulsado
-      let visible = 0; // Contador de productos visibles
-
-      // Muestra u oculta las tarjetas de producto según la categoría
-      productCardsArr.forEach(card => {
-        if (cat === 'todos' || card.classList.contains(cat)) {
-          card.classList.remove('d-none');
-          visible++;
-        } else {
-          card.classList.add('d-none');
-        }
-      });
-
-      // Muestra u oculta el mensaje de "No hay productos"
-      if (visible === 0) noProductsMessage.classList.remove('hidden');
-      else noProductsMessage.classList.add('hidden');
-    });
-  });
-
-  // ========== MODAL DE PRODUCTO ==========
-
-  // Añade listeners a cada tarjeta de producto para abrir el modal
-  productCards.forEach(card => {
-    card.setAttribute('tabindex', card.getAttribute('tabindex') || '0'); // Para accesibilidad (navegación por teclado)
-
-    card.addEventListener('click', function () {
-      // No abre el modal si el producto está marcado como no disponible
-      if (this.classList.contains('unavailable-product')) return;
-
-      // Extrae la información del producto de la tarjeta clickeada
-      const title = this.querySelector('.card-title').textContent.trim();
-      const priceEl = this.querySelector('.new-price') || this.querySelector('.card-text');
-      const price = parsePriceString(priceEl.textContent);
-      const image = this.querySelector('.card-img-top').src;
-      const ingredientsOverlay = this.querySelector('.ingredients-overlay');
-      const ingredientsHTML = ingredientsOverlay ? ingredientsOverlay.innerHTML : '';
-
-      // Rellena el contenido del modal
-      document.getElementById('modalTitle').textContent = title;
-      document.getElementById('modalPrice').textContent = priceEl.textContent; // Muestra precio formateado
-      document.getElementById('modalImage').src = image;
-      // Limpia el HTML de ingredientes (quita el "Ver producto")
-      document.getElementById('modalIngredients').innerHTML = ingredientsHTML.replace('<div class="view-product">Ver producto</div>', '');
-
-      const addBtn = modalElement.querySelector('.cart-btn');
-
-      // Resetea animación del botón por si se abrió rápido otra vez
-      addBtn.classList.remove('animate');
-      addBtn.getBoundingClientRect(); // Fuerza reflow
-
-      // Asigna la función de añadir al carrito al botón del modal
-      addBtn.onclick = () => addToCart(title, price, image);
-
-      // Muestra el modal
-      bsModal.show();
-    });
-
-    // Permite abrir el modal con Enter o Espacio (accesibilidad)
-    card.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        this.click();
-      }
-    });
-  });
-
-  // ========== BOTÓN "IR AL CARRITO" ==========
-  goToCartBtn.addEventListener('click', () => {
-    window.location.href = 'carrito_de_compras.html';
-  });
-
-  // ========== SINCRONIZACIÓN ENTRE PESTAÑAS ==========
-  // Escucha cambios en LocalStorage (hechos en otra pestaña)
-  window.addEventListener('storage', () => {
-    updateOrderSummary();
-    updateCartBadge();
-  });
-  // Escucha cuando la pestaña vuelve a ser visible
-  window.addEventListener('visibilitychange', () => {
-    if (!document.hidden) {
-      updateOrderSummary();
-      updateCartBadge();
-    }
-  });
-
-  // ========== INICIALIZACIÓN ==========
-  // Actualiza la barra de resumen y el badge al cargar la página
+  // INICIO
+  cargarProductosDesdeBD();
   updateOrderSummary();
-  updateCartBadge();
+  if (goToCartBtn) goToCartBtn.addEventListener('click', () => window.location.href = 'carrito_de_compras.html');
 });

@@ -28,6 +28,7 @@ const usuarioSchema = mongoose.Schema({
     fecha_nacimiento: Date,
     telefono: String,
     sexo: String,
+    img: String,
 
     // --- Atributos de estado y seguridad ---
     email_confirmado: {

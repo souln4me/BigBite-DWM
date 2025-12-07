@@ -50,12 +50,14 @@ body {
 
 /* --- Logo / marca ---
    Controla el tamaño, color y alineación del logo y texto de marca. */
-.logo, .navbar-brand {
+.logo,
+.navbar-brand {
   display: flex;
   align-items: center;
   text-decoration: none;
   color: #fff;
 }
+
 .navbar-brand-img,
 .logo img {
   height: 56px;
@@ -63,6 +65,7 @@ body {
   display: block;
   margin-right: 12px;
 }
+
 .brand-text,
 .logo span {
   font-size: 28px;
@@ -100,6 +103,7 @@ body {
 .navbar-nav .nav-link.active {
   color: #fff;
 }
+
 .navbar-nav .nav-link::before {
   content: '';
   display: block;
@@ -111,6 +115,7 @@ body {
   width: 0%;
   transition: width 0.25s ease-in-out;
 }
+
 .navbar-nav .nav-link:hover::before,
 .navbar-nav .nav-link.active::before {
   width: 100%;
@@ -127,8 +132,9 @@ body {
   padding: 0.25rem 0.5rem;
   background: transparent;
   border-radius: 6px;
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
+
 .navbar-toggler-icon {
   width: 30px;
   height: 30px;
@@ -149,10 +155,12 @@ body {
   transition: height 0.18s ease, padding 0.18s ease;
   border-radius: 30px;
 }
+
 .navbar-collapse.collapse.show {
   padding: 12px 16px;
   border-radius: 30px;
 }
+
 .navbar-collapse .navbar-nav {
   align-items: center;
 }
@@ -167,28 +175,36 @@ body {
   .navbar {
     height: 64px;
   }
+
   body {
     padding-top: 64px;
   }
-  .brand-text, .logo span {
+
+  .brand-text,
+  .logo span {
     font-size: 22px;
   }
+
   .navbar-brand-img,
   .logo img {
     height: 48px;
   }
+
   .navbar-nav {
     gap: 12px;
     width: 100%;
     flex-direction: column;
   }
+
   .navbar-nav .nav-link {
     width: 100%;
     padding: 10px 12px;
   }
+
   .navbar-collapse {
     box-shadow: none;
   }
+
   .navbar .right-section {
     gap: 10px;
   }
@@ -204,13 +220,16 @@ body {
   outline: none;
   box-shadow: none;
 }
+
 html {
   overflow-y: scroll;
   scrollbar-gutter: stable;
 }
+
 body.modal-open {
   padding-right: 0 !important;
 }
+
 body.modal-open .navbar {
   padding-right: 0 !important;
 }
@@ -228,14 +247,157 @@ body.modal-open .navbar {
   border-left: 1px solid rgba(255, 255, 255, 0.3);
   padding-left: 18px;
 }
+
 .navbar .navbar-cart a {
   color: #bdbdbd;
   text-decoration: none;
 }
+
 .navbar .navbar-cart a:hover {
   color: #fff;
   transition: color 0.18s ease;
 }
+
 .navbar .navbar-cart a.active {
   color: #fff;
+}
+
+
+/* ========================================= */
+/* =========  ESTILOS DE SESIÓN NAV  ======= */
+/* ========================================= */
+
+/* 1. Botón "Iniciar Sesión" (Borde Amarillo) */
+.btn-login-nav {
+  color: #ffc107 !important;
+  border: 2px solid #ffc107;
+  border-radius: 50px;
+  padding: 6px 20px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+  background: transparent;
+}
+
+.btn-login-nav:hover {
+  background-color: #ffc107;
+  color: #000 !important;
+  box-shadow: 0 0 15px rgba(255, 193, 7, 0.4);
+}
+
+/* 2. Botón Usuario Logueado (Avatar + Nombre) */
+.btn-user-nav {
+  color: #fff !important;
+  font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.btn-user-nav:hover {
+  color: #ffc107 !important;
+}
+
+.user-avatar-nav {
+  width: 38px;
+  height: 38px;
+  background-color: #ffc107;
+  color: #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  margin-right: 10px;
+  font-size: 1.1rem;
+}
+
+/* 3. Dropdown Menu (Estilo Glass Oscuro) */
+.navbar .dropdown-menu {
+  background-color: rgba(34, 34, 34, 0.95);
+  /* Casi negro */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+  margin-top: 17px !important;
+  /* Separación del navbar */
+  padding: 8px !important;
+  min-width: 220px;
+
+  /* ESTADO INICIAL: Oculto por defecto (Bootstrap lo maneja, pero preparamos la animación) */
+  display: none;
+}
+
+/* 2. ESTADO ABIERTO (Animación) */
+/* Cuando Bootstrap agrega la clase .show, ejecutamos la animación */
+.navbar .dropdown-menu.show {
+  display: block;
+  /* Aseguramos que se vea */
+  animation: slideDownFade 0.3s ease-out forwards;
+}
+
+/* 3. LA ANIMACIÓN (Keyframes) */
+@keyframes slideDownFade {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+    /* Empieza 15px más abajo */
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    /* Sube a su posición final */
+  }
+}
+
+/* Items del menú */
+.navbar .dropdown-item {
+  color: #e0e0e0;
+  border-radius: 10px;
+  padding: 10px 15px;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.navbar .dropdown-item i {
+  width: 25px;
+  color: #ffc107;
+  text-align: center;
+  margin-right: 5px;
+}
+
+.navbar .dropdown-item:hover {
+  background-color: rgba(255, 193, 7, 0.15);
+  color: #ffc107;
+  transform: translateX(5px);
+}
+
+/* Logout Rojo */
+.navbar .dropdown-item.text-danger:hover {
+  background-color: rgba(220, 53, 69, 0.2);
+  color: #dc3545;
+}
+
+.navbar .dropdown-item.text-danger i {
+  color: #dc3545;
+}
+
+/* Asegura que la imagen sea redonda y del mismo tamaño que la inicial */
+img.user-avatar-nav {
+    width: 38px; 
+    height: 38px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 2px solid #ffc107; /* Borde amarillo para destacar la foto */
 }

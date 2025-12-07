@@ -1,42 +1,102 @@
-/* ===== Carrusel ===== */
-/* Estilo general de las imágenes del carrusel */
-.carousel-inner img {
-    width: 100%; /* Imagen ocupa todo el ancho del contenedor */
-    height: 500px; /* Altura fija para mantener consistencia */
-    object-fit: cover; /* Recorta la imagen sin deformarla */
-    border-radius: 0; /* Sin bordes redondeados */
+/* ================================================= */
+/* ==============  1. FONDO Y BASE  ================ */
+/* ================================================= */
+
+body {
+    background-image: url('../img/local/FondoInicio.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Efecto Parallax: la imagen no se mueve */
+    position: relative;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
 }
 
-/* Estilos para los íconos de control del carrusel (flechas) */
+/* Capa oscura para que el texto sea legible sobre la foto */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.60);
+    z-index: -1;
+}
+
+/* ================================================= */
+/* =================  2. CARRUSEL  ================= */
+/* ================================================= */
+
+.carousel-inner {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+
+    background-color: #000;
+}
+
+.carousel-inner img {
+    width: 100%;
+
+    height: 60vh;
+    min-height: 300px;
+    max-height: 600px;
+
+    object-fit: cover;
+    object-position: center;
+}
+
+@media (max-width: 768px) {
+    .carousel-inner img {
+        height: 50vh;
+        min-height: 250px;
+    }
+}
+
+/* Sombra interna inferior para integrar la imagen con el fondo */
+.carousel-item::after {
+    content: "";
+    position: absolute;
+    bottom: 0; left: 0; width: 100%; height: 50%;
+    background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+    pointer-events: none;
+}
+
+/* Flechas y puntos (Negros para contrastar con fotos claras) */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    filter: invert(1); /* Invierte colores para que se vean sobre fondo claro u oscuro */
-    width: 60px !important; /* Aumenta tamaño de los íconos */
-    height: 60px !important;
+    background-color: #000 !important;
+    border-radius: 20px !important;
+    width: 70px; height: 50px !important;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+.carousel-indicators [data-bs-target] {
+    background-color: #000 !important;
+    opacity: 0.7;
+}
+.carousel-indicators .active {
+    background-color: #ffc107;
+    opacity: 1;
 }
 
-/* Hace que los indicadores (puntos) del carrusel también se inviertan */
-.carousel-indicators {
-    filter: invert(1);
-}
+/* ================================================= */
+/* ============  3. SECCIÓN PROMOCIONES  =========== */
+/* ================================================= */
 
-/* ===== Sección de Promociones ===== */
 #inicio-promociones {
-    margin-top: 80px;
-    margin-bottom: 80px;
-    text-align: center; /* Centra todo el contenido */
+    margin-top: 60px;
+    margin-bottom: 60px;
+    text-align: center;
 }
 
-/* Título principal de la sección de promociones */
+/* Título de Sección (Blanco con sombra) */
 #inicio-promociones h2 {
-    font-size: 2.2rem;
-    font-weight: bold;
-    color: #212529;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #fff; 
+    text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    margin-bottom: 3rem;
     position: relative;
-    display: inline-block; /* Permite aplicar pseudo-elemento decorativo debajo */
+    display: inline-block;
 }
 
-/* Línea decorativa amarilla debajo del título */
 #inicio-promociones h2::after {
     content: "";
     display: block;
@@ -47,187 +107,195 @@
     border-radius: 4px;
 }
 
-/* ===== Cards de Productos ===== */
-/* Estilo base de las tarjetas de productos y promociones */
+/* --- Tarjetas de Productos (Islas Blancas) --- */
 #inicio-promociones .card,
 .inicio-producto .card {
-    border-radius: 20px; /* Bordes redondeados */
-    overflow: hidden; /* Oculta contenido que sobresalga */
-    background-color: #fff8f0; /* Fondo beige claro */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Sombra suave */
-    transition: transform 0.25s ease, box-shadow 0.25s ease; /* Animación suave al hover */
-    margin: 20px auto;
-}
-
-/* Efecto al pasar el mouse sobre la card */
-#inicio-promociones .card:hover,
-.inicio-producto .card:hover {
-    transform: translateY(-6px); /* Eleva la tarjeta ligeramente */
-    box-shadow: 0 6px 16px rgba(0,0,0,0.2); /* Aumenta la sombra */
-}
-
-/* Imagen superior de la card */
-#inicio-promociones .card-img-top,
-.inicio-producto .card-img-top {
-    height: 290px; /* Altura fija */
-    object-fit: cover; /* Recorta sin deformar */
-}
-
-/* Cuerpo de la card */
-#inicio-promociones .card-body {
-    background-color: #fff8f0;
-    padding: 1rem;
-}
-
-/* Título dentro de la card */
-#inicio-promociones .card-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #212529;
-}
-
-/* Precio o texto destacado dentro de la card */
-#inicio-promociones .card-text {
-    color: #28a745; /* Verde para precios */
-    font-weight: 700;
-    font-size: 1.05rem;
-}
-
-/* ===== Botón "Ver Catálogo" ===== */
-#inicio-promociones a.btn {
+    font-family: 'Nunito', sans-serif;
+    line-height: 1.5;
+    background-color: #ffffff; /* Blanco puro para resaltar */
+    color: #212529; /* Texto oscuro adentro */
+    border: none;
     border-radius: 40px;
-    font-weight: bold;
-    padding: 0.8rem 2rem;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3); /* Sombra fuerte para flotar */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 15px;
+}
+
+#inicio-promociones .card:hover {
+    transform: translateY(-10px) scale(1.02);
+    z-index: 10;
+    box-shadow: 0 20px 40px rgba(255, 193, 7, 0.15);
+}
+
+#inicio-promociones .card-img-top {
+    height: 280px; /* Imagen más grande para destacar en inicio */
+    min-height: 220px;
+    max-height: 380px;
+    object-fit: cover;
+    width: 100%;
+    border-radius: 15px 15px 0 0;
+    display: block;
+}
+
+#inicio-promociones .card-title {
+    font-weight: 700;
+    font-size: 1.07rem;
+    margin-bottom: 8px !important;
+    margin-left: 0;
+    display: flex;
+    color: #212529;
+    padding-left: 20px;
+}
+
+/* Categoría */
+#inicio-promociones .card-subtitle {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: left !important;
+    padding-left: 20px;
+}
+
+/* Precio */
+#inicio-promociones .card-text {
+    color: #198754; /* Verde */
+    font-weight: 800;
+    font-size: 1.4rem;
+    display: flex;
+    justify-content: left !important;
+    padding-left: 20px;
+}
+
+/* ================================================= */
+/* ===========  4. LLAMADO A LA ACCIÓN  ============ */
+/* ================================================= */
+
+#inicio-promociones .cta {
+    background-image: url('../img/local/FondoCardInicio.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Efecto Parallax: la imagen no se mueve */
+
+    color: #212529;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 4rem 2rem;
+    margin-top: 80px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+#inicio-promociones .cta h2 {
+    color: #ffc107; /* Texto oscuro dentro de la tarjeta blanca */
+    text-shadow: none;
+    margin-bottom: 1rem;
+}
+
+#inicio-promociones .cta h2::after { display: none; } /* Quitar línea amarilla extra */
+
+#inicio-promociones .cta p {
+    color: #ffffff;
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto 2rem;
+}
+
+#inicio-promociones a.btn {
     background-color: #ffc107;
     color: #000;
-    transition: all 0.25s ease;
-}
-
-/* Efecto hover del botón */
-#inicio-promociones a.btn:hover {
-    background-color: #e6b800;
-    color: #000;
-    transform: translateY(-2px);
-}
-
-/* ===== Llamado a la acción ===== */
-#inicio-promociones .cta {
-    text-align: center;
-    border-radius: 40px;
-    margin-top: 60px;
-    padding: 2rem 1rem;
-    margin-bottom: 60px;
-    background-color: #fff8f0;
-}
-
-/* Título dentro del bloque de llamado a la acción */
-#inicio-promociones .cta h2 {
-    font-size: 2rem;
-    color: #212529;
-    margin-bottom: 1rem;
-    font-weight: bold;
-}
-
-/* Texto descriptivo dentro del bloque de llamado a la acción */
-#inicio-promociones .cta p {
+    font-weight: 700;
+    padding: 12px 35px;
+    border-radius: 50px;
     font-size: 1.1rem;
-    max-width: 600px;
-    margin: 0 auto 1.5rem;
-    color: #444;
+    transition: all 0.2s;
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
 }
 
-/* ===== Local ===== */
-/* Sección informativa sobre el local o tienda física */
+#inicio-promociones a.btn:hover {
+    background-color: #e0a800;
+    transform: scale(1.05);
+}
+
+/* ================================================= */
+/* ==============  5. SECCIÓN LOCAL  =============== */
+/* ================================================= */
+
+/* Efecto Glassmorphism (Vidrio) */
 #inicio-local {
-  background-color: #fff8f0;
-  border-radius: 40px;
-  padding: 3rem 1.5rem;
-  margin-top: 3rem;
-  margin-bottom: 3rem;
+    background-color: rgba(255, 255, 255, 0.08); /* Casi transparente */
+    backdrop-filter: blur(15px); /* Difuminado fuerte */
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Borde fino */
+    
+    border-radius: 40px;
+    padding: 4rem;
+    margin-top: 6rem;
+    margin-bottom: 6rem;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    color: white;
 }
 
-/* Centra verticalmente el contenido de la fila */
-#inicio-local .row {
-    align-items: center;
-}
-
-/* Imagen del local */
-#inicio-local img {
-  border-radius: 40px;
-  max-height: 650px;
-  object-fit: cover;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  display: block;
-  width: 100%;
-}
-
-/* Título de la sección local */
 #inicio-local h2 {
-  font-weight: 700;
-  margin-left: 50px;
+    font-weight: 800;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: #ffc107; /* Título amarillo */
 }
 
-/* Línea decorativa debajo del título */
-#inicio-local h2::after {
-  content: "";
-  display: block;
-  width: 80px;
-  height: 4px;
-  background-color: #ffc107;
-  border-radius: 4px;
-  margin-left: 140px;
-  margin-top: 10px;
-}
-
-/* Texto descriptivo */
 #inicio-local p {
-  color: #444;
-  margin-left: 50px;
+    color: #e0e0e0;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
 }
 
-/* Botón de acción dentro de la sección del local */
+#inicio-local img {
+    border-radius: 30px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+    transform: rotate(-2deg); /* Un toque dinámico */
+    border: 4px solid rgba(255,255,255,0.1);
+    max-width: 95%;
+}
+
+/* Botón del local */
 #inicio-local .btn {
     border-radius: 40px;
     font-weight: bold;
-    padding: 0.8rem 2rem;
+    padding: 12px 30px;
+    background-color: transparent;
+    border: 2px solid #ffc107;
+    color: #ffc107;
+    transition: all 0.2s ease;
+}
+
+#inicio-local .btn:hover {
     background-color: #ffc107;
     color: #000;
-    transition: all 0.25s ease;
-    margin-left: 50px;
-    margin-top: 20px;
+    box-shadow: 0 0 20px rgba(255, 193, 7, 0.4);
 }
 
-/* Efecto hover del botón */
-#inicio-local .btn:hover {
-    background-color: #e6b800;
-    color: #000;
-    transform: translateY(-2px);
+/* ================================================= */
+/* ============  6. ANIMACIONES SCROLL  ============ */
+/* ================================================= */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
 }
 
-/* Estilo al hacer clic (active) en el botón */
-#inicio-local .btn:active {
-    border: 1px solid #000 !important;
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-/* ===== Responsivo ===== */
-/* Ajustes para pantallas medianas (tablets, etc.) */
+/* Ajustes Responsivos */
 @media (max-width: 992px) {
-    .carousel-inner img {
-        height: 400px; /* Reduce la altura del carrusel */
-    }
-
-    #inicio-promociones .card {
-        max-width: 280px; /* Limita ancho de cards */
-    }
-
-    #inicio-promociones .cta {
-        margin-top: 40px; /* Ajusta espaciado superior */
-    }
-}
-
-/* Ajustes para pantallas pequeñas (celulares) */
-@media (max-width: 576px) {
-    #inicio-promociones h2 {
-        font-size: 1.8rem; /* Reduce tamaño del título */
-    }
+    .carousel-inner img { height: 400px; }
+    #inicio-local { padding: 2rem; }
+    #inicio-local img { transform: none; margin-bottom: 2rem; }
 }

@@ -8,58 +8,43 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <link rel="icon" type="image/png" sizes="32x32" href="../img/logo/cropped_circle_image.png">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-
+    <link rel="icon" type="image/png" sizes="32x32" href="../img/logo/cropped_circle_image.png">
     <link rel="stylesheet" href="../css/sidebar.css">
     <link rel="stylesheet" href="../css/mantenedor_base.css">
 </head>
 
 <body>
     <div id="sidebar-placeholder"></div>
-    
+
     <div class="main-content">
         <div class="container-fluid">
             <div class="admin-panel">
 
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h1 class="h3 mb-0">Mantenedor de Productos</h1>
-                    <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-person-fill me-1"></i> Administrador
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
-                            <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
-                        </ul>
+                <div class="d-flex justify-content-between align-items-center mb-4 animate-right">
+                    <div>
+                        <h1 class="h3 mb-0">
+                            <i class="bi bi-bag-check text-muted me-2"> |</i> Mantenedor de Productos
+                        </h1>
+                        <p class="text-muted mb-0 small" style="margin-left: 60px;">Administración del catálogo</p>
                     </div>
                 </div>
 
-                <div class="card card-dashboard mb-4">
+                <div class="card card-dashboard mb-4 animate-up">
                     <div class="card-body p-4">
                         <div class="row g-3 align-items-center">
                             <div class="col-md-4">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Buscar productos...">
-                                    <button class="btn btn-primary" type="button">
-                                        <i class="bi bi-search"></i>
-                                    </button>
+                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                    <input type="text" class="form-control" placeholder="Buscar productos..."
+                                        id="inputBusqueda">
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <select class="form-select">
-                                    <option selected value="Todas">Categoría: Todas</option>
-                                    <option value="Hamburguesas">Hamburguesas</option>
-                                    <option value="Bebidas">Bebidas</option>
-                                    <option value="Acompañamientos">Acompañamientos</option>
-                                    <option value="Combos">Combos</option>
+                                <select class="form-select" id="filtroCategoria">
+                                    <option selected value="Todas">Cargando categorías...</option>
                                 </select>
                             </div>
                             <div class="col-md-4 text-end">
@@ -71,11 +56,11 @@
                     </div>
                 </div>
 
-                <div class="card card-dashboard">
+                <div class="card card-dashboard animate-up">
                     <div class="card-header">
                         <h5 class="mb-0">Lista de Productos</h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body bg-light">
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
                                 <thead class="table-dark">
@@ -89,69 +74,11 @@
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tabla-productos">
                                     <tr>
-                                        <td>PROD-001</td>
-                                        <td>Hamburguesa Clásica</td>
-                                        <td>Hamburguesas</td>
-                                        <td>$12,000</td>
-                                        <td>50</td>
-                                        <td><span class="badge bg-success">Activo</span></td>
-                                        <td class="table-actions">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalProducto">
-                                                <i class="bi bi-pencil-fill me-1"></i> Editar
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalEliminar">
-                                                <i class="bi bi-trash-fill me-1"></i> Eliminar
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>PROD-002</td>
-                                        <td>Hamburguesa BBQ</td>
-                                        <td>Hamburguesas</td>
-                                        <td>$14,000</td>
-                                        <td>30</td>
-                                        <td><span class="badge bg-success">Activo</span></td>
-                                        <td class="table-actions">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalProducto">
-                                                <i class="bi bi-pencil-fill me-1"></i> Editar
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalEliminar">
-                                                <i class="bi bi-trash-fill me-1"></i> Eliminar
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>PROD-003</td>
-                                        <td>Papas Fritas Grandes</td>
-                                        <td>Acompañamientos</td>
-                                        <td>$5,000</td>
-                                        <td>0</td>
-                                        <td><span class="badge bg-danger">Sin Stock</span></td>
-                                        <td class="table-actions">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalProducto">
-                                                <i class="bi bi-pencil-fill me-1"></i> Editar
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalEliminar">
-                                                <i class="bi bi-trash-fill me-1"></i> Eliminar
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>PROD-004</td>
-                                        <td>Combo Familiar</td>
-                                        <td>Combos</td>
-                                        <td>$35,000</td>
-                                        <td>25</td>
-                                        <td><span class="badge bg-success">Activo</span></td>
-                                        <td class="table-actions">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalProducto">
-                                                <i class="bi bi-pencil-fill me-1"></i> Editar
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalEliminar">
-                                                <i class="bi bi-trash-fill me-1"></i> Eliminar
-                                            </button>
+                                        <td colspan="7" class="text-center py-5">
+                                            <div class="spinner-border text-warning" role="status"></div>
+                                            <p class="mt-2 text-muted small">Cargando productos...</p>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -163,58 +90,55 @@
             </div>
         </div>
     </div>
-    
+
     <div class="modal fade" id="modalProducto" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Nuevo Producto</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <div class="modal-header bg-dark">
+                    <h5 class="modal-title text-white">Nuevo Producto</h5>
                 </div>
                 <div class="modal-body">
                     <form id="formProducto" novalidate>
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">Nombre del Producto *</label>
-                                <input type="text" class="form-control" required placeholder="Ej: Hamburguesa Doble Queso">
-                                <div class="invalid-feedback">Ingrese el nombre del producto.</div>
+                                <input type="text" class="form-control" id="prodNombre" required
+                                    placeholder="Ej: Hamburguesa Doble">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Categoría *</label>
-                                <select class="form-select" required>
-                                    <option value="" disabled selected>Seleccionar categoría</option> 
-                                    <option>Hamburguesas</option>
-                                    <option>Bebidas</option>
-                                    <option>Acompañamientos</option>
-                                    <option>Combos</option>
+                                <select class="form-select" id="prodCategoria" required>
+                                    <option value="" disabled selected>Cargando...</option>
                                 </select>
-                                <div class="invalid-feedback">Seleccione una categoría.</div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Precio *</label>
-                                <input type="number" class="form-control" required placeholder="Ej: 10000" min="0"> 
-                                <div class="invalid-feedback">Ingrese un precio válido.</div>
+                                <input type="number" class="form-control" id="prodPrecio" required min="0">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Stock *</label>
-                                <input type="number" class="form-control" required placeholder="Ej: 50" min="0"> 
-                                <div class="invalid-feedback">Ingrese una cantidad válida.</div>
+                                <input type="number" class="form-control" id="prodStock" required min="0">
                             </div>
                             <div class="col-12">
                                 <label class="form-label">Descripción</label>
-                                <textarea class="form-control" rows="3" placeholder="Breve descripción del producto..."></textarea>
+                                <textarea class="form-control" id="prodDesc" rows="3"
+                                    placeholder="Ingredientes..."></textarea>
                             </div>
                             <div class="col-12">
-                                <label class="form-label">Imagen del Producto</label>
-                                <input type="file" class="form-control">
-                                <div class="invalid-feedback">Seleccione un archivo de imagen.</div> 
+                                <label class="form-label">Imagen (URL)</label>
+                                <input type="text" class="form-control" id="prodImg"
+                                    placeholder="img/productos/ejemplo.jpg">
                             </div>
-                            <div class="col-12">
+                            <div class="col-6">
                                 <div class="form-check mt-2">
                                     <input class="form-check-input" type="checkbox" checked id="productoActivo">
-                                    <label class="form-check-label" for="productoActivo">
-                                        Producto activo
-                                    </label>
+                                    <label class="form-check-label" for="productoActivo">Producto activo</label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" id="productoDestacado">
+                                    <label class="form-check-label" for="productoDestacado">Producto destacado</label>
                                 </div>
                             </div>
                         </div>
@@ -239,12 +163,11 @@
                 </div>
                 <div class="modal-body">
                     <p>¿Estás seguro de que deseas eliminar este producto?</p>
-                    <p class="text-muted small">Esta acción no se puede deshacer.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-danger" onclick="eliminarProducto()">
-                        <i class="bi bi-trash-fill me-1"></i> Eliminar Producto
+                        <i class="bi bi-trash-fill me-1"></i> Eliminar
                     </button>
                 </div>
             </div>
@@ -254,54 +177,264 @@
     <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100">
         <div id="toastExito" class="toast align-items-center text-bg-success border-0" role="alert">
             <div class="d-flex">
-                <div class="toast-body">
-                    <i class="bi bi-check-circle-fill me-2"></i> Producto guardado exitosamente
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                <div class="toast-body"><i class="bi bi-check-circle-fill me-2"></i> Guardado exitosamente</div><button
+                    type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
             </div>
         </div>
-         <div id="toastEliminado" class="toast align-items-center text-bg-danger border-0" role="alert">
+        <div id="toastEliminado" class="toast align-items-center text-bg-danger border-0" role="alert">
             <div class="d-flex">
-                <div class="toast-body">
-                    <i class="bi bi-trash-fill me-2"></i> Producto eliminado correctamente
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                <div class="toast-body"><i class="bi bi-trash3-fill me-2"></i> Eliminado correctamente</div><button
+                    type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
             </div>
         </div>
     </div>
 
-    <script>
-        // --- Carga del Sidebar ---
-        fetch('includes/sidebar.html')
-            .then(response => {
-                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                 return response.text();
-             })
-            .then(data => {
-                const sidebarPlaceholder = document.getElementById('sidebar-placeholder');
-                if (sidebarPlaceholder) {
-                    sidebarPlaceholder.innerHTML = data;
-                    // Listeners del sidebar
-                    const toggle = document.getElementById('sidebarToggle');
-                    if (toggle) {
-                        toggle.addEventListener('click', function () {
-                            document.querySelector('.nav-sidebar')?.classList.toggle('active');
-                        });
-                    }
-                    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-                    const links = sidebarPlaceholder.querySelectorAll('.nav-sidebar .nav-link');
-                    links.forEach(link => {
-                        const linkPage = link.getAttribute('href')?.split('/').pop();
-                        if (linkPage === currentPage) {
-                            link.classList.add('active');
-                        } else {
-                            link.classList.remove('active');
-                        }
-                    });
-                }
-            })
-            .catch(error => console.error('Error cargando el sidebar:', error));
+    <script src="../JS/config.js"></script>
+    <script src="../JS/sidebar-loader.js"></script>
 
+    <script>
+        let categoriasCache = [];
+        let productosCache = [];
+        let productoAEliminarId = null;
+        let modalProductoBS = null;
+        let modalEliminarBS = null;
+        let editandoId = null;
+
+        // ==========================================
+        // 1. SEGURIDAD
+        // ==========================================
+        function initPage() {
+            const token = localStorage.getItem('token_bigbite');
+            if (!token) {
+                window.location.href = '../login.html';
+            }
+        }
+        initPage();
+
+        // 3. LISTENERS AL CARGAR DOM
+        document.addEventListener('DOMContentLoaded', () => {
+            modalProductoBS = new bootstrap.Modal(document.getElementById('modalProducto'));
+            modalEliminarBS = new bootstrap.Modal(document.getElementById('modalEliminar'));
+
+            cargarCategorias();
+            cargarProductos();
+
+            document.getElementById('inputBusqueda').addEventListener('input', aplicarFiltros);
+            document.getElementById('filtroCategoria').addEventListener('change', aplicarFiltros);
+
+            // Reset del formulario al cerrar modal
+            document.getElementById('modalProducto').addEventListener('hidden.bs.modal', () => {
+                editandoId = null;
+                document.getElementById('formProducto').reset();
+                document.querySelector('#modalProducto .modal-title').textContent = "Nuevo Producto";
+            });
+        });
+
+        // 4. CARGAR DATOS
+        async function cargarCategorias() {
+            try {
+                const res = await fetch(GRAPHQL_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: `query { getCategorias { id, nombre } }` })
+                });
+                const json = await res.json();
+                categoriasCache = json.data.getCategorias || [];
+
+                // Llenar Filtro
+                const filtro = document.getElementById('filtroCategoria');
+                filtro.innerHTML = '<option value="Todas">Todas las categorías</option>';
+                categoriasCache.forEach(c => filtro.innerHTML += `<option value="${c.nombre}">${c.nombre}</option>`);
+
+                // Llenar Select del Modal
+                const sel = document.getElementById('prodCategoria');
+                sel.innerHTML = '<option value="" disabled selected>Seleccionar...</option>';
+                categoriasCache.forEach(c => sel.innerHTML += `<option value="${c.id}">${c.nombre}</option>`);
+            } catch (e) { console.error("Error cats:", e); }
+        }
+
+        async function cargarProductos() {
+            const query = `query { getProductos { id, nombre, descripcion, precio, stock, img, esta_activo, es_destacado, categoria { id, nombre } } }`;
+            try {
+                const res = await fetch(GRAPHQL_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query })
+                });
+                const json = await res.json();
+
+                // Protección contra null
+                productosCache = json.data.getProductos || [];
+                aplicarFiltros();
+            } catch (e) { console.error("Error productos:", e); }
+        }
+
+        // 5. FILTRADO Y RENDERIZADO
+        function aplicarFiltros() {
+            const texto = document.getElementById('inputBusqueda').value.toLowerCase();
+            const catSel = document.getElementById('filtroCategoria').value;
+
+            const filtrados = productosCache.filter(p => {
+                const matchTexto = p.nombre.toLowerCase().includes(texto);
+                // Protección: verificar si p.categoria existe antes de pedir el nombre
+                const matchCat = catSel === 'Todas' || (p.categoria && p.categoria.nombre === catSel);
+                return matchTexto && matchCat;
+            });
+            renderizarTabla(filtrados);
+        }
+
+        function renderizarTabla(productos) {
+            const tbody = document.getElementById('tabla-productos');
+            tbody.innerHTML = '';
+
+            if (productos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-5 text-muted">No se encontraron productos</td></tr>';
+                return;
+            }
+
+            productos.forEach(p => {
+                const badgeColor = p.esta_activo ? 'bg-success' : 'bg-secondary';
+                const badgeText = p.esta_activo ? 'Activo' : 'Inactivo';
+                const catNombre = p.categoria ? p.categoria.nombre : '<span class="text-danger">Sin Categoría</span>';
+
+                // Preparamos objeto seguro para pasar al modal
+                const pSafe = {
+                    ...p,
+                    categoriaId: p.categoria ? p.categoria.id : ''
+                };
+                // "Escapamos" las comillas simples en el JSON para no romper el HTML del botón
+                const dataStr = encodeURIComponent(JSON.stringify(pSafe));
+
+                const tr = `
+                    <tr>
+                        <td>#${p.id.slice(-4).toUpperCase()}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="../${p.img || 'img/default.jpg'}" 
+                                     class="rounded me-2 border" width="40" height="40" 
+                                     style="object-fit: cover;"
+                                     onerror="this.src='https://placehold.co/40x40?text=IMG'">
+                                <div>
+                                    <div class="fw-bold">${p.nombre}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${catNombre}</td>
+                        <td>$${p.precio.toLocaleString('es-CL')}</td>
+                        <td>${p.stock}</td>
+                        <td><span class="badge ${badgeColor}">${badgeText}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-1" onclick="abrirModalEditar('${dataStr}')">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="confirmarEliminar('${p.id}')">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += tr;
+            });
+        }
+
+        // 6. CREAR / EDITAR
+        window.abrirModalEditar = function (dataStr) {
+            const p = JSON.parse(decodeURIComponent(dataStr));
+            editandoId = p.id;
+
+            document.getElementById('prodNombre').value = p.nombre;
+            document.getElementById('prodCategoria').value = p.categoriaId;
+            document.getElementById('prodPrecio').value = p.precio;
+            document.getElementById('prodStock').value = p.stock;
+            document.getElementById('prodDesc').value = p.descripcion || '';
+            document.getElementById('prodImg').value = p.img || '';
+            document.getElementById('productoActivo').checked = p.esta_activo;
+            document.getElementById('productoDestacado').checked = p.es_destacado || false;
+
+            document.querySelector('#modalProducto .modal-title').textContent = "Editar Producto";
+            modalProductoBS.show();
+        }
+
+        window.guardarProducto = async function () {
+            const token = localStorage.getItem('token_bigbite');
+            const nombre = document.getElementById('prodNombre').value;
+            const catId = document.getElementById('prodCategoria').value;
+            const precio = parseFloat(document.getElementById('prodPrecio').value);
+            const stock = parseInt(document.getElementById('prodStock').value);
+            const desc = document.getElementById('prodDesc').value;
+            const img = document.getElementById('prodImg').value;
+            const activo = document.getElementById('productoActivo').checked;
+            const destacado = document.getElementById('productoDestacado').checked;
+
+            // Validación mejorada: Permite precio 0, pero no vacío
+            if (!nombre || isNaN(precio) || !catId) return alert("Por favor complete Nombre, Categoría y Precio.");
+
+            const inputData = { 
+                nombre, 
+                categoriaId: catId, 
+                precio, 
+                stock: stock || 0, 
+                descripcion: desc, 
+                img, 
+                esta_activo: activo, 
+                es_destacado: destacado
+            };
+            let query, variables;
+
+            if (editandoId) {
+                query = `mutation E($id:ID!, $in:ProductoInput){updProducto(id:$id, input:$in){id}}`;
+                variables = { id: editandoId, in: inputData };
+            } else {
+                query = `mutation C($in:ProductoInput){addProducto(input:$in){id}}`;
+                variables = { in: inputData };
+            }
+
+            try {
+                const res = await fetch(GRAPHQL_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ query, variables })
+                });
+                const json = await res.json();
+
+                if (json.errors) {
+                    alert("Error: " + json.errors[0].message);
+                } else {
+                    modalProductoBS.hide();
+                    cargarProductos();
+                    const t = new bootstrap.Toast(document.getElementById('toastExito'));
+                    t.show();
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        // 7. ELIMINAR
+        window.confirmarEliminar = function (id) {
+            productoAEliminarId = id;
+            modalEliminarBS.show();
+        }
+
+        window.eliminarProducto = async function () {
+            const token = localStorage.getItem('token_bigbite');
+            try {
+                const res = await fetch(GRAPHQL_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ query: `mutation { delProducto(id: "${productoAEliminarId}") { status } }` })
+                });
+                const json = await res.json();
+
+                if (json.errors) {
+                    alert(json.errors[0].message);
+                } else {
+                    modalEliminarBS.hide();
+                    cargarProductos();
+                    const t = new bootstrap.Toast(document.getElementById('toastEliminado'));
+                    t.show();
+                }
+            } catch (e) { console.error(e); }
+        }
     </script>
 </body>
+
 </html>

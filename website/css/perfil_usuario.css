@@ -1,127 +1,428 @@
-/* =========================
-   CARD PRINCIPAL
-   ========================= */
-/* Estilo general para las cards: bordes redondeados, padding, sombra y transición para hover */
-div.card {
-    border-radius: 40px;
-    padding: 30px;
-    max-height: fit-content;
-    height: 100%;
-    margin-bottom: 100px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-    background-color: #f5f5f5;
-    border: 1px solid #e0e0e0;
-    transition: 0.3s ease;
+/* ========================================= */
+/* ========= ESTILO GOURMET DARK =========== */
+/* ========================================= */
+
+body {
+    background-image: url('../img/local/Fondo5.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
 }
 
-/* Hover de las cards: levanta la card y aumenta la sombra */
-div.card:hover {
-    transform: translateY(-3px) !important;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2) !important;
-}
-
-/* =========================
-   BOTONES DENTRO DE CARD
-   ========================= */
-/* Botón de cancelar dentro de la card: gris, redondeado y transición */
-.btn-card-cancel {
-    background-color: #6c757d;
-    color: white;
-    font-weight: 600;
-    border-radius: 40px;
-    padding: 15px 45px;
-    border: none;
-    transition: 0.3s;
-}
-.btn-card-cancel:hover {
-    background-color: #5a6268;
-}
-
-/* Botón de guardar dentro de la card: amarillo, redondeado y transición */
-.btn-card-save {
-    background-color: #ffc107;
-    color: black;
-    font-weight: 600;
-    border-radius: 40px;
-    padding: 15px 45px;
-    border: none;
-    transition: 0.3s;
-}
-.btn-card-save:hover {
-    background-color: #e0a800;
-}
-
-/* =========================
-   BOTONES DE PERFIL (COLUMNA DERECHA)
-   ========================= */
-/* Botón de perfil: ancho completo, bordes redondeados, fondo y borde sutil, hover con cambio de color y ligero zoom */
-.btn-perfil {
+/* Overlay Oscuro */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    padding: 22px 45px;
-    border-radius: 40px;
-    background-color: #f5f5f5;
-    border: 1px solid #e0e0e0;
-    color: #333;
-    font-weight: 600;
-    text-align: left;
-    display: flex;
-    align-items: center;
-    transition: 0.3s;
-    margin-bottom: 52px;
-    margin-left: 40px;
-    text-decoration: none !important;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: -1;
 }
-.btn-perfil:hover,
-.btn-perfil.active {
+
+h1.text-center {
+    font-weight: 800;
+    font-size: 2.5rem;
+    color: #ffc107;
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    margin-top: 20px;
+}
+
+hr {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    opacity: 1;
+}
+
+/* =========================
+   CARD PRINCIPAL (VIDRIO)
+   ========================= */
+div.card {
+    background-color: rgba(33, 37, 41, 0.6);
+    /* Oscuro translúcido */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    padding: 40px;
+    color: #fff;
+    margin-bottom: 50px;
+}
+
+/* Títulos internos */
+.card h5 {
+    font-weight: 700;
+    color: #ffc107;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+    margin-bottom: 30px !important;
+}
+
+/* =========================
+   FOTO DE PERFIL (PLACEHOLDER)
+   ========================= */
+.profile-pic-wrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+}
+
+.profile-pic {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ffc107;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    background-color: #212529;
+}
+
+.profile-pic-edit {
+    position: absolute;
+    bottom: 0;
+    right: 0;
     background-color: #ffc107;
     color: #000;
-    border-color: #ffc107;
-    transform: scale(1.02); /* solo hover, active mantiene tamaño */
-    text-decoration: none !important;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+    border: 2px solid #212529;
+}
+
+.profile-pic-edit:hover {
+    transform: scale(1.1);
 }
 
 /* =========================
    FORMULARIOS Y INPUTS
    ========================= */
-/* Label dentro de cards: negrita y margen inferior */
 .card label {
-    font-weight: 600;
-    margin-bottom: 6px;
+    font-weight: 500;
+    color: #e0e0e0;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
 }
 
-/* Inputs con sombra interna para dar profundidad */
-input {
-    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+.form-control,
+.form-select {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 15px !important;
+    color: #fff !important;
+    padding: 12px 15px !important;
+    transition: all 0.3s ease !important;
 }
 
-select {
-    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+.form-control:focus,
+.form-select:focus {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-color: #ffc107 !important;
+    box-shadow: none !important;
 }
 
-/* Input de grupo: borde redondeado solo al final y cursor pointer */
-div .input-group-text {
-    border-radius: 0 15px 15px 0;
+/* Placeholder */
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Icono del select (flechita) invertido a blanco */
+.form-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+}
+
+/* Apunta al indicador del calendario en Chrome/Edge/Safari */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    /* Invierte el color: Negro -> Blanco */
+    filter: invert(1);
+
+    /* Opcional: Cambia el cursor a manito para que se sepa que es clicable */
+    cursor: pointer;
+
+    /* Opcional: Un poco de transparencia si lo quieres más sutil */
+    opacity: 0.8;
+}
+
+/* Efecto al pasar el mouse */
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    /* Pequeño zoom */
+}
+
+/* Inputs deshabilitados (más oscuros) */
+.form-control:disabled,
+.form-select:disabled {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+    color: #888 !important;
+}
+
+/* Inputs Password Group */
+.input-group .form-control {
+    border-right: none !important;
+    border-radius: 15px 0 0 15px !important;
+}
+
+.input-group .input-group-text {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-left: none !important;
+    border-radius: 0 15px 15px 0 !important;
+    color: #fff;
     cursor: pointer;
 }
 
-/* Inputs generales: borde redondeado y padding interno */
-div .form-control {
-    border-radius: 15px;
-    padding: 12px;
+/* Forzamos que las opciones tengan fondo oscuro para que se lea el texto blanco */
+.form-select option {
+    background-color: #212529;
+    /* Gris muy oscuro (Casi negro) */
+    color: #fff;
+    /* Texto blanco */
 }
 
-div .form-select {
-    border-radius: 15px;
-    padding: 12px;
+/* Opcional: Estilo al pasar el mouse sobre una opción (solo funciona en algunos navegadores) */
+.form-select option:hover {
+    background-color: #ffc107 !important;
+    color: #000 !important;
 }
 
 /* =========================
-   RESPONSIVE
+   BOTONES DE ACCIÓN
    ========================= */
-/* Ajustes de márgenes para botones de perfil en pantallas pequeñas */
-@media (max-width: 768px) {
+.btn-card-cancel {
+    background-color: transparent;
+    color: #aaa;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 40px;
+    padding: 12px 30px;
+    transition: 0.3s;
+}
+
+.btn-card-cancel:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: #fff;
+}
+
+.btn-card-save {
+    background-color: #ffc107;
+    color: #000;
+    font-weight: 700;
+    border-radius: 40px;
+    padding: 12px 40px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+    transition: 0.3s;
+}
+
+.btn-card-save:hover {
+    background-color: #e0a800;
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+}
+
+/* =========================
+   MENÚ LATERAL (BOTONES)
+   ========================= */
+.btn-perfil {
+    width: 100%;
+    padding: 18px 25px;
+    border-radius: 20px;
+
+    /* Fondo oscuro sutil */
+    background-color: rgba(33, 37, 41, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+
+    color: #ccc;
+    font-weight: 600;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+    margin-bottom: 15px;
+    /* Separación entre botones */
+    text-decoration: none !important;
+}
+
+.btn-perfil i {
+    font-size: 1.2rem;
+    width: 30px;
+    /* Ancho fijo icono */
+    text-align: center;
+    margin-right: 10px;
+    transition: color 0.3s;
+}
+
+/* Hover y Activo */
+.btn-perfil:hover {
+    background-color: rgba(255, 193, 7, 0.1);
+    border-color: #ffc107;
+    color: #ffc107;
+    transform: translateX(5px);
+    /* Mover a la derecha */
+}
+
+.btn-perfil.active {
+    background-color: #ffc107;
+    color: #000;
+    border-color: #ffc107;
+    box-shadow: 0 0 20px rgba(255, 193, 7, 0.4);
+    /* Resplandor */
+}
+
+.btn-perfil.active i {
+    color: #000;
+}
+
+/* Botón Cerrar Sesión (Diferente) */
+button.btn-perfil:last-child:hover {
+    background-color: rgba(220, 53, 69, 0.2);
+    /* Rojo suave */
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+button.btn-perfil:last-child:hover i {
+    color: #dc3545;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
     .btn-perfil {
         margin-left: 0;
-        margin-bottom: 20px;
     }
+}
+
+/* ================================================= */
+/* ========= ESTILOS ESPECÍFICOS PASSWORD ========== */
+/* ================================================= */
+
+/* Contenedor del Formulario (Alta especificidad) */
+#password-card {
+    background-color: rgba(33, 37, 41, 0.7) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* --- INPUTS DE CONTRASEÑA FUSIONADOS --- */
+
+/* 1. El Input (Izquierda) */
+#password-card .input-group .form-control {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-right: none !important;
+    border-radius: 15px 0 0 15px !important;
+    color: #fff !important;
+    padding: 12px 15px;
+    transition: all 0.3s ease;
+}
+
+/* 2. El Botón del Ojo (Derecha) */
+#password-card .input-group .input-group-text {
+    background-color: rgba(52, 52, 52, 0.458) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-left: none !important;
+    border-radius: 0 15px 15px 0 !important;
+    color: #adb5bd;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Hover en el ojo */
+#password-card .input-group .input-group-text:hover {
+    color: #ffc107;
+    background-color: rgba(255, 255, 255, 0.225) !important;
+}
+
+/* 3. Estado FOCO (Cuando escribes) - Ilumina todo el bloque */
+#password-card .input-group:focus-within .form-control,
+#password-card .input-group:focus-within .input-group-text {
+    border-color: #ffc107 !important;
+    /* Borde Amarillo */
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    /* Fondo más oscuro */
+    box-shadow: none !important;
+}
+
+#password-card .input-group:focus-within .input-group-text i {
+    color: #ffc107;
+    /* Ícono amarillo */
+}
+
+/* Texto de ayuda */
+#password-card .form-text {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.85rem;
+    margin-top: 5px;
+}
+
+/* ================================================= */
+/* === FIX: TEXTOS Y CONTRASTES DE INPUTS ========== */
+/* ================================================= */
+
+/* 1. Texto dentro de los Inputs (Nombre, Rut, etc.) */
+.form-control,
+.form-select {
+    color: #ffffff !important;
+    /* ✨ Texto BLANCO brillante */
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    /* Fondo oscuro */
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+/* 2. Texto del Placeholder (Lo que dice antes de escribir) */
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+    /* Blanco semitransparente */
+}
+
+/* 3. Texto cuando el input está deshabilitado (Email) */
+.form-control:disabled,
+.form-control[readonly] {
+    color: #aaaaaa !important;
+    /* Gris claro */
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    /* Fondo más oscuro */
+}
+
+/* ================================================= */
+/* === FIX: BOTÓN DEL OJO (TOGGLE PASSWORD) ======== */
+/* ================================================= */
+
+/* Fondo del "Span" (La cajita del ojo) */
+.input-group .input-group-text {
+    /* ✨ CAMBIO: Gris más claro para diferenciarlo del input */
+    background-color: rgba(255, 255, 255, 0.15) !important;
+
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.3) !important;
+    /* Línea divisoria sutil */
+
+    color: #fff !important;
+    /* Icono blanco */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Al pasar el mouse sobre el ojo */
+.input-group .input-group-text:hover {
+    background-color: rgba(255, 255, 255, 0.25) !important;
+    /* Aún más claro */
+    color: #ffc107 !important;
+    /* Icono se pone amarillo */
 }

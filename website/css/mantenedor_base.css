@@ -3,8 +3,13 @@
 /* ========================== */
 
 /* ===== General ===== */
+
+html {
+    overflow-y: scroll;
+}
+
 body {
-    background-color: #f8f9fa;
+    background-color: #f3f3f3 !important;
 }
 
 .admin-panel {
@@ -57,8 +62,8 @@ body {
 .modal-footer .btn {
     border-radius: 800px;
     font-weight: 600;
-    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; 
-    border: 2px solid transparent; 
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    border: 2px solid transparent;
     padding: 8px 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
@@ -85,51 +90,63 @@ body {
     white-space: nowrap;
 }
 
-/* Botón Amarillo (Primario) */
+/* ===================================== */
+/* ===== BOTÓN PRIMARIO (AMARILLO) ===== */
+/* ===================================== */
+
+/* 1. Estado Base */
 .admin-panel .btn.btn-primary,
 .modal-footer .btn.btn-primary {
     background-color: #ffc107;
-    border-color: transparent; 
+    border-color: transparent;
     color: #212529;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .admin-panel .btn.btn-primary:hover,
 .modal-footer .btn.btn-primary:hover {
-    background-color: #e0a800; /* Color Hover */
-    border-color: transparent; 
+    background-color: #e0a800;
     color: #212529;
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Estado presionado (:active) para botones primarios */
 .admin-panel .btn.btn-primary:active,
 .modal-footer .btn.btn-primary:active {
-    background-color: #e0a800 !important; /* MISMO COLOR QUE HOVER */
-    border-color: transparent !important; /* SIN BORDE NEGRO */
-    transform: none; 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important; /* Sombra normal */
+    background-color: #d39e00 !important;
+    color: #212529 !important;
+    border-color: transparent !important;
+    transform: none;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125) !important;
 }
 
-/* Foco visible (teclado) para botones primarios */
-.admin-panel .btn.btn-primary:focus-visible,
+.admin-panel .btn.btn-primary:focus,
 .modal-footer .btn.btn-primary:focus-visible {
-   box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.5); 
-   border-color: transparent; 
+    background-color: #e0a800;
+    color: #212529;
+    border-color: transparent;
+    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.4);
 }
 
 /* Botón Rojo (Peligro) */
 .admin-panel .btn.btn-danger,
 .modal-footer .btn.btn-danger {
     background-color: #dc3545;
-    border-color: transparent; 
+    border-color: transparent;
     color: #fff;
 }
+
 .admin-panel .btn.btn-danger:hover,
 .modal-footer .btn.btn-danger:hover {
     background-color: #bb2d3b;
     border-color: transparent;
     color: #fff;
 }
- /* Estado presionado (:active) para botones danger */
+
+/* Estado presionado (:active) para botones danger */
 .admin-panel .btn.btn-danger:active,
 .modal-footer .btn.btn-danger:active {
     background-color: #bb2d3b !important;
@@ -137,11 +154,12 @@ body {
     transform: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
 }
+
 /* Foco visible (teclado) para botones danger */
 .admin-panel .btn.btn-danger:focus-visible,
 .modal-footer .btn.btn-danger:focus-visible {
-     box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.5);
-     border-color: transparent; 
+    box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.5);
+    border-color: transparent;
 }
 
 /* Botón de Dropdown de Usuario y Secundarios */
@@ -149,10 +167,10 @@ body {
 .modal-footer .btn.btn-secondary {
     border-radius: 800px;
     font-weight: 500;
-    border: 1px solid #ced4da; 
+    border: 1px solid #ced4da;
     color: #495057;
     background-color: #fff;
-    padding: 8px 20px; 
+    padding: 8px 20px;
 }
 
 .admin-panel .btn.btn-outline-secondary:hover,
@@ -165,30 +183,60 @@ body {
 .modal-footer .btn.btn-secondary {
     font-weight: 600;
 }
- /* Foco visible (teclado) para secundarios */
+
+/* Foco visible (teclado) para secundarios */
 .admin-panel .btn.btn-outline-secondary:focus-visible,
 .modal-footer .btn.btn-secondary:focus-visible {
     box-shadow: 0 0 0 4px rgba(108, 117, 125, 0.5);
 }
 
-/* Botones de acciones de tabla */
+/* Botones de acciones de tabla (Editar / Eliminar) */
 .admin-panel .btn.btn-outline-primary {
     border-color: #ffc107;
     color: #e0a800;
-    background-color: transparent; /* Asegura fondo transparente */
+    background-color: transparent;
+    transition: all 0.2s ease;
 }
 
+/* HOVER: Cuando pasas el mouse (Amarillo brillante) */
 .admin-panel .btn.btn-outline-primary:hover {
     background-color: #ffc107;
     color: #212529;
     border-color: #ffc107;
 }
 
+/* ACTIVE: Solo mientras mantienes el clic presionado (Amarillo oscuro) */
+.admin-panel .btn.btn-outline-primary:active {
+    background-color: #e0a800 !important;
+    /* Color oscuro AQUÍ */
+    border-color: #e0a800 !important;
+    color: #212529 !important;
+    transform: translateY(0);
+    /* Efecto visual de presión */
+}
+
+/* FOCUS: Cuando sueltas el clic o usas Tab (El anillo de luz) */
+/* Aquí quitamos el fondo oscuro para que no se quede pegado */
+.admin-panel .btn.btn-outline-primary:focus {
+    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.4);
+    /* Anillo suave */
+    border-color: #ffc107;
+    /* Importante: No forzamos fondo aquí, dejamos que el hover mande */
+}
+
+/* FOCUS + HOVER: Para que si sueltas el clic pero sigues encima, se vea amarillo normal */
+.admin-panel .btn.btn-outline-primary:focus:hover {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+
 .admin-panel .btn.btn-outline-danger {
     border-color: #dc3545;
     color: #dc3545;
-     background-color: transparent;
+    background-color: transparent;
 }
+
 .admin-panel .btn.btn-outline-danger:hover {
     background-color: #dc3545;
     color: #fff;
@@ -198,7 +246,7 @@ body {
 .admin-panel .btn.btn-outline-info {
     border-color: #0dcaf0;
     color: #0dcaf0;
-     background-color: transparent;
+    background-color: transparent;
 }
 
 .admin-panel .btn.btn-outline-info:hover {
@@ -210,16 +258,36 @@ body {
 /* QUITAR SOMBRA DE FOCO EN CLIC (botones generales) */
 .admin-panel .btn:focus:not(:focus-visible),
 .modal-footer .btn:focus:not(:focus-visible) {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra normal */
-    outline: none; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    /* Sombra normal */
+    outline: none;
 }
 
 
- /* ===== Inputs y Formularios ===== */
+/* ===== Inputs y Formularios ===== */
 .admin-panel .form-control,
 .modal-body .form-control {
-    border-radius: 8px; 
+    border-radius: 15px;
     border: 1px solid #ced4da;
+    padding: 8px 16px;
+    font-weight: 500;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.modal-body .form-select,
+#formPerfil .form-select {
+    border-radius: 15px;
+    border: 1px solid #ced4da;
+    padding: 8px 16px;
+    font-weight: 500;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Inputs con icono (contraseña) */
+.modal-body .input-group #pass1,
+.modal-body .input-group #pass2 {
+    border-radius: 15px 0 0 15px !important;
+    border-right: none !important;
     padding: 8px 16px;
     font-weight: 500;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -232,63 +300,68 @@ body {
     font-weight: 500;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
+
 /* Estado :focus */
 .admin-panel .form-control:focus,
-.modal-body .form-control:focus {
+.modal-body .form-control:focus,
+#formPerfil .form-control:focus {
     border-color: #ffc107;
-    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.25); 
+    box-shadow: none !important;
 }
 
 .admin-panel .form-select:focus,
-.modal-body .form-select:focus {
+.modal-body .form-select:focus,
+#formPerfil .form-select:focus {
     border-color: #ffc107;
-    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.25); 
+    box-shadow: none !important;
 }
 
 /* Barra de búsqueda (Input dentro de input-group) */
-.admin-panel .input-group > .form-control { 
-    border-radius: 800px 0 0 800px; 
-    border-right: none; 
+.admin-panel .input-group>.form-control {
+    border-radius: 40px;
 }
-.admin-panel .input-group > .form-control:focus {
-     box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.25); 
-     z-index: 3; 
+
+.admin-panel .input-group>.form-control:focus {
+    border-color: #ffc107;
+    box-shadow: none !important;
+    z-index: 3;
 }
 
 /* Botón de búsqueda (pegado al input) */
-.admin-panel .input-group > .btn.btn-primary { 
-    border-radius: 0 800px 800px 0 !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); 
-    border: 1px solid #ced4da; 
-    border-left: none; 
-    padding: 8px 16px; 
-    border-color: #ced4da; 
-    border-left: none; 
+.admin-panel .input-group-text {
+    border-radius: 40px;
+    border: 1px solid #ced4da;
+    background-color: #F8F9FA;
+    padding: 0.5rem 1rem;
 }
-.admin-panel .input-group > .btn.btn-primary:hover {
-    border-color: #ced4da; 
+
+.admin-panel .input-group>.btn.btn-primary:hover {
+    border-color: #ced4da;
 }
+
 /* Estado presionado del botón de búsqueda */
- .admin-panel .input-group > .btn.btn-primary:active {
-    background-color: #e0a800 !important; 
-    border: 1px solid #ced4da !important; 
+.admin-panel .input-group>.btn.btn-primary:active {
+    background-color: #e0a800 !important;
+    border: 1px solid #ced4da !important;
     border-left: none !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
     transform: none !important;
 }
+
 /* Foco visible (teclado) del botón de búsqueda */
-.admin-panel .input-group > .btn.btn-primary:focus-visible {
-     box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.5);
-     border-color: #ffc107; 
-     border-left: none; 
-     z-index: 3;
+.admin-panel .input-group>.btn.btn-primary:focus-visible {
+    box-shadow: none !important;
+    border-color: #ffc107;
+    border-left: none;
+    z-index: 3;
 }
+
 /* Quitar sombra foco en click del botón de búsqueda */
-.admin-panel .input-group > .btn.btn-primary:focus:not(:focus-visible) {
-     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); 
-     border-color: #ced4da; 
-     border-left: none;
-     outline: none;
+.admin-panel .input-group>.btn.btn-primary:focus:not(:focus-visible) {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-color: #ced4da;
+    border-left: none;
+    outline: none;
 }
 
 .admin-panel label,
@@ -299,20 +372,23 @@ body {
     font-size: 14.4px;
 }
 
- /* Estilo para el check */
+/* Estilo para el check */
 .modal-body .form-check-input {
     border-radius: 0.25em;
     border: 1px solid #ced4da;
     box-shadow: none;
 }
- .modal-body .form-check-input:checked {
+
+.modal-body .form-check-input:checked {
     background-color: #ffc107;
     border-color: #ffc107;
 }
- .modal-body .form-check-input:focus {
-     border-color: #ffc107;
-     box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.25);
+
+.modal-body .form-check-input:focus {
+    border-color: #ffc107;
+    box-shadow: none !important;
 }
+
 .modal-body .form-check-label {
     font-weight: 500;
     font-size: 1rem;
@@ -354,24 +430,28 @@ body {
 .modal-content {
     border-radius: 40px !important;
     border: none;
-    box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.15);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
     overflow: hidden;
 }
+
 .modal-header {
     border-bottom: 1px solid #dee2e6;
     padding: 25px 30px !important;
     border-top-left-radius: 40px;
     border-top-right-radius: 40px;
 }
+
 .modal-body {
     padding: 30px !important;
 }
+
 .modal-body .form-select {
     border: 1px solid #ced4da;
     padding: 8px 16px;
     font-weight: 500;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
+
 .modal-footer {
     background-color: #f8f9fa;
     border-top: 1px solid #dee2e6;
@@ -379,30 +459,37 @@ body {
     border-bottom-left-radius: 40px;
     border-bottom-right-radius: 40px;
 }
-.modal-body h5 { /* Subtítulo "Datos opcionales" */
+
+.modal-body h5 {
+    /* Subtítulo "Datos opcionales" */
     font-weight: 600;
     color: #6c757d;
     border-bottom: 1px solid #dee2e6;
     padding-bottom: 0.5rem;
-    margin-top: 24px; /* Espacio antes del subtítulo */
+    margin-top: 24px;
+    /* Espacio antes del subtítulo */
 }
 
- /* Icono del ojo en contraseña */
-.modal-body .input-group > .form-control { /* Input */
+/* Icono del ojo en contraseña */
+.modal-body .input-group>.form-control {
+    /* Input */
     border-radius: 8px 0 0 8px;
 }
- .modal-body .input-group > .input-group-text { /* Span del ojo */
+
+.modal-body .input-group>.input-group-text {
+    /* Span del ojo */
     cursor: pointer;
     border-radius: 0 8px 8px 0 !important;
     border: 1px solid #ced4da;
-    padding: 0.5rem 0.75rem; /* ajusta tamaño del recuadro */
+    padding: 0.5rem 0.75rem;
+    /* ajusta tamaño del recuadro */
 }
 
 /* cuando el input tiene foco, aplicar el mismo estilo/contorno al icono */
-.modal-body .input-group:focus-within > .input-group-text,
-.modal-body .input-group > .form-control:focus + .input-group-text {
+.modal-body .input-group:focus-within>.input-group-text,
+.modal-body .input-group>.form-control:focus+.input-group-text {
     border-color: #ffc107;
-    box-shadow: 0 0 0 4px rgba(255,193,7,0.25);
+    box-shadow: none !important;
 }
 
 /* ===== Badges ===== */
@@ -413,44 +500,61 @@ body {
     font-size: 12.8px;
     border: 1px solid transparent;
 }
+
 /* Específicos para Estado */
-.admin-panel .badge.bg-success { /* Activo */
+.admin-panel .badge.bg-success {
+    /* Activo */
     color: #0a3622;
     background-color: #d1e7dd;
     border-color: #b1d3c6;
 }
-.admin-panel .badge.bg-warning { /* Inactivo */
+
+.admin-panel .badge.bg-warning {
+    /* Inactivo */
     color: #664d03;
     background-color: #fff3cd;
     border-color: #ffecb5;
 }
-.admin-panel .badge.bg-danger { /* Sin Stock */
+
+.admin-panel .badge.bg-danger {
+    /* Sin Stock */
     color: #58151c;
     background-color: #f8d7da;
     border-color: #f1b0b7;
 }
+
 /* Específicos para Rol (Usuarios) */
-.admin-panel .badge.role-owner { /* Dueño */
-    color: #6f42c1; /* Púrpura */
+.admin-panel .badge.role-owner {
+    /* Dueño */
+    color: #6f42c1;
+    /* Púrpura */
     background-color: #e9d5ff;
     border-color: #d8b4fe;
 }
-.admin-panel .badge.role-admin { /* Admin */
+
+.admin-panel .badge.role-admin {
+    /* Admin */
     color: #055160;
     background-color: #cff4fc;
     border-color: #aeeafc;
 }
-.admin-panel .badge.role-manager { /* Manager (se quitó de usuarios?) */
-    color: #0a3622; 
+
+.admin-panel .badge.role-vcashier {
+    /* Cajero Virtual */
+    color: #0a3622;
     background-color: #d1e7dd;
     border-color: #b1d3c6;
 }
-.admin-panel .badge.role-user { /* Usuario */
+
+.admin-panel .badge.role-user {
+    /* Usuario */
     color: #41464b;
     background-color: #e2e3e5;
     border-color: #d3d6d8;
 }
-.admin-panel .badge.role-delivery { /* Despacho */
+
+.admin-panel .badge.role-delivery {
+    /* Despacho */
     color: #664d03;
     background-color: #fff3cd;
     border-color: #ffecb5;
@@ -471,7 +575,8 @@ body {
 .admin-panel .stat-card {
     background-color: #fff;
     border-radius: 40px;
-    border: 1px solid #dee2e6; /* Borde sutil */
+    border: 1px solid #dee2e6;
+    /* Borde sutil */
     box-shadow: none;
     color: #212529;
     font-weight: 600;
@@ -487,7 +592,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem; /* Ajusta padding si es necesario */
+    padding: 1.5rem;
+    /* Ajusta padding si es necesario */
 }
 
 .admin-panel .stat-card .stat-icon {
@@ -503,7 +609,8 @@ body {
 .admin-panel .stat-card h6 {
     font-weight: 500;
     font-size: 0.9rem;
-    color: #6c757d; /* Color de texto secundario */
+    color: #6c757d;
+    /* Color de texto secundario */
     margin-bottom: 0.25rem;
 }
 
@@ -515,75 +622,631 @@ body {
 
 /* Colores específicos para cada tarjeta de estadística */
 .stat-card.ventas .stat-icon {
-    background-color: #e0f8e9; /* Verde claro */
-    color: #198754; /* Verde oscuro */
+    background-color: #e0f8e9;
+    /* Verde claro */
+    color: #198754;
+    /* Verde oscuro */
 }
 
 .stat-card.promedio .stat-icon {
-    background-color: #fff8e1; /* Amarillo claro */
-    color: #ffc107; /* Amarillo oscuro */
+    background-color: #fff8e1;
+    /* Amarillo claro */
+    color: #ffc107;
+    /* Amarillo oscuro */
 }
 
 .stat-card.pedidos .stat-icon {
-    background-color: #e0f2fe; /* Azul claro */
-    color: #0d6efd; /* Azul oscuro */
+    background-color: #e0f2fe;
+    /* Azul claro */
+    color: #0d6efd;
+    /* Azul oscuro */
 }
 
 .stat-card.productos .stat-icon {
-    background-color: #fdeded; /* Rojo claro */
-    color: #dc3545; /* Rojo oscuro */
+    background-color: #fdeded;
+    /* Rojo claro */
+    color: #dc3545;
+    /* Rojo oscuro */
 }
 
 /* ===== Botones de Exportar ===== */
 .admin-panel .btn.btn-export-pdf {
-    background-color: #dc3545; /* Rojo */
-    border-color: transparent; /* Consistencia */
+    background-color: #dc3545;
+    /* Rojo */
+    border-color: transparent;
+    /* Consistencia */
     color: #fff;
 }
+
 .admin-panel .btn.btn-export-pdf:hover {
     background-color: #bb2d3b;
     border-color: transparent;
     color: #fff;
 }
- /* Estado presionado */
+
+/* Estado presionado */
 .admin-panel .btn.btn-export-pdf:active {
     background-color: #bb2d3b !important;
     border-color: transparent !important;
     transform: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
 }
+
 /* Foco visible */
 .admin-panel .btn.btn-export-pdf:focus-visible {
-     box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.5);
-     border-color: transparent;
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.5);
+    border-color: transparent;
 }
 
 
 .admin-panel .btn.btn-export-excel {
-    background-color: #198754; /* Verde */
-    border-color: transparent; /* Consistencia */
+    background-color: #198754;
+    /* Verde */
+    border-color: transparent;
+    /* Consistencia */
     color: #fff;
 }
+
 .admin-panel .btn.btn-export-excel:hover {
     background-color: #157347;
     border-color: transparent;
     color: #fff;
 }
- /* Estado presionado */
+
+/* Estado presionado */
 .admin-panel .btn.btn-export-excel:active {
     background-color: #157347 !important;
     border-color: transparent !important;
     transform: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
 }
+
 /* Foco visible */
 .admin-panel .btn.btn-export-excel:focus-visible {
-     box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.5);
-     border-color: transparent;
+    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.5);
+    border-color: transparent;
 }
 
 /* ===== Alertas ===== */
 .admin-panel .alert {
     border-radius: 0.75rem;
     font-weight: 500;
+}
+
+div .toast {
+    border-radius: 30px;
+    padding: 10px;
+    animation: slideInRight 5s ease forwards;
+}
+
+@keyframes slideInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+
+    10%,
+    80% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+.admin-panel .btn.btn-outline-secondary.dropdown-toggle {
+    border-radius: 40px;
+}
+
+/* Sobrescribir estado Activo y Dropdown Abierto */
+.admin-panel .btn.btn-outline-secondary.dropdown-toggle:active,
+.admin-panel .btn.btn-outline-secondary.dropdown-toggle:focus,
+.admin-panel .btn.btn-outline-secondary.dropdown-toggle.show {
+    color: #495057 !important;
+    /* Mantiene el texto gris oscuro */
+    background-color: #e9ecef !important;
+    /* Mantiene el fondo blanco (o usa #e9ecef si prefieres el gris del hover) */
+    border-color: #ced4da !important;
+    /* Mantiene el borde original */
+    box-shadow: none !important;
+    /* Elimina el resplandor azul del foco */
+}
+
+/* Asegurar que al pasar el mouse (hover) siga viéndose bien */
+.admin-panel .btn.btn-outline-secondary.dropdown-toggle:hover {
+    background-color: #e9ecef !important;
+    color: #495057 !important;
+}
+
+.admin-panel #btn-logout {
+    color: #dc3545;
+    background-color: #fff;
+    padding: 8px 20px;
+    font-weight: 500;
+}
+
+
+
+
+/* ===================================== */
+/* ==== Estilos MONITOR DE COCINA ====== */
+/* ===================================== */
+
+/* Contenedor principal */
+.kitchen-wrapper {
+    min-height: 75vh;
+    background-color: #f8f9fa !important;
+    padding: 2rem !important;
+    border-radius: 0 0 40px 40px;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Tarjeta Base */
+.kitchen-card {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 24px;
+    /* Bordes más redondos */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.kitchen-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* --- ENCABEZADOS DE COLOR (SEMÁFORO) --- */
+
+/* 1. NUEVO / PAGADO (Celeste) */
+.kitchen-card.status-new .k-card-header {
+    background-color: #e0f7fa;
+    /* Fondo celeste muy claro */
+    border-top: 8px solid #0dcaf0;
+    /* Borde superior grueso celeste */
+    color: #055160;
+    /* Texto oscuro */
+}
+
+.kitchen-card.status-new .order-time {
+    background-color: rgba(255, 255, 255, 0.6);
+    color: #055160;
+    border: 1px solid #b6effb;
+}
+
+/* 2. EN PREPARACIÓN (Amarillo) */
+.kitchen-card.status-prep .k-card-header {
+    background-color: #fff9db;
+    /* Fondo amarillo muy claro */
+    border-top: 8px solid #ffc107;
+    /* Borde superior grueso amarillo */
+    color: #664d03;
+}
+
+.kitchen-card.status-prep .order-time {
+    background-color: rgba(255, 255, 255, 0.6);
+    color: #664d03;
+    border: 1px solid #ffe69c;
+}
+
+/* 3. LISTO (Verde) */
+.kitchen-card.status-ready .k-card-header {
+    background-color: #d1e7dd;
+    /* Fondo verde muy claro */
+    border-top: 8px solid #198754;
+    /* Borde superior grueso verde */
+    color: #0f5132;
+}
+
+.kitchen-card.status-ready .order-time {
+    background-color: rgba(255, 255, 255, 0.6);
+    color: #0f5132;
+    border: 1px solid #badbcc;
+}
+
+
+/* --- ESTRUCTURA INTERNA --- */
+.k-card-header {
+    padding: 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.order-id {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.order-time {
+    font-size: 0.85rem;
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.k-card-body {
+    padding: 1.5rem;
+    flex-grow: 1;
+    background-color: #fff;
+}
+
+/* Items de la lista */
+.k-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed #f0f0f0;
+}
+
+.k-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.k-qty {
+    background-color: #212529;
+    color: #ffc107;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-weight: 700;
+    margin-right: 15px;
+    flex-shrink: 0;
+    font-size: 1rem;
+}
+
+.k-item-name {
+    font-weight: 600;
+    color: #343a40;
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+/* Footer (Botones) */
+.k-card-footer {
+    padding: 1.2rem;
+    background-color: #fff;
+    border-top: 1px solid #f0f0f0;
+}
+
+/* Animación de entrada */
+.animate-pop {
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* ========================================== */
+/* === COLORES DE FILTROS ACTIVOS (COCINA) == */
+/* ========================================== */
+
+#fAll,
+#fNew,
+#fPrep,
+#fReady {
+    transition: 0.2s ease;
+}
+
+#fAll:hover+label,
+#fNew:hover+label,
+#fPrep:hover+label,
+#fReady:hover+label {
+    transform: translateY(-3px);
+}
+
+#fAll:checked+label {
+    background-color: #000000;
+    border-color: #6c757d;
+    color: white;
+}
+
+/* 1. NUEVOS: Celeste/Azul (Info) */
+#fNew:checked+label {
+    background-color: #0dcaf0;
+    /* O el color que prefieras */
+    border-color: #0dcaf0;
+    color: white;
+}
+
+/* 2. EN PROCESO: Amarillo (Warning) */
+#fPrep:checked+label {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: black;
+    /* Texto negro para contraste */
+}
+
+/* 3. LISTOS: Verde (Success) */
+#fReady:checked+label {
+    background-color: #198754;
+    border-color: #198754;
+    color: white;
+}
+
+/* Opcional: Efecto Hover suave cuando pasas el mouse (sin hacer click) */
+#fNew:not(:checked)+label:hover {
+    background-color: #e0f7fa;
+    border-color: #0dcaf0;
+    color: #0dcaf0;
+}
+
+#fPrep:not(:checked)+label:hover {
+    background-color: #fff3cd;
+    border-color: #ffc107;
+    color: #664d03;
+}
+
+#fReady:not(:checked)+label:hover {
+    background-color: #d1e7dd;
+    border-color: #198754;
+    color: #0f5132;
+}
+
+
+/* ================================================== */
+/* === CORRECCIÓN VISUAL PARA GRUPOS DE BOTONES ===== */
+/* ================================================== */
+
+/* 1. Quitar redondeo y márgenes a TODOS los botones dentro de un grupo */
+.admin-panel .btn-group .btn {
+    border-radius: 0 !important;
+    margin: 0 !important;
+    /* Asegura que se toquen */
+}
+
+/* 2. Restaurar redondeo SOLO en el PRIMER botón (Izquierda) */
+.admin-panel .btn-group .btn.rounded-start-pill {
+    border-top-left-radius: 50rem !important;
+    border-bottom-left-radius: 50rem !important;
+}
+
+/* 3. Restaurar redondeo SOLO en el ÚLTIMO botón (Derecha) */
+.admin-panel .btn-group .btn.rounded-end-pill {
+    border-top-right-radius: 50rem !important;
+    border-bottom-right-radius: 50rem !important;
+}
+
+/* ESTILO TICKET DE COCINA (COMANDA) */
+.ticket-content {
+    font-family: 'Courier New', Courier, monospace;
+    /* Fuente tipo máquina */
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.ticket-header {
+    text-align: center;
+    border-bottom: 2px dashed #000;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.ticket-body .row-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.ticket-footer {
+    border-top: 2px dashed #000;
+    padding-top: 15px;
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+body.modal-open {
+    padding-right: 0 !important;
+}
+
+
+
+/* ================================================= */
+/* ==== INPUT PASSWORD FUSIONADO CON LÍNEA ========= */
+/* ================================================= */
+
+/* 1. El Input (Contraseña) */
+.modal-body .input-group input[type="password"],
+#formPerfil .input-group input[type="password"],
+.modal-body .input-group input[type="text"],
+#formPerfil .input-group input[type="text"] {
+    /* Redondo a la izquierda, Plano a la derecha */
+    border-radius: 15px 0 0 15px !important;
+    border-right: none !important;
+    /* IMPORTANTE: Sin borde derecho */
+    padding: 8px 16px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    z-index: 2;
+    /* Asegura que quede por encima si hay solapamiento */
+}
+
+/* 2. El Ojo (Span) */
+.modal-body .input-group .toggle-password,
+#formPerfil .input-group .toggle-password {
+    /* Plano a la izquierda, Redondo a la derecha */
+    border-radius: 0 15px 15px 0 !important;
+    background-color: #F8F9FA !important;
+    /* Fondo Gris */
+
+    /* Borde General */
+    border: 1px solid #ced4da;
+
+    /* LA LÍNEA DIVISORA (Borde Izquierdo) */
+    border-left: 1px solid #ced4da !important;
+
+    /* EL TRUCO MÁGICO: Evita que Bootstrap lo oculte */
+    margin-left: 0 !important;
+
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+}
+
+/* 3. Efecto de Foco (Todo Amarillo) */
+.modal-body .input-group:focus-within input {
+    border-color: #ffc107;
+    box-shadow: none;
+}
+
+/* Al hacer foco, pintamos también la línea divisoria de amarillo */
+.modal-body .input-group:focus-within .toggle-password {
+    border-color: #ffc107;
+    border-left-color: #ffc107 !important;
+}
+
+#mensajeSinResultados {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    border-radius: 40px;
+}
+
+#mensajeRangoInvalido {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    color: #dc3545;
+    border-radius: 40px;
+}
+
+/* ========================================== */
+/* ==========  RESPONSIVE DESIGN  =========== */
+/* ========================================== */
+
+/* --- Tablets y Móviles (Menos de 992px) --- */
+@media (max-width: 991.98px) {
+
+    /* 1. Quitar el margen izquierdo (El sidebar se esconde) */
+    .main-content {
+        margin-left: 0 !important;
+        padding: 15px !important;
+        /* Menos padding para ganar espacio */
+    }
+
+    /* 2. Ajustar el padding del panel */
+    .admin-panel {
+        padding: 20px 10px;
+    }
+
+    /* 3. Títulos más pequeños */
+    .admin-panel h1.h3 {
+        font-size: 1.5rem;
+    }
+}
+
+/* --- Móviles (Menos de 576px) --- */
+@media (max-width: 576.98px) {
+
+    /* 4. Ajuste de Tarjetas de Cocina/Despacho */
+    .k-card-header {
+        flex-direction: column;
+        /* Apilar elementos verticalmente */
+        align-items: flex-start !important;
+        gap: 10px;
+    }
+
+    .k-card-header .text-end {
+        text-align: left !important;
+        /* Alinear a la izquierda */
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        /* Separar precio y hora */
+        align-items: center;
+        margin-top: 5px;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        padding-top: 8px;
+    }
+
+    /* 5. Botones de Filtro */
+    .btn-group {
+        width: 100%;
+        flex-wrap: wrap;
+        /* Permitir que bajen de línea */
+    }
+
+    .btn-group .btn {
+        flex: 1 0 auto;
+        /* Que ocupen el espacio disponible */
+        border-radius: 8px !important;
+        /* Volverlos cuadraditos redondeados */
+        margin: 2px !important;
+        /* Separarlos un poco */
+    }
+
+    /* 6. Ajuste del Modal */
+    .modal-dialog {
+        margin: 10px;
+        /* Un poco de margen en los bordes */
+    }
+}
+
+.animate-up {
+    animation: slideUpFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    /* Movimiento suave */
+    opacity: 0;
+    /* Empieza invisible */
+}
+
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(60px);
+        /* Empieza 60px más abajo */
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        /* Termina en su lugar */
+    }
+}
+
+/* Clase para aplicar al elemento */
+.animate-right {
+    animation: slideRightFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    opacity: 0; /* Empieza invisible */
+}
+
+/* Definición de la animación */
+@keyframes slideRightFade {
+    from {
+        opacity: 0;
+        transform: translateX(-60px); /* Empieza 60px a la IZQUIERDA */
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);     /* Termina en su lugar original */
+    }
 }

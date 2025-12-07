@@ -5,6 +5,7 @@ body {
 
 /* ===== Sidebar principal ===== */
 .nav-sidebar {
+    font-family: 'Poppins', sans-serif;
     background: linear-gradient(180deg, #1c1c1c 0%, #2b2b2b 100%);
     color: #fff;
     min-height: 100vh;
@@ -43,65 +44,145 @@ body {
     line-height: 1.3;
 }
 
-/* ===== Enlaces ===== */
+/* ===== Enlaces del Sidebar ===== */
 .nav-sidebar .nav-link {
     color: #adb5bd;
+    /* Gris suave por defecto */
     display: flex;
     align-items: center;
-    padding: 10px 15px;
-    border-radius: 8px;
-    margin-bottom: 5px;
-    transition: all 0.2s ease;
+    padding: 12px 15px;
+    border-radius: 12px;
+    /* Bordes más modernos */
+    margin-bottom: 8px;
+    transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
     font-weight: 500;
+    border: 1px solid transparent;
+    /* Para evitar saltos al agregar borde */
 }
 
 .nav-sidebar .nav-link i {
-    font-size: 1.3rem;
-    margin-right: 10px;
+    font-size: 1.2rem;
+    width: 24px;
+    /* Ancho fijo para alinear texto */
+    text-align: center;
+    margin-right: 12px;
+    transition: color 0.2s ease;
 }
 
-.nav-sidebar .nav-link.active,
+/* --- ESTADO HOVER (Pasar el mouse) --- */
+/* Efecto "Vidrio Amarillo": Fondo sutil y texto brillante */
 .nav-sidebar .nav-link:hover {
-    background-color: #ffc107;
-    color: #000;
+    background-color: rgba(255, 193, 7, 0.1);
+    /* Amarillo muy transparente */
+    color: #ffc107 !important;
+    /* Texto Amarillo Big Bite */
     transform: translateX(5px);
-    font-weight: 600;
+    border-color: rgba(255, 193, 7, 0.2);
+    /* Borde sutil */
 }
 
-/* ===== Responsive ===== */
-@media (max-width: 768px) {
-    .nav-sidebar {
-        left: -240px;
-        position: fixed;
-    }
-
-    .nav-sidebar.active {
-        left: 0;
-    }
-
-    #sidebarToggle {
-        display: block !important;
-    }
+.nav-sidebar .nav-link:hover i {
+    color: #ffc107;
+    /* Ícono también amarillo */
 }
 
-/* ===== Botón hamburguesa ===== */
+/* --- ESTADO ACTIVE (Página Actual) --- */
+/* Efecto "Encendido": Fondo sólido y resplandor */
+.nav-sidebar .nav-link.active {
+    background-color: #ffc107 !important;
+    /* Amarillo Sólido */
+    color: #1a1a1a !important;
+    /* Texto Negro casi puro */
+    font-weight: 700;
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.4);
+    /* Resplandor Neon */
+    transform: translateX(5px);
+    border-color: #ffc107;
+}
+
+.nav-sidebar .nav-link.active i {
+    color: #1a1a1a;
+}
+
+/* ========================================== */
+/* ==========  RESPONSIVE MOVIL  ============ */
+/* ========================================== */
+
+/* El fondo oscuro (Overlay) */
+#sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Negro semitransparente */
+    z-index: 999;
+    /* Debajo del sidebar (1000), encima del contenido */
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+    backdrop-filter: blur(2px);
+    /* Efecto borroso opcional */
+}
+
+/* Cuando el overlay está activo */
+#sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Estilos del Botón Hamburguesa */
 #sidebarToggle {
     position: fixed;
     top: 15px;
     left: 15px;
     z-index: 1100;
+    /* Encima de todo */
     display: none;
-    border: none;
+    /* Oculto en PC */
+
+    /* Estilo Botón Big Bite */
     background-color: #ffc107;
-    color: #000;
-    padding: 8px 12px;
-    border-radius: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    transition: background-color 0.2s ease;
+    color: #212529;
+    border: none;
+    border-radius: 12px;
+    padding: 5px 12px;
+    transition: transform 0.2s;
 }
 
-#sidebarToggle:hover {
-    background-color: #ecb100;
+#sidebarToggle:active {
+    transform: scale(0.95);
+}
+
+/* MEDIA QUERY: Pantallas menores a 992px (Tablets y Celulares) */
+@media (max-width: 991.98px) {
+
+    /* 1. Mostrar botón hamburguesa */
+    #sidebarToggle {
+        display: block !important;
+    }
+
+    /* 2. Sidebar Oculto por defecto */
+    .nav-sidebar {
+        left: -280px;
+        /* Ancho del sidebar negativo */
+        box-shadow: none;
+    }
+
+    /* 3. Sidebar Visible (Activo) */
+    .nav-sidebar.active {
+        left: 0;
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+        /* Sombra al abrir */
+    }
+
+    /* 4. Contenido Principal expandido */
+    .main-content {
+        margin-left: 0 !important;
+        padding-top: 70px;
+        /* Espacio para no chocar con el botón hamburguesa */
+    }
 }
 
 /* ===== Contenido principal ===== */
@@ -109,6 +190,153 @@ body {
     margin-left: 240px;
     padding: 20px;
     transition: margin-left 0.3s ease;
+}
+
+.dropdown .user-pill {
+    background-color: #212529;
+    border-radius: 40px;
+    padding: 10px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5) !important;
+}
+
+.dropdown .user-pill:hover {
+    background-color: #333;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Ocultar el icono de flecha en los elementos desplegables */
+.nav-sidebar .dropdown-toggle::after {
+    display: none;
+}
+
+/* ============================================== */
+/* ==== MENU FLOTANTE SÓLIDO (TIPO TARJETA) ===== */
+/* ============================================== */
+
+.nav-sidebar .dropdown-menu {
+    /* 1. Comportamiento */
+    display: flex !important;
+    flex-direction: column;
+    gap: 10px;
+
+    /* 2. Posición y Animación */
+    top: auto !important;
+    bottom: 100% !important;
+    margin-bottom: -55px !important;
+    margin-top: 0 !important;
+
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0;
+    transform: translateY(-20px);
+    overflow: hidden;
+    transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    /* 3. ESTILO VISUAL */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 20px !important;
+    padding: 15px !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+    min-width: 100%;
+
+    /* CAMBIO: Bajamos la opacidad al 60% para que se note el vidrio */
+    background-color: rgba(33, 37, 41, 0.6) !important;
+
+    /* El efecto borroso */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    /* Para que funcione en Safari/Mac */
+
+    /* Borde sutil para definir el vidrio */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.nav-sidebar .nav-link i {
+    width: 24px;
+    text-align: center;
+    margin-right: 12px;
+}
+
+/* Estado Abierto */
+.nav-sidebar .dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    max-height: 200px;
+    transform: translateY(0);
+}
+
+/* 4. BOTONES INTERNOS */
+#btn-logout-sidebar,
+#btn-GoToIndex-sidebar,
+#btn-profile-sidebar {
+    border-radius: 50px;
+    color: #fff;
+    padding: 10px 16px;
+    border: none;
+    width: 100%;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    margin-bottom: 0;
+    text-decoration: none;
+    display: block;
+    font-weight: 550;
+}
+
+/* 4. BOTONES INTERNOS DEL DROPDOWN */
+
+/* Estilos Base Compartidos (Forma y Comportamiento) */
+#btn-logout-sidebar,
+#btn-GoToIndex-sidebar,
+#btn-profile-sidebar {
+    border-radius: 50px;
+    /* Píldora */
+    padding: 10px 16px;
+    /* Tamaño cómodo */
+    border: none;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-weight: 600;
+    color: #fff;
+    /* Texto blanco por defecto */
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    margin-bottom: 0;
+    /* El gap del padre maneja el espacio */
+}
+
+/* --- COLORES ESPECÍFICOS --- */
+
+/* 1. Cerrar Sesión (Rojo) */
+#btn-logout-sidebar {
+    background-color: #dc3545;
+}
+
+#btn-logout-sidebar:hover {
+    background-color: #c82333;
+    transform: scale(1.02);
+}
+
+/* 2. Ir a Inicio (Amarillo Big Bite) */
+#btn-GoToIndex-sidebar {
+    background-color: #ffc107;
+    color: #212529 !important;
+    /* Texto oscuro para contraste */
+}
+
+#btn-GoToIndex-sidebar:hover {
+    background-color: #e0a800;
+    transform: scale(1.02);
+}
+
+/* 3. Mi Perfil (Azul) */
+#btn-profile-sidebar {
+    background-color: #343a40;
+}
+
+#btn-profile-sidebar:hover {
+    background-color: #343a40;
+    transform: scale(1.02);
 }
 
 @media (max-width: 768px) {

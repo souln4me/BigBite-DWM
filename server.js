@@ -21,13 +21,15 @@ const AnulacionPedido = require('./models/anulacionPedido');
 const TokenConfirmacion = require('./models/tokenConfirmacion');
 const Sesion = require('./models/sesion');
 
-const JWT_SECRET = "1234"; 
+const JWT_SECRET = "1234";
 
-mongoose.connect('mongodb://localhost:27017/bd-bigbite');
+mongoose.connect('mongodb://localhost:27017/bd-bigbite')
+    .then(() => console.log("✅ Conectado a MongoDB"))
+    .catch(err => console.error("Error MongoB:", err));
 
-// --------------------
+// -----------------------------
 // --- 2. SCHEMAS (TypeDefs) ---
-// --------------------
+// -----------------------------
 
 const typeDefs = gql`
 # --- (Tipos de Usuario y Rol) ---
@@ -47,6 +49,7 @@ type Usuario {
     fecha_nacimiento: String
     telefono: String
     sexo: String
+    img: String
     email_confirmado: Boolean!
     intentos_fallidos: Int!
     fecha_bloqueo: String
@@ -65,6 +68,7 @@ input UsuarioInput {
     fecha_nacimiento: String
     telefono: String
     sexo: String
+    img: String
     rolId: String
 }
 input UpdateUsuarioInput {
@@ -79,6 +83,7 @@ input UpdateUsuarioInput {
     fecha_nacimiento: String
     telefono: String
     sexo: String
+    img: String
     rolId: String
 }
 input RolInput {
@@ -303,12 +308,11 @@ type Mutation {
     solicitarRecuperacion(email: String!): Response
     cambiarPassword(passActual: String!, nuevaPass: String!): Response
     resetearPassword(token: String!, nuevaPass: String!): Response
+
+    # Control de sesión
+    renovarSesion: String
 }
 `;
-
-// ---------------------
-// --- 3. RESOLVERS ---
-// ---------------------
 
 // --- Funciones Helper para Popular ---
 const popularCarrito = (carritoDocument) => {
@@ -381,7 +385,7 @@ const crearFiltroDeFecha = (fechaInicio, fechaFin) => {
 // Constante para el IVA (19% en Chile)
 const IVA_PERCENT = 0.19;
 
-// --- Helper de validación de contraseña (B-01, B-07) ---
+// --- Helper de validación de contraseña ---
 const validarFormatoPassword = (pass) => {
     // Mínimo 8 caracteres, 1 mayúscula, 1 dígito
     const formatoValido = /^(?=.*[A-Z])(?=.*\d).{8,}$/.test(pass);
@@ -402,7 +406,7 @@ const crearYEnviarTokenConfirmacion = async (usuario) => {
     await nuevoToken.save();
 
     console.log('---------------------------------')
-    console.log(`(Simulación) Email de CONFIRMACIÓN enviado a: ${usuario.email}`)
+    console.log(`Email de CONFIRMACIÓN enviado a: ${usuario.email}`)
     console.log(`Token: ${valorToken}`)
     console.log('---------------------------------');
     return true
@@ -424,7 +428,7 @@ const crearYEnviarTokenReseteo = async (usuario) => {
     await nuevoToken.save();
 
     console.log('---------------------------------')
-    console.log(`(Simulación) Email de RESETEO enviado a: ${usuario.email}`)
+    console.log(`Email de RESETEO PASS enviado a: ${usuario.email}`)
     console.log(`Token: ${valorToken}`)
     console.log('---------------------------------');
     return true
@@ -449,7 +453,9 @@ const validarDatosPerfil = (input) => {
     return true;
 }
 
-
+// ================================
+// -- 3. RESOLVERS DE QUERY ---
+// ================================
 const resolvers = {
     Query: {
         // --- Resolvers de Usuario y Rol ---
@@ -634,18 +640,43 @@ const resolvers = {
             return ordenesPopuladas;
         }
     },
+    // ================================
+    // --- 4. RESOLVERS DE MUTATION ---
+    // ================================
     Mutation: {
+        // --- Resolver de Sesión ---
+        async renovarSesion(obj, args, context) {
+            // 1. Verificar si el token actual sigue siendo válido
+            if (!context.usuario) {
+                throw new UserInputError("Sesión no válida o expirada.");
+            }
+            // 2. Generar un nuevo token JWT
+            const tokenPayLoad = {
+                id: context.usuario.id,
+                email: context.usuario.email,
+                rol: context.usuario.rol
+            };
+
+            const nuevoToken = jwt.sign(tokenPayLoad, JWT_SECRET, { expiresIn: '30min' });
+            
+            // 3. Actualizar la fecha de último acceso en la colección Sesion
+            await Sesion.findOneAndUpdate(
+                { usuario: context.usuario.id },
+                { $set: { fecha_ultimo_acceso: new Date() } }
+            );
+            return nuevoToken;
+        },
         // --- Resolvers de Usuario y Rol ---
         async addUsuario(obj, { input }) {
             const existeEmail = await Usuario.findOne({ email: input.email });
             if (existeEmail) throw new UserInputError('El email ya está registrado.');
             
-            // Gap B-01: Validar formato de contraseña
+            // Validar formato de contraseña
             if (!validarFormatoPassword(input.pass)) {
                 throw new UserInputError("La contraseña no cumple los requisitos (mín. 8 caracteres, 1 mayúscula, 1 dígito).");
             }
             
-            // Gap B-03: Validar datos
+            // Validar datos
             validarDatosPerfil(input);
             
             if (input.rut) {
@@ -677,6 +708,7 @@ const resolvers = {
                 fecha_nacimiento: input.fecha_nacimiento,
                 telefono: input.telefono,
                 sexo: input.sexo,
+                img: input.img,
                 rol: rolAsignadoId
             });
             await usuario.save();
@@ -701,17 +733,16 @@ const resolvers = {
             return rol;
         },
         async updUsuario(obj, { id, input }, context) {
-            // Gap B-03: Validación de datos
+            // Validación de datos
             validarDatosPerfil(input);
             
-            // Gap B-03: Seguridad de ruta
-            // Solo un Admin o el propio usuario puede editar
+            // Solo un Admin, Dueño o el propio usuario puede editar
             const usuarioLogueado = context.usuario;
             if (!usuarioLogueado) {
                 throw new UserInputError("No estás autenticado.");
             }
-            // Si no es admin Y está intentando editar a OTRA persona
-            if (usuarioLogueado.rol !== 'Admin' && usuarioLogueado.id !== id) {
+            // Si no es admin o dueño y está intentando editar a OTRA persona
+            if (usuarioLogueado.rol !== 'Administrador' && usuarioLogueado.rol !== 'Dueño' && usuarioLogueado.id !== id) {
                 throw new UserInputError("No tienes permiso para editar este perfil.");
             }
             
@@ -726,9 +757,10 @@ const resolvers = {
             if (input.fecha_nacimiento) updates.fecha_nacimiento = input.fecha_nacimiento;
             if (input.telefono) updates.telefono = input.telefono;
             if (input.sexo) updates.sexo = input.sexo;
+            if (input.img) updates.img = input.img;
             
             if (input.pass) {
-                // Gap B-01: Validar formato
+                // Validar formato
                 if (!validarFormatoPassword(input.pass)) {
                     throw new UserInputError("La nueva contraseña no cumple los requisitos (mín. 8 caracteres, 1 mayúscula, 1 dígito).");
                 }
@@ -736,9 +768,9 @@ const resolvers = {
                 updates.hash_pass = await bcrypt.hash(input.pass, salt);
             }
             
-            // Solo un Admin puede cambiar el Rol
+            // Solo un Admin o Dueño puede cambiar el Rol
             if (input.rolId) {
-                if (usuarioLogueado.rol !== 'Admin') {
+                if (usuarioLogueado.rol !== 'Administrador' && usuarioLogueado.rol !== 'Dueño') {
                     throw new UserInputError("No tienes permiso para cambiar roles.");
                 }
                 if (!Types.ObjectId.isValid(input.rolId) || !(await Rol.findById(input.rolId))) {
@@ -1214,13 +1246,13 @@ const resolvers = {
         },
         
         async cambiarPassword(obj, { passActual, nuevaPass }, context) {
-            // Gap B-03: Seguridad. Esta mutación REQUIERE que el usuario esté logueado.
+            // Seguridad. Esta mutación REQUIERE que el usuario esté logueado.
             if (!context.usuario) {
                 throw new UserInputError("No estás autenticado. Debes iniciar sesión.");
             }
             const userId = context.usuario.id;
 
-            // Gap B-07: Validar formato
+            // Validar formato
             if (!validarFormatoPassword(nuevaPass)) {
                 throw new UserInputError("La nueva contraseña no cumple los requisitos (mín. 8 caracteres, 1 mayúscula, 1 dígito).");
             }
@@ -1228,11 +1260,11 @@ const resolvers = {
             const usuario = await Usuario.findById(userId);
             if (!usuario) throw new UserInputError("Usuario no encontrado.");
 
-            // Gap B-07: Validar contraseña actual
+            // Validar contraseña actual
             const esValida = await bcrypt.compare(passActual, usuario.hash_pass);
             if (!esValida) throw new UserInputError("La contraseña actual es incorrecta.");
             
-            // Gap B-07: Validar que no sea igual a la anterior
+            // Validar que no sea igual a la anterior
             const esMismaPass = await bcrypt.compare(nuevaPass, usuario.hash_pass);
             if (esMismaPass) throw new UserInputError("La nueva contraseña no puede ser igual a la anterior.");
 
@@ -1245,12 +1277,12 @@ const resolvers = {
         },
         
         async resetearPassword(obj, { token, nuevaPass }) {
-            // Gap B-01/B-07: Validar formato
+            // Validar formato
             if (!validarFormatoPassword(nuevaPass)) {
                 throw new UserInputError("La nueva contraseña no cumple los requisitos (mín. 8 caracteres, 1 mayúscula, 1 dígito).");
             }
 
-            // Gap B-06: Buscar token de reseteo
+            // Buscar token de reseteo
             const tokenDoc = await TokenConfirmacion.findOne({
                 valor_token: token,
                 tipo_token: 'RESETEO_PASSWORD'
@@ -1260,7 +1292,7 @@ const resolvers = {
                 throw new UserInputError("Token inválido, revise su correo.");
             }
             
-            // Gap B-06: Validar expiración (60 min)
+            // Validar expiración (60 min)
             if (tokenDoc.fecha_expiracion < new Date()) {
                 throw new UserInputError('El token ha expirado, genere uno nuevo.');
             }
@@ -1274,7 +1306,7 @@ const resolvers = {
                 throw new UserInputError("Usuario asociado al token no encontrado.");
             }
             
-            // Gap B-07: Validar que no sea igual a la anterior
+            // Validar que no sea igual a la anterior
             const esMismaPass = await bcrypt.compare(nuevaPass, usuario.hash_pass);
             if (esMismaPass) throw new UserInputError("La nueva contraseña no puede ser igual a la anterior.");
 
@@ -1296,6 +1328,9 @@ const resolvers = {
 // -----------------------------------------------------
 const app = express();
 app.use(cors());
+
+app.use(express.json({ limit: '15mb' }));
+app.use(express.urlencoded({ limit: '15mb', extended: true }));
 
 async function startServer() {
     const apolloServer = new ApolloServer({

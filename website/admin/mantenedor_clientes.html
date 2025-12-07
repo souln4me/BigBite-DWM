@@ -29,32 +29,31 @@
         <div class="container-fluid">
             <div class="admin-panel">
 
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h1 class="h3 mb-0">Mantenedor de Clientes</h1>
-                    <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                            data-bs-toggle="dropdown">
-                            <i class="bi bi-person-fill me-1"></i> Administrador
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
-                        </ul>
+                <div class="d-flex justify-content-between align-items-center mb-4 animate-right">
+                    <div>
+                        <h1 class="h3 mb-0">
+                            <i class="bi bi-person-badge me-2 text-muted"> |</i> Mantenedor de Clientes
+                        </h1>
+                        <p class="text-muted mb-0 small" style="margin-left: 60px;">Gestión de perfiles y contacto</p>
                     </div>
                 </div>
 
-                <div class="card card-dashboard mb-4">
+                <div class="card card-dashboard mb-4 animate-up">
                     <div class="card-body p-4">
                         <div class="row g-3 align-items-center justify-content-between">
-                            <div class="col-md-9">
+                            <div class="col-md-6">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Buscar clientes...">
-                                    <button class="btn btn-primary" type="button">
+                                    <span class="input-group-text">
                                         <i class="bi bi-search"></i>
-                                    </button>
+                                    </span>
+                                    <input type="text" class="form-control" placeholder="Buscar usuarios..."
+                                        id="inputBuscar">
                                 </div>
                             </div>
-                            <div class="col-md-3 text-end">
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
+
+                            <div class="col-md-6 text-end">
+                                <button id="btnRegistrarCliente" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#modalCliente">
                                     <i class="bi bi-plus-lg me-1"></i> Registrar Cliente
                                 </button>
                             </div>
@@ -62,11 +61,11 @@
                     </div>
                 </div>
 
-                <div class="card card-dashboard">
+                <div class="card card-dashboard animate-up">
                     <div class="card-header">
                         <h5 class="mb-0">Lista de Clientes</h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body bg-light">
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
                                 <thead class="table-dark">
@@ -82,68 +81,11 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>CLI-001</td>
-                                        <td>Roberto Sánchez</td>
-                                        <td>roberto.s@email.com</td>
-                                        <td>+56 9 1234 5678</td>
-                                        <td>$450,000</td>
-                                        <td>15/03/2024</td>
-                                        <td class="table-actions">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-                                                data-bs-target="#modalCliente">
-                                                <i class="bi bi-pencil-fill me-1"></i> Editar
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-info" onclick="verHistorial()">
-                                                <i class="bi bi-clock-history me-1"></i> Historial
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>CLI-002</td>
-                                        <td>Laura Mendoza</td>
-                                        <td>laura.m@email.com</td>
-                                        <td>+56 9 8765 4321</td>
-                                        <td>$320,000</td>
-                                        <td>14/03/2024</td>
-                                        <td class="table-actions">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
-                                                <i class="bi bi-pencil-fill me-1"></i> Editar
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-info" onclick="verHistorial()">
-                                                <i class="bi bi-clock-history me-1"></i> Historial
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>CLI-003</td>
-                                        <td>Diego Castillo</td>
-                                        <td>diego.c@email.com</td>
-                                        <td>+56 9 5555 1234</td>
-                                        <td>$85,000</td>
-                                        <td>10/03/2024</td>
-                                        <td class="table-actions">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
-                                                <i class="bi bi-pencil-fill me-1"></i> Editar
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-info" onclick="verHistorial()">
-                                                <i class="bi bi-clock-history me-1"></i> Historial
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>CLI-004</td>
-                                        <td>Fernanda Rojas</td>
-                                        <td>fernanda.r@email.com</td>
-                                        <td>+56 9 4444 5678</td>
-                                        <td>$45,000</td>
-                                        <td>08/03/2024</td>
-                                        <td class="table-actions">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
-                                                <i class="bi bi-pencil-fill me-1"></i> Editar
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-info" onclick="verHistorial()">
-                                                <i class="bi bi-clock-history me-1"></i> Historial
-                                            </button>
+                                        <td colspan="7" class="text-center py-5">
+                                            <div class="spinner-border text-warning" role="status">
+                                                <span class="visually-hidden">Cargando...</span>
+                                            </div>
+                                            <p class="mt-2 text-muted small">Cargando clientes...</p>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -155,57 +97,115 @@
             </div>
         </div>
     </div>
-    
+
     <div class="modal fade" id="modalCliente" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Registrar Cliente</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <div class="modal-header bg-dark">
+                    <h5 class="modal-title text-white">Nuevo Cliente</h5>
                 </div>
                 <div class="modal-body">
                     <form id="formCliente" novalidate>
-                        <div class="row g-3">
+                        <h5 class="text-muted mb-3 mt-0">
+                            <i class="bi bi-shield-lock-fill me-2"></i> Datos de Acceso
+                        </h5>
+                        <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label">Email *</label>
-                                <input type="email" class="form-control" required placeholder="ejemplo@correo.com">
-                                <div class="invalid-feedback">Por favor, ingrese un email válido.</div>
+                                <input type="email" id="userEmail" class="form-control" required
+                                    placeholder="ejemplo@bigbite.cl">
                             </div>
+                        </div>
+                        <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label">Contraseña *</label>
-                                <div class="input-group"> 
-                                    <input type="password" id="pass" class="form-control" required placeholder="••••••••">
-                                    <span class="input-group-text" id="togglePass" style="cursor: pointer;">
+                                <div class="input-group">
+                                    <input type="password" id="pass1" class="form-control" required
+                                        placeholder="•••••••••">
+                                    <span class="input-group-text toggle-password spanOjo">
                                         <i class="bi bi-eye-slash"></i>
                                     </span>
-                                    <div class="invalid-feedback">Por favor, ingrese una contraseña.</div>
                                 </div>
                             </div>
-
-                            <div class="col-12">
-                                <h5 class="mt-4 mb-2">Datos opcionales:</h5>
-                            </div>
-
                             <div class="col-md-6">
-                                <label class="form-label">RUN</label>
-                                <input type="text" class="form-control" placeholder="12345678-9">
+                                <label class="form-label">Confirmar contraseña *</label>
+                                <div class="input-group">
+                                    <input type="password" id="pass2" class="form-control" required
+                                        placeholder="•••••••••">
+                                    <span class="input-group-text toggle-password spanOjo">
+                                        <i class="bi bi-eye-slash"></i>
+                                    </span>
+                                </div>
                             </div>
-                            <div class="col-md-6">
+                        </div>
+
+                        <h5 class="text-muted mb-3 mt-5">
+                            <i class="bi bi-person-vcard-fill me-2"></i> Ficha Personal (RRHH)
+                        </h5>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">RUT</label>
+                                <input type="text" id="userRut" class="form-control" placeholder="12.345.678-9">
+                            </div>
+                            <div class="col-md-8">
                                 <label class="form-label">Nombre Completo</label>
-                                <input type="text" class="form-control" placeholder="Juan Pérez González">
+                                <input type="text" id="userName" class="form-control" placeholder="Ej: Ana Contreras">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Teléfono</label>
-                                <input type="tel" class="form-control" placeholder="+56 9 1234 5678">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Fecha de Nacimiento</label>
-                                <input type="date" class="form-control">
-                            </div>
-                            <div class="col-12">
                                 <label class="form-label">Dirección</label>
-                                <textarea class="form-control" rows="3"
-                                    placeholder="Calle Falsa 123, Comuna"></textarea>
+                                <input type="text" id="userAdress" class="form-control"
+                                    placeholder="Calle cualquiera 123">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Región</label>
+                                <select id="userRegion" class="form-select">
+                                    <option value="" selected disabled>Selecciona tu región...</option>
+                                    <option value="arica_y_parinacota">Arica y Parinacota</option>
+                                    <option value="tarapaca">Tarapacá</option>
+                                    <option value="atacama">Atacama</option>
+                                    <option value="coquimbo">Coquimbo</option>
+                                    <option value="valparaiso">Valparaíso</option>
+                                    <option value="metropolitana">Metropolitana de Santiago</option>
+                                    <option value="ohiggins">O'Higgins</option>
+                                    <option value="maule">Maule</option>
+                                    <option value="ñuble">Ñuble</option>
+                                    <option value="biobio">Biobío</option>
+                                    <option value="araucania">Araucanía</option>
+                                    <option value="los_rios">Los Ríos</option>
+                                    <option value="los_lagos">Los Lagos</option>
+                                    <option value="aysen">Aysén</option>
+                                    <option value="magallanes">Magallanes</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Provincia</label>
+                                <select id="userProvincia" class="form-select" disabled>
+                                    <option value="" selected disabled>Selecciona tu provincia...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Comuna</label>
+                                <select id="userComuna" class="form-select" disabled>
+                                    <option value="" selected disabled>Selecciona tu comuna...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Fecha de nacimiento</label>
+                                <input type="date" id="userDob" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Teléfono</label>
+                                <input type="tel" id="userPhone" class="form-control" placeholder="9 1111 2222">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Sexo</label>
+                                <select id="userSex" class="form-select">
+                                    <option value="" selected disabled>Seleccionar...</option>
+                                    <option value="masculino">Masculino</option>
+                                    <option value="femenino">Femenino</option>
+                                    <option value="otro">Otro</option>
+                                    <option value="no_especifica">Prefiero no decirlo</option>
+                                </select>
                             </div>
                         </div>
                     </form>
@@ -231,40 +231,482 @@
         </div>
     </div>
 
+    <script src="../JS/config.js"></script>
+    <script src="../JS/sidebar-loader.js"></script>
+
     <script>
-        // --- Carga del Sidebar ---
-        fetch('includes/sidebar.html')
-            .then(response => {
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                return response.text();
-            })
-            .then(data => {
-                const sidebarPlaceholder = document.getElementById('sidebar-placeholder');
-                if (sidebarPlaceholder) {
-                    sidebarPlaceholder.innerHTML = data;
-                    // Listeners del sidebar
-                    const toggle = document.getElementById('sidebarToggle');
-                    if (toggle) {
-                        toggle.addEventListener('click', function () {
-                            document.querySelector('.nav-sidebar')?.classList.toggle('active');
-                        });
+        let clientesDataCache = [];
+        let clienteEditandoId = null;
+        let clienteAEliminarId = null;
+        let modalClienteBS = null;
+
+        // ==========================================
+        // 1. SEGURIDAD
+        // ==========================================
+        function initPage() {
+            const token = localStorage.getItem('token_bigbite');
+            if (!token) {
+                window.location.href = '../login.html';
+            }
+        }
+        initPage();
+
+        // ==========================
+        // 2) DOMContentLoaded init
+        // ==========================
+        document.addEventListener('DOMContentLoaded', () => {
+            modalClienteBS = new bootstrap.Modal(document.getElementById('modalCliente'));
+
+            // inicializar selects región/provincia/comuna
+            initLocationLogic();
+
+            // cargar datos
+            cargarClientesConDatos();
+
+            // Toggle password icons (funciona para todos los .toggle-password dentro del modal)
+            document.querySelectorAll('.toggle-password').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const input = this.parentElement.querySelector('input.form-control');
+                    const icon = this.querySelector('i');
+                    if (!input) return;
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        if (icon) icon.classList.replace('bi-eye-slash', 'bi-eye');
+                    } else {
+                        input.type = 'password';
+                        if (icon) icon.classList.replace('bi-eye', 'bi-eye-slash');
                     }
-                    const currentPage = window.location.pathname.split('/').pop() || 'index.html'; 
-                    const links = sidebarPlaceholder.querySelectorAll('.nav-sidebar .nav-link');
-                    links.forEach(link => {
-                        const linkPage = link.getAttribute('href')?.split('/').pop();
-                        if (linkPage === currentPage) {
-                            link.classList.add('active');
-                        } else {
-                            link.classList.remove('active'); 
-                        }
-                    });
-                } else {
-                    console.error('Placeholder del sidebar no encontrado.');
+                });
+            });
+
+            // Registrar cliente (botón superior) -> resetea modal para creación
+            const btnRegistrar = document.getElementById('btnRegistrarCliente');
+            if (btnRegistrar) {
+                btnRegistrar.addEventListener('click', () => {
+                    clienteEditandoId = null;
+                    const form = document.getElementById('formCliente');
+                    if (form) form.reset();
+                    // aseguramos título y required para pass
+                    const title = document.querySelector('.modal-title');
+                    if (title) title.textContent = "Registrar Cliente";
+                    const p1 = document.getElementById('pass1');
+                    const p2 = document.getElementById('pass2');
+                    if (p1) p1.setAttribute('required', 'true');
+                    if (p2) p2.setAttribute('required', 'true');
+                    // limpiar selects de ubicación
+                    const prov = document.getElementById('userProvincia');
+                    const com = document.getElementById('userComuna');
+                    if (prov) { prov.innerHTML = '<option value=\"\" selected disabled>Selecciona tu provincia...</option>'; prov.disabled = true; }
+                    if (com) { com.innerHTML = '<option value=\"\" selected disabled>Selecciona tu comuna...</option>'; com.disabled = true; }
+                });
+            }
+
+            // Cuando se oculta el modal limpiamos el estado
+            const modalEl = document.getElementById('modalCliente');
+            if (modalEl) {
+                modalEl.addEventListener('hidden.bs.modal', () => {
+                    clienteEditandoId = null;
+                    const form = document.getElementById('formCliente');
+                    if (form) form.reset();
+                });
+            }
+
+            // Search / filter: local (selector genérico para el input y botón)
+            const inputBuscar = document.querySelector('.card .input-group input[type="text"]');
+            const btnBuscar = document.querySelector('.card .input-group button.btn.btn-primary');
+            if (inputBuscar) inputBuscar.addEventListener('input', aplicarFiltrosClientes);
+            if (btnBuscar) btnBuscar.addEventListener('click', aplicarFiltrosClientes);
+        });
+
+        // ==========================
+        // 3) Location logic (cascada)
+        // ==========================
+        const locationData = {
+            "metropolitana": {
+                "santiago": ["Cerrillos", "Cerro Navia", "Conchalí", "El Bosque", "Estación Central", "Huechuraba", "Independencia", "La Cisterna", "La Florida", "La Granja", "La Pintana", "La Reina", "Las Condes", "Lo Barnechea", "Lo Espejo", "Lo Prado", "Macul", "Maipú", "Ñuñoa", "Pedro Aguirre Cerda", "Peñalolén", "Providencia", "Pudahuel", "Quilicura", "Quinta Normal", "Recoleta", "Renca", "San Joaquín", "San Miguel", "San Ramón", "Santiago", "Vitacura"],
+                "cordillera": ["Puente Alto", "Pirque", "San José de Maipo"],
+                "maipo": ["San Bernardo", "Buin", "Calera de Tango", "Paine"],
+                "talagante": ["Talagante", "El Monte", "Isla de Maipo", "Padre Hurtado", "Peñaflor"],
+                "melipilla": ["Melipilla", "Alhué", "Curacaví", "María Pinto", "San Pedro"],
+                "chacabuco": ["Colina", "Lampa", "Tiltil"]
+            },
+            "valparaiso": {
+                "valparaiso": ["Valparaíso", "Viña del Mar", "Concón", "Quintero", "Puchuncaví", "Casablanca", "Juan Fernández"],
+                "isla_de_pascua": ["Isla de Pascua"],
+                "los_andes": ["Los Andes", "San Esteban", "Calle Larga", "Rinconada"],
+                "marga_marga": ["Quilpué", "Villa Alemana", "Limache", "Olmué"],
+                "quillota": ["Quillota", "La Calera", "Hijuelas", "La Cruz", "Nogales"],
+                "san_antonio": ["San Antonio", "Algarrobo", "Cartagena", "El Quisco", "El Tabo", "Santo Domingo"],
+                "san_felipe": ["San Felipe", "Llaillay", "Putaendo", "Santa María", "Catemu", "Panquehue"],
+                "petorca": ["La Ligua", "Petorca", "Cabildo", "Zapallar", "Papudo"]
+            }
+        };
+        const stopWords = ['de', 'del', 'la', 'las', 'los', 'y', 'en'];
+
+        function initLocationLogic() {
+            const regionSelect = document.getElementById('userRegion');
+            const provinciaSelect = document.getElementById('userProvincia');
+            const comunaSelect = document.getElementById('userComuna');
+            if (!regionSelect || !provinciaSelect || !comunaSelect) return;
+
+            regionSelect.addEventListener('change', (e) => {
+                const selectedRegion = e.target.value;
+                provinciaSelect.innerHTML = '<option value="" selected disabled>Selecciona tu provincia...</option>';
+                comunaSelect.innerHTML = '<option value="" selected disabled>Selecciona tu comuna...</option>';
+                provinciaSelect.disabled = true;
+                comunaSelect.disabled = true;
+
+                if (locationData[selectedRegion]) {
+                    const provincias = locationData[selectedRegion];
+                    for (const provinciaKey in provincias) {
+                        const textWithSpaces = provinciaKey.replace(/_/g, ' ');
+                        const optionText = textWithSpaces.split(' ').map((word, index) => {
+                            const lowerWord = word.toLowerCase();
+                            if (index > 0 && stopWords.includes(lowerWord)) return lowerWord;
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        const option = new Option(optionText, provinciaKey);
+                        provinciaSelect.add(option);
+                    }
+                    provinciaSelect.disabled = false;
                 }
-            })
-            .catch(error => console.error('Error cargando el sidebar:', error));      
+            });
+
+            provinciaSelect.addEventListener('change', (e) => {
+                const selectedRegion = regionSelect.value;
+                const selectedProvincia = e.target.value;
+                comunaSelect.innerHTML = '<option value="" selected disabled>Selecciona tu comuna...</option>';
+                comunaSelect.disabled = true;
+
+                if (locationData[selectedRegion] && locationData[selectedRegion][selectedProvincia]) {
+                    const comunas = locationData[selectedRegion][selectedProvincia];
+                    comunas.forEach(comuna => {
+                        const optionValue = comuna.toLowerCase().replace(/ /g, '_');
+                        const option = new Option(comuna, optionValue);
+                        comunaSelect.add(option);
+                    });
+                    comunaSelect.disabled = false;
+                }
+            });
+        }
+
+        // ==========================
+        // 4) Cargar clientes + pedidos
+        // ==========================
+        async function cargarClientesConDatos() {
+            const token = localStorage.getItem('token_bigbite');
+
+            const qUsers = `
+            query {
+                getUsuariosRol {
+                    id, nombre_completo, email, telefono, fecha_registro, rut, direccion, fecha_nacimiento,
+                    region, provincia, comuna, sexo, rol { id, nombre }
+                }
+            }
+        `;
+            const qOrders = `
+            query {
+                getPedidos {
+                    total_pagado, createdAt, estado_pedido
+                    usuario { id }
+                }
+            }
+        `;
+
+            try {
+                const [resUsers, resOrders] = await Promise.all([
+                    fetch(GRAPHQL_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ query: qUsers }) }),
+                    fetch(GRAPHQL_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify({ query: qOrders }) })
+                ]);
+
+                const jsonUsers = await resUsers.json();
+                const jsonOrders = await resOrders.json();
+
+                const allUsers = (jsonUsers && jsonUsers.data && jsonUsers.data.getUsuariosRol) ? jsonUsers.data.getUsuariosRol : [];
+                const allOrders = (jsonOrders && jsonOrders.data && jsonOrders.data.getPedidos) ? jsonOrders.data.getPedidos : [];
+
+                // Solo Clientes
+                const clientes = allUsers.filter(u => u.rol && u.rol.nombre === 'Cliente');
+
+                // Enriquecer
+                const clientesConData = clientes.map(cliente => {
+                    const susPedidos = allOrders.filter(o => o.usuario && o.usuario.id === cliente.id);
+                    const total = susPedidos.reduce((sum, o) => {
+                        if (['PAGADO', 'EN_PREPARACION', 'PREPARANDO', 'LISTA', 'EN_DESPACHO', 'ENTREGADO'].includes(o.estado_pedido)) {
+                            return sum + (o.total_pagado || 0);
+                        }
+                        return sum;
+                    }, 0);
+
+                    let ultima = '-';
+                    if (susPedidos.length > 0) {
+                        susPedidos.sort((a, b) => Number(b.createdAt) - Number(a.createdAt));
+                        const d = new Date(Number(susPedidos[0].createdAt));
+                        if (!isNaN(d.getTime())) ultima = d.toLocaleDateString('es-CL');
+                    } else if (cliente.fecha_registro) {
+                        const dr = new Date(Number(cliente.fecha_registro));
+                        if (!isNaN(dr.getTime())) ultima = dr.toLocaleDateString('es-CL');
+                    }
+
+                    return { ...cliente, totalGastado: total, ultimaVisita: ultima };
+                });
+
+                clientesDataCache = clientesConData;
+                renderizarTablaClientes(clientesConData);
+
+            } catch (e) {
+                console.error("Error cargando clientes:", e);
+                // fallback: limpiar tabla
+                clientesDataCache = [];
+                renderizarTablaClientes([]);
+            }
+        }
+
+        function renderizarTablaClientes(clientes) {
+            const tbody = document.querySelector('tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            if (!clientes || clientes.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted py-4">No hay clientes registrados</td></tr>';
+                return;
+            }
+
+            clientes.forEach(c => {
+                const safe = { ...c };
+                const dataStr = encodeURIComponent(JSON.stringify(safe));
+
+                const row = `
+                <tr>
+                    <td>#${String(c.id || '').slice(-4).toUpperCase()}</td>
+                    <td class="fw-bold">${c.nombre_completo || 'Sin nombre'}</td>
+                    <td>${c.email || '-'}</td>
+                    <td>${c.telefono || '-'}</td>
+                    <td class="text-success fw-bold">$${(c.totalGastado || 0).toLocaleString('es-CL')}</td>
+                    <td>${c.ultimaVisita || '-'}</td>
+                    <td class="table-actions">
+                        <button class="btn btn-sm btn-outline-primary btn-editar" onclick="abrirModalEditarCliente('${dataStr}')">
+                            <i class="bi bi-pencil-fill me-1"></i> Editar
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="confirmarEliminarCliente('${c.id}')">
+                            <i class="bi bi-trash-fill"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // ==========================
+        // 5) Editar / Crear cliente
+        // ==========================
+        window.abrirModalEditarCliente = function (dataStr) {
+            try {
+                const c = JSON.parse(decodeURIComponent(dataStr));
+                clienteEditandoId = c.id;
+
+                // elementos
+                const emailEl = document.getElementById('userEmail');
+                const pass1El = document.getElementById('pass1');
+                const pass2El = document.getElementById('pass2');
+                const rutEl = document.getElementById('userRut');
+                const nameEl = document.getElementById('userName');
+                const phoneEl = document.getElementById('userPhone');
+                const addrEl = document.getElementById('userAdress');
+                const dateEl = document.getElementById('userDob');
+                const sexEl = document.getElementById('userSex');
+                const regSelect = document.getElementById('userRegion');
+                const provSelect = document.getElementById('userProvincia');
+                const comSelect = document.getElementById('userComuna');
+
+                if (emailEl) emailEl.value = c.email || '';
+                if (pass1El) { pass1El.value = ''; pass1El.removeAttribute('required'); }
+                if (pass2El) { pass2El.value = ''; pass2El.removeAttribute('required'); }
+                if (rutEl) rutEl.value = c.rut || '';
+                if (nameEl) nameEl.value = c.nombre_completo || '';
+                if (phoneEl) phoneEl.value = c.telefono || '';
+                if (addrEl) addrEl.value = c.direccion || '';
+
+                // fecha
+                if (dateEl) {
+                    dateEl.value = '';
+                    if (c.fecha_nacimiento) {
+                        if (typeof c.fecha_nacimiento === 'string' && c.fecha_nacimiento.includes('-')) {
+                            dateEl.value = c.fecha_nacimiento;
+                        } else if (!isNaN(c.fecha_nacimiento) && String(c.fecha_nacimiento).length > 8) {
+                            const dt = new Date(Number(c.fecha_nacimiento));
+                            if (!isNaN(dt.getTime())) {
+                                dateEl.value = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
+                            }
+                        } else {
+                            // intento parseo general
+                            const dt = new Date(c.fecha_nacimiento);
+                            if (!isNaN(dt.getTime())) {
+                                dateEl.value = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
+                            }
+                        }
+                    }
+                }
+
+                // sexo
+                if (sexEl) sexEl.value = c.sexo || '';
+
+                // Ubicación (cascada defensiva)
+                if (regSelect && provSelect && comSelect && c.region) {
+                    // setear región y disparar change para poblar provincias
+                    regSelect.value = c.region;
+                    regSelect.dispatchEvent(new Event('change'));
+
+                    // esperamos un tick para que se agreguen provincias
+                    setTimeout(() => {
+                        if (c.provincia) {
+                            provSelect.value = c.provincia;
+                            provSelect.dispatchEvent(new Event('change'));
+
+                            setTimeout(() => {
+                                if (c.comuna) {
+                                    // normalizar el valor a formato option (minus y _)
+                                    const comunaVal = String(c.comuna).toLowerCase().replace(/ /g, '_');
+                                    try { comSelect.value = comunaVal; } catch (e) { }
+                                }
+                            }, 50);
+                        }
+                    }, 50);
+                }
+
+                // título y mostrar modal
+                const title = document.querySelector('.modal-title');
+                if (title) title.textContent = "Editar Cliente";
+                if (modalClienteBS) modalClienteBS.show();
+            } catch (err) {
+                console.error("abrirModalEditarCliente error:", err);
+                alert("Error al abrir edición (ver consola).");
+            }
+        };
+
+        window.guardarCliente = async function () {
+            const token = localStorage.getItem('token_bigbite');
+            const email = document.getElementById('userEmail').value;
+            const pass = document.getElementById('pass1').value;
+            const rut = document.getElementById('userRut').value;
+            const nombre = document.getElementById('userName').value;
+            const telefono = document.getElementById('userPhone').value;
+            const fechaNac = document.getElementById('userDob').value;
+            const direccion = document.getElementById('userAdress').value;
+            const sexo = document.getElementById('userSex') ? document.getElementById('userSex').value : '';
+            const region = document.getElementById('userRegion') ? document.getElementById('userRegion').value : '';
+            const provincia = document.getElementById('userProvincia') ? document.getElementById('userProvincia').value : '';
+            const comuna = document.getElementById('userComuna') ? document.getElementById('userComuna').value : '';
+
+            if (!email) return alert("Email obligatorio");
+            if (!clienteEditandoId && !pass) return alert("Contraseña obligatoria al crear");
+
+            const inputData = {
+                email,
+                rut,
+                nombre_completo: nombre,
+                telefono,
+                fecha_nacimiento: fechaNac,
+                direccion,
+                sexo,
+                region,
+                provincia,
+                comuna,
+            };
+            if (pass) inputData.pass = pass;
+
+            let query = '', variables = {};
+            if (clienteEditandoId) {
+                query = `mutation EditarCli($id: ID!, $input: UpdateUsuarioInput) { updUsuario(id: $id, input: $input) { id } }`;
+                variables = { id: clienteEditandoId, input: inputData };
+            } else {
+                query = `mutation CrearCli($input: UsuarioInput) { addUsuario(input: $input) { id } }`;
+                variables = { input: inputData };
+            }
+
+            try {
+                const res = await fetch(GRAPHQL_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ query, variables })
+                });
+                const json = await res.json();
+                if (json.errors) {
+                    alert("Error: " + (json.errors[0] && json.errors[0].message ? json.errors[0].message : 'Error inesperado'));
+                } else {
+                    if (modalClienteBS) modalClienteBS.hide();
+                    await cargarClientesConDatos();
+                    clienteEditandoId = null;
+                    const f = document.getElementById('formCliente'); if (f) f.reset();
+                    const t = new bootstrap.Toast(document.getElementById('toastExitoCliente')); if (t) t.show();
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Error de conexión");
+            }
+        };
+
+        // ==========================
+        // 6) Eliminar cliente
+        // ==========================
+        window.confirmarEliminarCliente = function (id) {
+            if (!id) return;
+            if (!confirm("¿Confirma eliminar este cliente? Esta acción no se puede deshacer.")) return;
+            clienteAEliminarId = id;
+            eliminarCliente();
+        };
+
+        async function eliminarCliente() {
+            if (!clienteAEliminarId) return;
+            const token = localStorage.getItem('token_bigbite');
+            const miUsuario = JSON.parse(localStorage.getItem('usuario_bigbite') || '{}');
+            if (miUsuario.id === clienteAEliminarId) { alert("No puedes eliminar tu propia cuenta."); return; }
+
+            const query = `mutation { delUsuario(id: "${clienteAEliminarId}") { status } }`;
+            try {
+                const res = await fetch(GRAPHQL_URL, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ query })
+                });
+                const json = await res.json();
+                if (json.errors) {
+                    alert("Error: " + (json.errors[0] && json.errors[0].message ? json.errors[0].message : 'Error al eliminar'));
+                } else {
+                    clienteAEliminarId = null;
+                    await cargarClientesConDatos();
+                    const t = new bootstrap.Toast(document.getElementById('toastExitoCliente')); if (t) t.show();
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Error conexión");
+            }
+        }
+
+        // ==========================
+        // 7) Buscador / filtros
+        // ==========================
+        function aplicarFiltrosClientes() {
+            const input = document.querySelector('.card .input-group input[type="text"]');
+            const texto = (input ? input.value : '').toLowerCase().trim();
+
+            if (!Array.isArray(clientesDataCache)) {
+                renderizarTablaClientes([]);
+                return;
+            }
+
+            const filtrados = clientesDataCache.filter(c => {
+                const nombre = (c.nombre_completo || '').toString().toLowerCase();
+                const email = (c.email || '').toString().toLowerCase();
+                const telefono = (c.telefono || '').toString().toLowerCase();
+                const coincideTexto = !texto || nombre.includes(texto) || email.includes(texto) || telefono.includes(texto) || (c.id && String(c.id).toLowerCase().includes(texto));
+                return coincideTexto;
+            });
+
+            renderizarTablaClientes(filtrados);
+        }
     </script>
+
 </body>
 
 </html>

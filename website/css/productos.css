@@ -1,62 +1,195 @@
-/* === Tarjetas de productos === */
-.card {
-    /* transición suave de todos los cambios */
-    transition: all 0.3s ease;
-    cursor: pointer; /* indica que es clickeable */
-    border-radius: 40px !important; /* bordes redondeados grandes */
-    overflow: hidden; /* recorta contenido que sobresalga */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* sombra ligera para profundidad */
+/* ============================================================ */
+/* =================== BACKGROUND & LAYOUT =================== */
+/* ============================================================ */
+
+body {
+    background-image: url('../img/local/Fondo3.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
 }
 
-/* Imágenes dentro de la card con bordes redondeados en la parte superior */
+/* Dark overlay on background image for better text readability */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.50);
+    z-index: -1;
+}
+
+/* Blur effect (glass morphism) */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(8px);
+    background-color: rgba(0, 0, 0, 0.18);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Z-index layering */
+#navbar-placeholder,
+.navbar,
+.navbar.fixed-top,
+header.navbar {
+    z-index: 2000 !important;
+}
+
+body > * {
+    z-index: 1;
+}
+
+/* ============================================================ */
+/* ======================= TYPOGRAPHY ======================= */
+/* ============================================================ */
+
+h1.text-center {
+    font-weight: 800;
+    font-size: 3rem;
+    color: #ffc107;
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    margin-top: 20px;
+}
+
+hr {
+    border-color: rgba(255, 255, 255, 0.724) !important;
+    opacity: 1;
+}
+
+/* ============================================================ */
+/* ======================= FILTERS ========================= */
+/* ============================================================ */
+
+h5.mb-3 {
+    color: #fff !important;
+    font-weight: 600 !important;
+    margin-bottom: 15px !important;
+}
+
+h4.mb-4 {
+    color: #ffffffe0 !important;
+    font-weight: 400 !important;
+    margin-bottom: 25px !important;
+}
+
+button.filter-btn {
+    margin-right: 5px !important;
+    margin-bottom: 10px !important;
+    background-color: #343a40 !important;
+    color: #fff !important;
+    border: none !important;
+    transition: background-color 0.3s ease !important;
+    height: 42px;
+    border-radius: 80px;
+}
+
+.filter-btn:hover {
+    background-color: #495057 !important;
+    color: #fff !important;
+}
+
+.filter-btn.active {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+    font-weight: 600 !important;
+}
+
+/* ============================================================ */
+/* ===================== PRODUCT CARDS ====================== */
+/* ============================================================ */
+
+.card {
+    font-family: 'Nunito', sans-serif;
+    line-height: 1.5;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    border-radius: 40px !important;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    background-color: #fff;
+    margin-bottom: 20px;
+    border: transparent !important;
+}
+
+.card:hover {
+    transform: translateY(-10px) scale(1.02);
+    z-index: 10;
+    box-shadow: 0 20px 40px rgba(255, 193, 7, 0.15);
+}
+
 .card-img-top {
     border-radius: 15px 15px 0 0;
 }
 
-/* Efecto hover en la card: aumenta ligeramente, eleva z-index y sombra más marcada */
-.card:hover {
-    transform: scale(1.03);
-    z-index: 10;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+.card-title {
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin-bottom: 10px !important;
+    margin-left: 20px;
+    display: flex;
+    justify-content: left;
 }
 
-/* === Elementos ocultos === */
-/* Clase general para ocultar elementos */
-.hidden {
-    display: none !important;
+/* Pricing within cards */
+.card-price .old-price {
+    text-decoration: line-through;
+    margin-right: 10px;
 }
 
-/* Mensaje de "no hay productos" con transición suave */
-#no-products-message {
-    transition: all 0.3s ease;
+.new-price {
+    font-size: 1.3rem !important;
+    font-weight: 800 !important;
+    color: #198754 !important;
+    margin-left: 20px;
+    display: flex;
+    justify-content: left;
+    gap: 10px;
 }
 
-/* === Imagen y overlay de ingredientes === */
+.category {
+    margin-left: 20px;
+    display: flex;
+    justify-content: left;
+    font-size: 0.95rem;
+    color: #6c757d;
+}
+
+/* ============================================================ */
+/* ==================== IMAGE OVERLAYS ====================== */
+/* ============================================================ */
+
 .image-container {
-    position: relative; /* necesario para posicionar overlay encima */
+    position: relative;
     overflow: hidden;
 }
 
-/* Overlay con información de ingredientes, inicialmente oculto */
 .ingredients-overlay {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.9); /* fondo oscuro semi-transparente */
+    background: rgba(0, 0, 0, 0.65);
     color: white;
     padding: 15px;
-    display: none; /* inicialmente oculto */
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     border-radius: 15px 15px 0 0;
-    opacity: 0; /* efecto de transición */
+    opacity: 0;
     transition: opacity 0.3s ease;
 }
 
-/* Estilos de los títulos e ingredientes dentro del overlay */
 .ingredients-overlay h6 {
     font-size: 1.1rem;
     font-style: italic;
@@ -70,26 +203,26 @@
     margin-bottom: 15px;
 }
 
-/* Botón para ver producto dentro del overlay */
 .ingredients-overlay .view-product {
     font-weight: bold;
     font-size: 1rem;
     margin-top: 10px;
 }
 
-/* Mostrar overlay al pasar el mouse sobre la imagen */
 .image-container:hover .ingredients-overlay {
     display: flex;
     opacity: 1;
 }
 
-/* === Productos no disponibles === */
+/* ============================================================ */
+/* =================== UNAVAILABLE STATE ==================== */
+/* ============================================================ */
+
 .unavailable-product {
     position: relative;
-    opacity: 0.6; /* opacidad reducida para indicar indisponibilidad */
+    opacity: 0.6;
 }
 
-/* Overlay rojo indicando que el producto no está disponible */
 .unavailable-overlay {
     position: absolute;
     top: 50%;
@@ -103,32 +236,107 @@
     z-index: 5;
 }
 
-/* Evita que el overlay de ingredientes se muestre en productos no disponibles */
 .unavailable-product .ingredients-overlay {
     display: none !important;
 }
 
-/* === Modal === */
+/* ============================================================ */
+/* ======================== VISIBILITY ====================== */
+/* ============================================================ */
+
+.hidden {
+    display: none !important;
+}
+
+#products-container {
+    margin-bottom: 80px;
+}
+
+/* ============================================================ */
+/* ================== ESTADO VACÍO (EMPTY STATE) ============= */
+/* ============================================================ */
+
+#no-products-message {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    margin-bottom: 80px;
+    /* La clase d-none de Bootstrap controlará la visibilidad, 
+       pero cuando se quite, usaremos flex para centrar */
+}
+
+/* La tarjeta contenedora (Vidrio) */
+.empty-state-card {
+    background-color: rgba(255, 255, 255, 0.08); /* Casi transparente */
+    backdrop-filter: blur(15px); /* Difuminado fuerte */
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Borde fino */
+    
+    border-radius: 40px;
+    padding: 3rem 2rem;
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    
+    animation: fadeInUp 0.5s ease-out;
+}
+
+/* Imagen */
+.empty-state-card img {
+    max-height: 180px;
+    filter: drop-shadow(0 10px 10px rgba(0,0,0,0.4)); /* Sombra a la imagen */
+    animation: floatImage 6s ease-in-out infinite; /* Animación de flotación suave */
+}
+
+/* Título */
+.empty-state-card h3 {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+/* Animación de flotación para la hamburguesa */
+@keyframes floatImage {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Animación de entrada de la tarjeta */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================ */
+/* ========================= MODAL ========================== */
+/* ============================================================ */
+
 div.modal-content {
-    border-radius: 40px; /* bordes redondeados */
+    font-family: 'Nunito', sans-serif;
+    line-height: 1.5;
+    border-radius: 40px;
     overflow: hidden;
 }
 
-/* Precio destacado dentro del modal */
+h3.modal-title {
+    font-weight: 700;
+    font-size: 1.9rem;
+}
+
 h4.modal-price {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: bold;
     color: #28a745;
 }
 
-/* Disponibilidad del producto */
 h6.availability {
     font-size: 1rem;
     font-weight: 600;
     color: #28a745;
 }
 
-/* Botón de cerrar modal personalizado */
 button.btn-close {
     position: absolute;
     top: 15px;
@@ -138,14 +346,22 @@ button.btn-close {
     border-radius: 50%;
     background: rgba(255, 0, 0, 0.8);
     opacity: 1;
-    /* ícono SVG de "X" */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 16 16'%3E%3Cpath d='M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 16px;
 }
 
-/* Botón de añadir al carrito */
+img.img-logo-modal {
+    margin-top: 25px !important;
+    margin-left: 130px;
+}
+
+/* ============================================================ */
+/* ========================= BUTTONS ======================== */
+/* ============================================================ */
+
+/* Add to cart button */
 button.cart-btn {
     border-radius: 30px;
     padding: 13px 13px;
@@ -157,72 +373,21 @@ button.cart-btn {
     border-color: #ffc107;
 }
 
-/* Hover en botón de carrito */
 button.cart-btn:hover {
     background-color: #ecb100;
     color: black;
     border-color: #ecb100;
+    transform: translateY(-2px);
 }
 
-/* Estados activo y focus con !important para asegurar estilo */
-button.cart-btn:active, button.cart-btn:focus {
+button.cart-btn:active,
+button.cart-btn:focus {
     background-color: #ecb100 !important;
     color: black !important;
     border-color: #ecb100 !important;
 }
 
-/* === Contenedor principal de productos === */
-#products-container {
-    margin-bottom: 80px; /* espacio inferior para la barra fija */
-}
-
-/* === Barra inferior de resumen de pedido === */
-#order-summary-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(90deg, #ff9f43, #ff6b6b); /* degradado naranja-rojo */
-    border-top: none;
-    padding: 15px 20px;
-    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 1000; /* sobre otros elementos */
-    animation: slideUp 0.5s ease-out; /* animación al aparecer */
-}
-
-/* Animación de subir la barra */
-@keyframes slideUp {
-    from {
-        transform: translateY(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-/* Estilo texto del resumen izquierdo */
-#order-summary-bar #order-summary-left strong {
-    font-size: 1.1rem;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-    margin-right: 10px;
-}
-
-/* Total del pedido */
-#order-summary-bar .order-total {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: #fff;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-    margin-left: 7px;
-}
-
-/* Botón "ir al carrito" dentro de la barra inferior */
+/* Go to cart button */
 button#go-to-cart-btn.btn.btn-success.btn-lg {
     background: #28a745;
     border: none;
@@ -235,55 +400,256 @@ button#go-to-cart-btn.btn.btn-success.btn-lg {
     transition: all 0.3s ease;
 }
 
-/* Hover en botón ir al carrito */
 button#go-to-cart-btn.btn.btn-success.btn-lg:hover {
     background: #2ecc71;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
-/* === Precios en la card === */
-.card-price {
-  display: flex;
-  gap: 10px; /* espacio entre los precios */
-  justify-content: center; /* centra los precios en la card */
-  align-items: center;
-  margin: 0;
+/* ============================================================ */
+/* ===================== ORDER SUMMARY BAR =================== */
+/* ============================================================ */
+
+#order-summary-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(90deg, #ff9f43, #ff6b6b);
+    border-top: none;
+    padding: 15px 20px;
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    animation: slideUp 0.5s ease-out;
 }
 
-/* Precio antiguo tachado */
-.card-price .old-price {
-    text-decoration: line-through;
+#order-summary-bar #order-summary-left strong {
+    font-size: 1.1rem;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
     margin-right: 10px;
 }
 
-/* Precio nuevo destacado */
-.card-price .new-price {
-    font-weight: bold;
-    color: #28a745;
+#order-summary-bar .order-total {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    margin-left: 7px;
 }
 
-/* Botón de filtros */
-button.filter-btn {
-    height: 42px;
-    border-radius: 80px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+/* ============================================================ */
+/* ===================== ANIMATIONS ========================= */
+/* ============================================================ */
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
-/* Logo dentro del modal */
-img.img-logo-modal {
-    margin-top: 25px !important;
-    margin-left: 130px;
-}
-
-/* Animación de clic en botón de carrito dentro del modal */
 .cart-btn.animate {
     animation: pop 0.3s ease forwards;
 }
 
-/* Keyframes para animación pop */
 @keyframes pop {
-    0%   { transform: scale(1); }
-    50%  { transform: scale(1.02); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 1s ease-out;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============================================================ */
+/* ==================== RESPONSIVE DESIGN ==================== */
+/* ============================================================ */
+
+/* Tablets y Móviles (menos de 768px) */
+@media (max-width: 767.98px) {
+    /* Typography adjustments */
+    h1.text-center {
+        font-size: 2rem;
+        margin-top: 15px;
+    }
+
+    h5.mb-3 {
+        font-size: 0.95rem;
+    }
+
+    /* Filter buttons smaller on mobile */
+    button.filter-btn {
+        height: 38px;
+        font-size: 0.85rem;
+        padding: 8px 12px;
+    }
+
+    /* Product cards adjustments */
+    .card {
+        margin-bottom: 15px;
+    }
+
+    .card:hover {
+        transform: translateY(-5px) scale(1.01);
+    }
+
+    .card-title {
+        font-size: 1.1rem;
+        margin-left: 15px;
+        margin-bottom: 8px !important;
+    }
+
+    .new-price,
+    .category {
+        margin-left: 15px;
+        font-size: 0.9rem;
+    }
+
+    /* Modal adjustments */
+    .modal-dialog {
+        margin: 10px;
+    }
+
+    div.modal-content {
+        border-radius: 25px;
+    }
+
+    h3.modal-title {
+        font-size: 1.4rem;
+    }
+
+    h4.modal-price {
+        font-size: 1.3rem;
+    }
+
+    /* Modal layout: stack vertically on mobile */
+    .modal-body .row {
+        flex-direction: column;
+    }
+
+    .modal-body .col-md-6 {
+        width: 100%;
+        padding: 0 !important;
+    }
+
+    .modal-body .col-md-6:last-child {
+        padding: 20px !important;
+    }
+
+    #modalImage {
+        border-radius: 25px 25px 0 0;
+    }
+
+    /* Logo: center on mobile, remove fixed margin */
+    img.img-logo-modal {
+        margin-top: 15px !important;
+        margin-left: 0 !important;
+        max-width: 180px;
+        margin: 15px auto !important;
+        display: block;
+    }
+
+    /* Order summary bar adjustments */
+    #order-summary-bar {
+        padding: 12px 15px;
+    }
+
+    #order-summary-bar #order-summary-left strong {
+        font-size: 0.95rem;
+    }
+
+    #order-summary-bar .order-total {
+        font-size: 1.2rem;
+    }
+
+    button#go-to-cart-btn.btn.btn-success.btn-lg {
+        padding: 10px 15px;
+        font-size: 0.95rem;
+    }
+
+    /* Buttons smaller on mobile */
+    button.cart-btn {
+        padding: 10px 10px;
+        font-size: 0.95rem;
+    }
+
+    /* Close button in modal */
+    button.btn-close {
+        width: 35px;
+        height: 35px;
+        top: 10px;
+        right: 10px;
+    }
+}
+
+/* Extra small devices (menos de 576px) */
+@media (max-width: 575.98px) {
+    h1.text-center {
+        font-size: 1.5rem;
+        margin-top: 10px;
+    }
+
+    h5.mb-3 {
+        font-size: 0.85rem;
+        margin-bottom: 12px !important;
+    }
+
+    .card-title {
+        font-size: 0.95rem;
+        margin-left: 12px;
+    }
+
+    .new-price,
+    .category {
+        margin-left: 12px;
+        font-size: 0.8rem;
+    }
+
+    h3.modal-title {
+        font-size: 1.2rem;
+    }
+
+    h4.modal-price {
+        font-size: 1.1rem;
+    }
+
+    #order-summary-bar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #order-summary-bar #order-summary-left {
+        width: 100%;
+        text-align: center;
+    }
+
+    button#go-to-cart-btn.btn.btn-success.btn-lg {
+        width: 100%;
+    }
+
+    img.img-logo-modal {
+        max-width: 150px !important;
+    }
 }

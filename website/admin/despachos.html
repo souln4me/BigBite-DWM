@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big Bite - Monitor de Despacho</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="icon" type="image/png" sizes="32x32" href="../img/logo/cropped_circle_image.png">
+    <link rel="stylesheet" href="../css/sidebar.css">
+    <link rel="stylesheet" href="../css/mantenedor_base.css">
+</head>
+
+<body>
+    <div id="sidebar-placeholder"></div>
+
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="admin-panel">
+
+                <div class="d-flex justify-content-between align-items-center mb-4 animate-right">
+                    <div>
+                        <h1 class="h3 mb-0">
+                            <i class="bi bi-truck text-muted me-2"> |</i> Monitor de Despacho
+                        </h1>
+                        <p class="text-muted mb-0 small" style="margin-left: 60px;">Pedidos en ruta y entregas</p>
+                    </div>
+                </div>
+
+                <div class="card card-dashboard animate-up">
+                    <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-3">
+                        <h5 class="mb-0">
+                            Pedidos en Ruta
+                            <span class="badge bg-warning text-dark ms-2 rounded-pill" id="badge-count">0</span>
+                        </h5>
+                        <button class="btn btn-outline-primary btn-sm rounded-pill px-3" style="padding: 8px 16px;"
+                            onclick="cargarPedidos()">
+                            <i class="bi bi-arrow-clockwise"></i> Actualizar
+                        </button>
+                    </div>
+
+                    <div class="card-body kitchen-wrapper bg-light">
+                        <div class="row g-4" id="orders-grid">
+                            <div class="col-12 text-center py-5">
+                                <div class="spinner-border text-warning" role="status"></div>
+                                <p class="mt-2 text-muted">Cargando despachos...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="../JS/config.js"></script>
+    <script src="../JS/sidebar-loader.js"></script>
+
+    <script>
+        let intervaloPolling = null;
+
+        // ==========================================
+        // 1. SEGURIDAD
+        // ==========================================
+        function initPage() {
+            const token = localStorage.getItem('token_bigbite');
+            if (!token) {
+                window.location.href = '../login.html';
+            }
+        }
+        initPage();
+
+        // 3. CONTROL DE ERRORES (Anti-cuelgue)
+        function manejarErrores(json) {
+            if (!json.errors) return false;
+            const msg = json.errors[0].message;
+            if (msg.includes("Sesión expirada") || msg.includes("No estás autenticado")) {
+                if (intervaloPolling) clearInterval(intervaloPolling);
+                alert("Sesión expirada.");
+                localStorage.clear();
+                window.location.href = '../login.html';
+                return true;
+            }
+            console.error('GraphQL Error:', msg);
+            return false;
+        }
+
+        // 4. LÓGICA PRINCIPAL
+        async function cargarPedidos() {
+            const token = localStorage.getItem('token_bigbite');
+            const query = `
+                query {
+                    getPedidos {
+                        id, createdAt, estado_pedido, total_pagado
+                        usuario { nombre_completo, direccion, telefono, comuna }
+                        items { cantidad, producto { nombre } }
+                    }
+                }
+            `;
+
+            try {
+                const res = await fetch(GRAPHQL_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ query })
+                });
+                const json = await res.json();
+
+                if (manejarErrores(json)) return;
+
+                // Protección contra null
+                const todos = (json.data && json.data.getPedidos) ? json.data.getPedidos : [];
+
+                const enRuta = todos.filter(p => p.estado_pedido === 'EN_DESPACHO')
+                    .sort((a, b) => Number(a.createdAt) - Number(b.createdAt));
+
+                renderizarGrid(enRuta);
+            } catch (e) { console.error("Error:", e); }
+        }
+
+        function renderizarGrid(pedidos) {
+            const grid = document.getElementById('orders-grid');
+            const badge = document.getElementById('badge-count');
+            if (badge) badge.textContent = pedidos.length;
+
+            grid.innerHTML = '';
+
+            if (pedidos.length === 0) {
+                grid.innerHTML = '<div class="col-12 text-center py-5 text-muted"><h4>No hay pedidos en ruta 🛵</h4><small>El equipo de cocina te avisará cuando salgan.</small></div>';
+                return;
+            }
+
+            pedidos.forEach(p => {
+                // Datos Cliente
+                const cliente = p.usuario || {};
+                const direccion = cliente.direccion ? `${cliente.direccion}, ${cliente.comuna || ''}` : 'Retiro en Local';
+                const telefono = cliente.telefono || 'Sin teléfono';
+
+                // Tiempo
+                let diffMins = 0;
+                const timeMs = Number(p.createdAt);
+                if (!isNaN(timeMs)) diffMins = Math.floor((Date.now() - timeMs) / 60000);
+                const tiempoTexto = diffMins < 1 ? "Salió recién" : `Hace ${diffMins} min`;
+
+                // Productos
+                const itemsText = p.items.map(i => `
+                    <div class="d-flex justify-content-between small">
+                        <span>${i.cantidad}x ${i.producto ? i.producto.nombre : 'Item'}</span>
+                    </div>
+                `).join('');
+
+                // Card Estilo Semáforo (Usamos status-prep para Amarillo)
+                const card = `
+                    <div class="col-12 col-md-6 col-xl-4 animate-pop">
+                        <div class="kitchen-card status-prep"> 
+                            <div class="k-card-header align-items-center">
+                                <div class="d-flex flex-column">
+                                    <span class="order-id" style="line-height:1;">#${p.id.slice(-4).toUpperCase()}</span>
+                                    <span style="font-size: 0.75rem; text-transform: uppercase; opacity: 0.85; letter-spacing: 1px; margin-top: 4px;">
+                                        EN RUTA
+                                    </span>
+                                </div>
+                                <div class="text-end">
+                                    <div class="order-time mb-1"><i class="bi bi-clock"></i> ${tiempoTexto}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="k-card-body">
+                                <div class="p-3 bg-light rounded-3 mb-3 border">
+                                    <h6 class="fw-bold text-dark mb-1 text-truncate">
+                                        <i class="bi bi-person-fill me-1"></i> ${cliente.nombre_completo || 'Anónimo'}
+                                    </h6>
+                                    <div class="small text-muted mb-1 text-truncate">
+                                        <i class="bi bi-geo-alt-fill me-1 text-danger"></i> ${direccion}
+                                    </div>
+                                    <div class="small text-muted">
+                                        <i class="bi bi-telephone-fill me-1 text-success"></i> <a href="tel:${telefono}" class="text-decoration-none text-muted">${telefono}</a>
+                                    </div>
+                                </div>
+
+                                <div class="px-2">
+                                    <small class="text-muted fw-bold text-uppercase" style="font-size: 0.7rem;">Contenido:</small>
+                                    <div class="mt-1 text-secondary">
+                                        ${itemsText}
+                                    </div>
+                                    <div class="mt-2 pt-2 border-top fw-bold text-end text-success">
+                                        Total: $${p.total_pagado.toLocaleString('es-CL')}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="k-card-footer">
+                                <button class="btn btn-success w-100 rounded-pill py-2 fw-bold shadow-sm" onclick="confirmarEntrega('${p.id}')">
+                                    <i class="bi bi-check2-all me-2"></i> Confirmar Entrega
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += card;
+            });
+        }
+
+        window.confirmarEntrega = async function (id) {
+            if (!confirm("¿Confirmar entrega finalizada?")) return;
+
+            const token = localStorage.getItem('token_bigbite');
+            try {
+                const res = await fetch(GRAPHQL_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({
+                        query: `mutation { actualizarEstadoPedido(id: "${id}", estado: "ENTREGADO") { id } }`
+                    })
+                });
+                const json = await res.json();
+                if (manejarErrores(json)) return;
+
+                cargarPedidos();
+                alert("¡Pedido entregado exitosamente!");
+
+            } catch (e) { console.error(e); }
+        }
+
+        // Auto-carga
+        cargarPedidos();
+        intervaloPolling = setInterval(cargarPedidos, 10000); 
+    </script>
+</body>
+
+</html>

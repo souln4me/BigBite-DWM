@@ -1,206 +1,243 @@
-/* ====== ESTILO DE LAS CARDS ====== */
-.pedido-card {
-    border-radius: 40px;
-    padding: 30px;
-    max-height: fit-content;
-    height: 100%;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-    background-color: #f5f5f5;
-    border: 1px solid #e0e0e0;
-    transition: 0.3s ease;
+/* ========================================= */
+/* ========= MIS PEDIDOS (DARK TICKET) ===== */
+/* ========================================= */
+
+/* Contenedor principal */
+#lista-pedidos {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
 }
 
-.pedido-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+/* --- TARJETA BASE (Alta Especificidad) --- */
+#lista-pedidos .pedido-card {
+    background-color: #212529 !important; /* Fondo Oscuro Sólido */
+    border: 1px solid #373b3e !important; /* Borde gris sutil */
+    border-radius: 20px;
+    position: relative; /* Para la barra de color absoluta */
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    color: #fff;
+    padding: 0; /* El padding va adentro */
 }
 
-/* ====== TOASTS ====== */
-div .toast {
-  border-radius: 30px;
-  padding: 10px;
-  animation: slideInRight 5s ease forwards;
+#lista-pedidos .pedido-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+    border-color: #495057 !important;
 }
 
-@keyframes slideInRight {
-  0% {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-  10%, 80% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(100%);
-  }
+/* --- BARRA LATERAL DE COLOR (SEMÁFORO) --- */
+#lista-pedidos .pedido-card::before {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0; left: 0;
+    width: 8px; /* Barra gruesa */
+    background-color: #6c757d; /* Color por defecto */
+    z-index: 1;
 }
 
-/* ====== ESTADOS ====== */
-.estado-anulable {
-    color: #198754;
+/* Colores de Estado */
+#lista-pedidos .pedido-card.status-success::before { background-color: #198754; box-shadow: 2px 0 15px rgba(25, 135, 84, 0.6); }
+#lista-pedidos .pedido-card.status-warning::before { background-color: #ffc107; box-shadow: 2px 0 15px rgba(255, 193, 7, 0.6); }
+#lista-pedidos .pedido-card.status-info::before    { background-color: #0dcaf0; box-shadow: 2px 0 15px rgba(13, 202, 240, 0.6); }
+#lista-pedidos .pedido-card.status-danger::before  { background-color: #dc3545; box-shadow: 2px 0 15px rgba(220, 53, 69, 0.6); }
+
+/* --- CONTENIDO INTERNO --- */
+.card-content {
+    padding: 25px 30px 25px 40px; /* Izquierda más ancha por la barra */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
 }
 
-.estado-no-anulable {
+/* 1. Cabecera (ID y Fecha) */
+.pedido-header h5 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #ffc107; /* Amarillo Big Bite */
+    margin: 0;
+}
+.pedido-date {
+    color: #adb5bd;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 2. Lista de Items (Centro) */
+.pedido-items-list {
+    flex: 1; /* Ocupa el espacio central */
+    min-width: 280px;
+    border-left: 1px solid rgba(255,255,255,0.1);
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.item-row {
+    font-size: 0.95rem;
+    color: #e0e0e0;
+}
+.item-qty {
+    color: #ffc107;
+    font-weight: 700;
+    margin-right: 8px;
+}
+
+/* 3. Columna Derecha (Total y Botón) */
+.pedido-footer {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    min-width: 150px;
+}
+
+.pedido-total {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+/* Badges de Estado (Texto) */
+.status-text {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.05);
+}
+.status-text.text-success { color: #20c997 !important; }
+.status-text.text-warning { color: #ffc107 !important; }
+.status-text.text-info    { color: #0dcaf0 !important; }
+.status-text.text-danger  { color: #ff6b6b !important; }
+
+/* Botón Anular */
+.btn-anular-dark {
+    background-color: transparent;
+    border: 1px solid #dc3545;
     color: #dc3545;
+    border-radius: 6px;
+    padding: 6px 16px;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+.btn-anular-dark:hover {
+    background-color: #dc3545;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(220, 53, 69, 0.5);
 }
 
-/* ====== MODAL ====== */
-div .modal-content {
-    border-radius: 40px;
+/* Botón No Anulable (Bloqueado) */
+.btn-disabled-dark {
+    background-color: rgba(255,255,255,0.05);
+    border: 1px solid transparent;
+    color: #6c757d;
+    border-radius: 6px;
+    padding: 6px 16px;
+    font-size: 0.85rem;
+    cursor: not-allowed;
 }
 
-div .modal-header {
-    padding: 20px;
+/* Responsive Mobile */
+@media (max-width: 768px) {
+    .card-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .pedido-items-list {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px dashed rgba(255,255,255,0.15);
+        padding-top: 15px;
+        width: 100%;
+    }
+    .pedido-footer {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        padding-top: 15px;
+    }
 }
 
-div .modal-header .modal-title {
-    font-weight: bold;
+/* ESTADO ENTREGADO / FINALIZADO */
+.estado-finalizado {
+    color: #adb5bd !important; /* Gris claro (casi blanco) para alto contraste */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.75rem;
+    
+    /* Opcional: Un fondo sutil para destacarlo más */
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 10px;
+    border-radius: 4px;
 }
 
-div .modal-body input,
-div .modal-body .form-select,
-div .modal-body .form-control {
-    border-radius: 12px;
-    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
-    border: 1px solid #dee2e6;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+/* ========================================= */
+/* ============ MODAL ====================== */
+/* ========================================= */
+
+/* ====== MODAL (Ajuste Dark Gourmet + Bordes 40px) ====== */
+
+/* 1. Bordes Redondeados Característicos */
+.modal-content {
+    background-color: #212529;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 40px !important; /* ✨ AQUÍ ESTÁ LA CLAVE */
+    overflow: hidden; /* Para que el header/footer no se salgan del borde */
 }
 
-div .modal-body .form-select:focus {
-    border-color: #ffc107;
-    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 0 8px rgba(255, 193, 7, 0.6);
-    outline: 0;
+/* 2. Ajuste de Header y Footer para que sigan la curva */
+.modal-header { 
+    border-bottom-color: rgba(255,255,255,0.1); 
+    padding: 25px 30px; /* Más aire */
+}
+.modal-footer { 
+    border-top-color: rgba(255,255,255,0.1); 
+    padding: 20px 30px;
 }
 
-div .modal-body .form-control:focus {
-    border-color: #ffc107;
-    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 0 8px rgba(255, 193, 7, 0.6);
-    outline: 0;
+/* 3. Corrección de Textarea y Selects */
+.modal-body .form-select,
+.modal-body .form-control {
+    background-color: rgba(255,255,255,0.05); /* Fondo oscuro translúcido */
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff !important; /* ✨ TEXTO BLANCO FORZADO */
+    border-radius: 15px;
+    padding: 12px;
 }
 
-div .modal-footer .btn-modal-cancel {
-    border-radius: 40px;
-    background-color: #6c757d;
-    color: white;
-    padding: 10px 45px;
+/* Placeholder más claro */
+.modal-body .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
 }
 
-div .modal-footer .btn-modal-cancel:hover {
-    background-color: #5a6268;
-    color: white;
-    border-color: #5a6268;
+/* Estado Foco */
+.modal-body .form-control:focus,
+.modal-body .form-select:focus {
+    background-color: rgba(255,255,255,0.1);
+    border-color: #ffc107; /* Amarillo */
+    color: #fff !important;
+    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.15);
 }
 
-div .modal-footer .btn-modal-confirm {
-    border-radius: 40px;
-    background-color: #ffc107;
-    color: black;
-    padding: 10px 45px;
-}
-
-div .modal-footer .btn-modal-confirm:hover {
-    background-color: #ecb100;
-    color: black;
-    border-color: #ecb100;
-}
-
-/* ====== BOTONES ====== */
-div .btn-anular {
-    background-color: #ffc107;
-    color: black;
-    font-weight: 600;
-    border-radius: 40px;
-    padding: 10px 25px;
-    border: none;
-    transition: 0.3s;
-}
-
-div .btn-anular:hover {
-    background-color: #ecb100;
-}
-
-div .btn-anular:active,
-div .btn-anular:focus {
-    background-color: #ecb100;
-    color: black;
-    border-color: #ecb100;
-    outline: none;
-    box-shadow: none;
-}
-
-/* --- botón no anulable --- */
-div .btn-no-anulable {
-    background-color: #f87171;
-    color: black;
-    font-weight: 600;
-    border-radius: 40px;
-    padding: 10px 25px;
-    border: none;
-    transition: 0.3s ease;
-}
-
-div .btn-no-anulable:hover {
-    background-color: #ef4444;
-}
-
-div .btn-no-anulable:active,
-div .btn-no-anulable:focus {
-    background-color: #ef4444;
-    color: black;
-    border-color: #ef4444;
-    outline: none;
-    box-shadow: none;
-}
-
-/* ====== EFECTOS VISUALES ====== */
-div .btn-anular:focus,
-div .btn-no-anulable:focus {
-    outline: none;
-    box-shadow: none;
-    filter: none;
-}
-
-.btn-anular:active,
-.btn-no-anulable:active {
-    transform: scale(0.97);
-}
-
-.btn-anular:hover,
-.btn-no-anulable:hover {
-    transform: translateY(-2px);
-}
-
-/* ====== FIXES ====== */
-.pedido-card .btn-anular:focus-visible,
-.pedido-card .btn-no-anulable:focus-visible {
-    outline: none;
-    box-shadow: none;
-}
-
-/* restablece color base cuando no hay hover ni clic */
-.pedido-card .btn-anular:not(:hover):not(:active) {
-    background-color: #ffc107;
-    color: black;
-}
-
-.pedido-card .btn-no-anulable:not(:hover):not(:active) {
-    background-color: #f87171;
-    color: black;
-}
-
-/* Evita que los botones pierdan color al mantener clic */
-.btn-anular:active,
-.btn-anular:focus:active {
-  background-color: #ecb100 !important;
-  color: black !important;
-  opacity: 1 !important;
-}
-
-.btn-no-anulable:active,
-.btn-no-anulable:focus:active {
-  background-color: #ef4444 !important;
-  color: black !important;
-  opacity: 1 !important;
+/* Opciones del Select (Fondo oscuro para que se lea) */
+.modal-body .form-select option {
+    background-color: #212529;
+    color: #fff;
 }

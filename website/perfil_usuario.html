@@ -8,6 +8,8 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="icon" type="image/png" sizes="32x32" href="img/logo/cropped_circle_image.png">
 
@@ -26,11 +28,46 @@
     <div class="container">
       <div class="row">
 
+        <div class="col-lg-4 mt-4 mb-5">
+          <div class="sticky-top" style="top: 100px; z-index: 1;">
+            <a href="perfil_usuario.html" class="btn-perfil active">
+              <i class="bi bi-person me-2"></i> Información personal
+            </a>
+            <a href="mis_pedidos.html" class="btn-perfil">
+              <i class="bi bi-bag-check me-2"></i> Mis pedidos
+            </a>
+            <a href="cambiar_pass.html" class="btn-perfil">
+              <i class="bi bi-key me-2"></i> Cambiar contraseña
+            </a>
+            <button class="btn-perfil" id="btn-logout-sidebar">
+              <i class="bi bi-box-arrow-right me-2"></i> Cerrar sesión
+            </button>
+          </div>
+        </div>
+
         <div class="col-lg-8 mb-4 mt-4">
           <div class="card">
-            <div class="container">
-              <h5 class="mb-5">Información de la cuenta:</h5>
 
+            <div class="text-center mb-4">
+              <div class="profile-pic-wrapper">
+                <img src="https://img.freepik.com/free-icon/user_318-159711.jpg" class="profile-pic"
+                  id="userAvatarDisplay" alt="Foto de perfil">
+
+                <div class="profile-pic-edit" title="Cambiar foto"
+                  onclick="document.getElementById('inputFoto').click()">
+                  <i class="bi bi-camera-fill"></i>
+                </div>
+
+                <input type="file" id="inputFoto" hidden accept="image/*">
+              </div>
+              <h5 class="text-white mb-0 border-0 pb-0" id="userNameDisplay">Cargando...</h5>
+            </div>
+
+            <h5 class="mb-4">
+              <i class="bi bi-person-vcard me-2"></i> Datos de la cuenta
+            </h5>
+
+            <form id="formPerfil">
               <div class="row mb-4">
                 <div class="col-md-4">
                   <label for="run">RUT:</label>
@@ -38,7 +75,7 @@
                 </div>
                 <div class="col-md-8">
                   <label for="nombre">Nombre completo:</label>
-                  <input type="text" id="nombre" class="form-control" placeholder="Eduardo Vicanco Tapia">
+                  <input type="text" id="nombre" class="form-control" placeholder="Tu nombre">
                 </div>
               </div>
 
@@ -51,21 +88,6 @@
                   <label for="region">Región:</label>
                   <select id="region" class="form-select">
                     <option value="" selected disabled>Selecciona tu región...</option>
-                    <option value="arica_y_parinacota">Arica y Parinacota</option>
-                    <option value="tarapaca">Tarapacá</option>
-                    <option value="atacama">Atacama</option>
-                    <option value="coquimbo">Coquimbo</option>
-                    <option value="valparaiso">Valparaíso</option>
-                    <option value="metropolitana">Metropolitana de Santiago</option>
-                    <option value="ohiggins">O'Higgins</option>
-                    <option value="maule">Maule</option>
-                    <option value="ñuble">Ñuble</option>
-                    <option value="biobio">Biobío</option>
-                    <option value="araucania">Araucanía</option>
-                    <option value="los_rios">Los Ríos</option>
-                    <option value="los_lagos">Los Lagos</option>
-                    <option value="aysen">Aysén</option>
-                    <option value="magallanes">Magallanes</option>
                   </select>
                 </div>
               </div>
@@ -108,215 +130,317 @@
 
               <div class="row">
                 <div class="col-6 text-start">
-                  <button class="btn-card-cancel">
+                  <button type="button" class="btn-card-cancel">
                     <i class="bi bi-x-lg me-2"></i> Cancelar
                   </button>
                 </div>
                 <div class="col-6 text-end">
-                  <button class="btn-card-save">
+                  <button type="button" class="btn-card-save">
                     <i class="bi bi-floppy me-2"></i> Guardar cambios
                   </button>
                 </div>
               </div>
-            </div>
+            </form>
           </div>
         </div>
 
-
-        <div class="col-12 col-md-4 d-flex flex-column align-items-start mt-4 mt-md-5">
-          <a href="perfil_usuario.html" class="btn-perfil active">
-            <i class="bi bi-person me-2"></i> Información personal
-          </a>
-          <a href="mis_pedidos.html" class="btn-perfil">
-            <i class="bi bi-bag-check me-2"></i> Mis pedidos
-          </a>
-          <a href="cambiar_pass.html" class="btn-perfil">
-            <i class="bi bi-key me-2"></i> Cambiar contraseña
-          </a>
-          <button class="btn-perfil">
-            <i class="bi bi-box-arrow-right me-2"></i> Cerrar sesión
-          </button>
-        </div>
       </div>
     </div>
   </main>
 
   <div id="footer-placeholder"></div>
 
-  <script>
-    // ----------------------------------------------------------------
-    // --- LÓGICA PARA SELECTS DINÁMICOS (REGIÓN/PROVINCIA/COMUNA) ---
-    // ----------------------------------------------------------------
+  <script src="JS/config.js"></script>
+  <script src="JS/navbar-loader.js"></script>
 
-    // 1. Objeto de datos
+  <script>
+    let nuevaImagenBase64 = null;
+
+    // 1. Verificar Sesión al inicio
+    function verificarSesion() {
+      const token = localStorage.getItem('token_bigbite');
+      const usuarioData = localStorage.getItem('usuario_bigbite');
+
+      if (!token || !usuarioData) {
+        window.location.href = 'login.html';
+        return null;
+      }
+      return JSON.parse(usuarioData);
+    }
+
+    // 2. Lógica de Ubicación
     const locationData = {
-      "metropolitana": {
-        "santiago": ["Cerrillos", "Cerro Navia", "Conchalí", "El Bosque", "Estación Central", "Huechuraba", "Independencia", "La Cisterna", "La Florida", "La Granja", "La Pintana", "La Reina", "Las Condes", "Lo Barnechea", "Lo Espejo", "Lo Prado", "Macul", "Maipú", "Ñuñoa", "Pedro Aguirre Cerda", "Peñalolén", "Providencia", "Pudahuel", "Quilicura", "Quinta Normal", "Recoleta", "Renca", "San Joaquín", "San Miguel", "San Ramón", "Santiago", "Vitacura"],
-        "cordillera": ["Puente Alto", "Pirque", "San José de Maipo"],
-        "maipo": ["San Bernardo", "Buin", "Calera de Tango", "Paine"],
-        "talagante": ["Talagante", "El Monte", "Isla de Maipo", "Padre Hurtado", "Peñaflor"],
-        "melipilla": ["Melipilla", "Alhué", "Curacaví", "María Pinto", "San Pedro"],
-        "chacabuco": ["Colina", "Lampa", "Tiltil"]
-      },
-      "valparaiso": {
-        "valparaiso": ["Valparaíso", "Viña del Mar", "Concón", "Quintero", "Puchuncaví", "Casablanca", "Juan Fernández"],
-        "isla_de_pascua": ["Isla de Pascua"],
-        "los_andes": ["Los Andes", "San Esteban", "Calle Larga", "Rinconada"],
-        "marga_marga": ["Quilpué", "Villa Alemana", "Limache", "Olmué"],
-        "quillota": ["Quillota", "La Calera", "Hijuelas", "La Cruz", "Nogales"],
-        "san_antonio": ["San Antonio", "Algarrobo", "Cartagena", "El Quisco", "El Tabo", "Santo Domingo"],
-        "san_felipe": ["San Felipe", "Llaillay", "Putaendo", "Santa María", "Catemu", "Panquehue"],
-        "petorca": ["La Ligua", "Petorca", "Cabildo", "Zapallar", "Papudo"]
-      },
+      "metropolitana": { "santiago": ["Cerrillos", "Cerro Navia", "Conchalí", "El Bosque", "Estación Central", "Huechuraba", "Independencia", "La Cisterna", "La Florida", "La Granja", "La Pintana", "La Reina", "Las Condes", "Lo Barnechea", "Lo Espejo", "Lo Prado", "Macul", "Maipú", "Ñuñoa", "Pedro Aguirre Cerda", "Peñalolén", "Providencia", "Pudahuel", "Quilicura", "Quinta Normal", "Recoleta", "Renca", "San Joaquín", "San Miguel", "San Ramón", "Santiago", "Vitacura"], "cordillera": ["Puente Alto", "Pirque", "San José de Maipo"], "maipo": ["San Bernardo", "Buin", "Calera de Tango", "Paine"], "talagante": ["Talagante", "El Monte", "Isla de Maipo", "Padre Hurtado", "Peñaflor"], "melipilla": ["Melipilla", "Alhué", "Curacaví", "María Pinto", "San Pedro"], "chacabuco": ["Colina", "Lampa", "Tiltil"] },
+      "valparaiso": { "valparaiso": ["Valparaíso", "Viña del Mar", "Concón", "Quintero", "Puchuncaví", "Casablanca", "Juan Fernández"], "isla_de_pascua": ["Isla de Pascua"], "los_andes": ["Los Andes", "San Esteban", "Calle Larga", "Rinconada"], "marga_marga": ["Quilpué", "Villa Alemana", "Limache", "Olmué"], "quillota": ["Quillota", "La Calera", "Hijuelas", "La Cruz", "Nogales"], "san_antonio": ["San Antonio", "Algarrobo", "Cartagena", "El Quisco", "El Tabo", "Santo Domingo"], "san_felipe": ["San Felipe", "Llaillay", "Putaendo", "Santa María", "Catemu", "Panquehue"], "petorca": ["La Ligua", "Petorca", "Cabildo", "Zapallar", "Papudo"] }
     };
 
-    // 2. Seleccionar los 3 dropdowns
-    const regionSelect = document.getElementById('region');
-    const provinciaSelect = document.getElementById('provincia');
-    const comunaSelect = document.getElementById('comuna');
+    function initLocationLogic() {
+      const regSelect = document.getElementById('region');
+      const provSelect = document.getElementById('provincia');
+      const comSelect = document.getElementById('comuna');
 
-    // (Tu const locationData = {...} va aquí arriba)
-    // (Tu const ...Select = ... va aquí arriba)
+      // Limpiar y llenar
+      regSelect.innerHTML = '<option value="" selected disabled>Selecciona tu región...</option>';
+      for (let key in locationData) {
+        let txt = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        regSelect.add(new Option(txt, key));
+      }
 
-    // Lista de palabras a mantener en minúscula (si no son la primera palabra)
-    const stopWords = ['de', 'del', 'la', 'las', 'los', 'y', 'en'];
+      regSelect.addEventListener('change', (e) => {
+        const sel = e.target.value;
+        provSelect.innerHTML = '<option value="" selected disabled>Selecciona tu provincia...</option>';
+        comSelect.innerHTML = '<option value="" selected disabled>Selecciona tu comuna...</option>';
+        provSelect.disabled = true; comSelect.disabled = true;
 
-    // 3. Función para llenar Provincias (CORREGIDA)
-    regionSelect.addEventListener('change', (e) => {
-      const selectedRegion = e.target.value; // ej: "metropolitana"
-
-      // Limpiar selects
-      provinciaSelect.innerHTML = '<option value="" selected disabled>Selecciona tu provincia...</option>';
-      comunaSelect.innerHTML = '<option value="" selected disabled>Selecciona tu comuna...</option>';
-
-      // Habilitar/Deshabilitar
-      provinciaSelect.disabled = true;
-      comunaSelect.disabled = true;
-
-      if (locationData[selectedRegion]) {
-        const provincias = locationData[selectedRegion]; // Obtiene las provincias de esa región
-
-        // Llenar el select de Provincias
-        for (const provinciaKey in provincias) { // ej: "isla_de_pascua"
-
-          // --- INICIO DE LA CORRECCIÓN ---
-          const textWithSpaces = provinciaKey.replace(/_/g, ' '); // "isla de pascua"
-
-          // Pone en mayúscula cada palabra, EXCEPTO las stopWords
-          const optionText = textWithSpaces.split(' ').map((word, index) => {
-            const lowerWord = word.toLowerCase();
-            // Si es una stopWord Y NO es la primera palabra, mantener minúscula
-            if (index > 0 && stopWords.includes(lowerWord)) {
-              return lowerWord; // ej: "de"
-            }
-            // Si es la primera palabra O no es stopWord, capitalizar
-            return word.charAt(0).toUpperCase() + word.slice(1);
-          }).join(' '); // "Isla de Pascua"
-          // --- FIN DE LA CORRECCIÓN ---
-
-          const option = new Option(optionText, provinciaKey);
-          provinciaSelect.add(option);
+        if (locationData[sel]) {
+          for (let pKey in locationData[sel]) {
+            let txt = pKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            provSelect.add(new Option(txt, pKey));
+          }
+          provSelect.disabled = false;
         }
-        provinciaSelect.disabled = false; // Habilitar
-      }
-    });
+      });
 
-    // 4. Función para llenar Comunas
-    provinciaSelect.addEventListener('change', (e) => {
-      const selectedRegion = regionSelect.value;
-      const selectedProvincia = e.target.value; // ej: "santiago"
+      provSelect.addEventListener('change', (e) => {
+        const r = regSelect.value;
+        const p = e.target.value;
+        comSelect.innerHTML = '<option value="" selected disabled>Selecciona tu comuna...</option>';
+        comSelect.disabled = true;
 
-      // Limpiar comunas
-      comunaSelect.innerHTML = '<option value="" selected disabled>Selecciona tu comuna...</option>';
-      comunaSelect.disabled = true;
-
-      if (locationData[selectedRegion] && locationData[selectedRegion][selectedProvincia]) {
-        const comunas = locationData[selectedRegion][selectedProvincia]; // Obtiene el array de comunas
-
-        // Llenar el select de Comunas
-        comunas.forEach(comuna => {
-          // Crea un valor amigable (ej: "cerro_navia")
-          const optionValue = comuna.toLowerCase().replace(/ /g, '_');
-          const option = new Option(comuna, optionValue);
-          comunaSelect.add(option);
-        });
-        comunaSelect.disabled = false; // Habilitar
-      }
-    });
-    // ----------------------------------------------------------------
-    // --- FIN LÓGICA DE SELECTS DINÁMICOS ---
-    // ----------------------------------------------------------------
-
-    // --- Carga dinámica del Navbar ---
-    fetch("components/navbar.html")
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById("navbar-placeholder").innerHTML = data;
-
-        // --- Lógica para marcar el enlace activo en el Navbar ---
-        const currentPage = window.location.pathname.split("/").pop();
-        const links = document.querySelectorAll("nav a");
-
-        links.forEach(link => {
-          const href = link.getAttribute("href");
-          if (!href) return;
-
-          // Marca si la página es exacta
-          if (currentPage === href.replace('./', '')) {
-            link.classList.add("active");
-          }
-
-          // Caso especial: Marcar "Perfil" si estamos en cualquier subpágina de perfil
-          const perfilPages = ['perfil_usuario.html', 'mis_pedidos.html', 'cambiar_pass.html'];
-          if (perfilPages.includes(currentPage) && href === 'perfil_usuario.html') {
-            link.classList.add("active");
-          }
-        });
-
-
-        // --- Verificación de inicio de sesión ---
-        // Redirige al login si el usuario no está logueado e intenta acceder al perfil
-        const perfilLink = document.getElementById('perfil-link');
-        if (perfilLink) {
-          perfilLink.addEventListener('click', (e) => {
-            const usuarioLogueado = localStorage.getItem('usuarioLogueado');
-            if (!usuarioLogueado) {
-              e.preventDefault(); // Detiene la navegación
-              window.location.href = 'login.html'; // Envía al login
-            }
+        if (locationData[r] && locationData[r][p]) {
+          locationData[r][p].forEach(c => {
+            // Normalizar valor para que coincida con DB (minuscula y guiones)
+            const val = c.toLowerCase().replace(/ /g, '_');
+            comSelect.add(new Option(c, val));
           });
+          comSelect.disabled = false;
+        }
+      });
+    }
+
+    document.getElementById('inputFoto').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (file) {
+        if (file.size > 2 * 1024 * 1024) {
+          alert("La imagen es muy pesada (Máx 2MB).");
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('userAvatarDisplay').src = e.target.result;
+          nuevaImagenBase64 = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // 3. CARGAR DATOS (READ)
+    async function cargarDatosUsuario() {
+      const usuario = verificarSesion();
+      const token = localStorage.getItem('token_bigbite');
+      if (!usuario) return;
+
+      initLocationLogic();
+
+      const query = `
+        query GetDatosPerfil($id: ID!) {
+          getUsuarioByIdRol(id: $id) {
+            rut, nombre_completo, email, telefono, direccion,
+            region, provincia, comuna,
+            fecha_nacimiento, sexo, img, rol { nombre }
+          }
+        }
+      `;
+
+      try {
+        const response = await fetch(GRAPHQL_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ query: query, variables: { id: usuario.id } })
+        });
+
+        const json = await response.json();
+
+        // Validación de respuesta
+        if (json.errors) {
+          console.error("GraphQL Error:", json.errors);
+          alert("Error al cargar datos: " + json.errors[0].message);
+          return;
         }
 
-        // --- Actualización del contador del carrito ---
-        // Se usa un setTimeout(0) para asegurar que el DOM del navbar esté listo
-        setTimeout(() => {
-          const badge = document.getElementById('cart-count');
-          if (!badge) return;
-          const cart = JSON.parse(localStorage.getItem('carrito')) || [];
-          const totalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
-          badge.textContent = totalItems;
-        }, 0);
-        // ----------------------------
-      });
+        const u = json.data.getUsuarioByIdRol;
 
+        if (u) {
+          // --- LLENAR CABECERA (FOTO Y NOMBRE) ---
+          document.getElementById('userNameDisplay').textContent = u.nombre_completo || "Sin Nombre";
+          if (u.img) {
+            document.getElementById('userAvatarDisplay').src = u.img;
+          }
 
-    // --- Carga dinámica del Footer ---
-    fetch("components/footer.html")
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById("footer-placeholder").innerHTML = data;
-      });
+          // --- LLENAR INPUTS ---
+          if (u.rut) document.getElementById('run').value = u.rut;
+          if (u.nombre_completo) document.getElementById('nombre').value = u.nombre_completo;
+          if (u.direccion) document.getElementById('direccion').value = u.direccion;
+          if (u.telefono) document.getElementById('num').value = u.telefono;
+          if (u.sexo) document.getElementById('sexo').value = u.sexo.toLowerCase();
 
-    // --- Lógica para Cerrar Sesión ---
-    // Selecciona el último botón de la barra lateral (Cerrar Sesión)
-    const btnCerrarSesion = document.querySelector('.btn-perfil:last-child');
+          // Fecha
+          if (u.fecha_nacimiento) {
+            let v = u.fecha_nacimiento;
+            const dInput = document.getElementById('fecha');
+            if (!isNaN(v) && String(v).length > 8) {
+              const d = new Date(parseInt(v));
+              dInput.value = d.toISOString().split('T')[0];
+            } else if (v.includes('T')) {
+              dInput.value = v.split('T')[0];
+            } else {
+              dInput.value = v;
+            }
+          }
 
-    btnCerrarSesion.addEventListener('click', () => {
-      // Borra el indicador de sesión del almacenamiento local
-      localStorage.removeItem('usuarioLogueado');
+          // Ubicación en Cascada
+          if (u.region) {
+            const regSelect = document.getElementById('region');
+            regSelect.value = u.region;
+            regSelect.dispatchEvent(new Event('change'));
 
-      // Redirige al inicio
-      window.location.href = 'inicio.html';
+            setTimeout(() => {
+              const provSelect = document.getElementById('provincia');
+              if (u.provincia) {
+                provSelect.value = u.provincia;
+                provSelect.dispatchEvent(new Event('change'));
+
+                setTimeout(() => {
+                  if (u.comuna) {
+                    // Aseguramos formato correcto
+                    const valComuna = String(u.comuna).toLowerCase().replace(/ /g, '_');
+                    document.getElementById('comuna').value = valComuna;
+                  }
+                }, 50);
+              }
+            }, 50);
+          }
+        }
+      } catch (error) {
+        console.error("Error de conexión:", error);
+      }
+    }
+
+    // 4. GUARDAR CAMBIOS
+    async function guardarCambios() {
+      const usuario = verificarSesion();
+      const token = localStorage.getItem('token_bigbite');
+      const btnGuardar = document.querySelector('.btn-card-save');
+
+      // Recolectar datos
+      const inputData = {
+        rut: document.getElementById('run').value,
+        nombre_completo: document.getElementById('nombre').value,
+        direccion: document.getElementById('direccion').value,
+        region: document.getElementById('region').value,
+        provincia: document.getElementById('provincia').value,
+        comuna: document.getElementById('comuna').value,
+        fecha_nacimiento: document.getElementById('fecha').value,
+        telefono: document.getElementById('num').value,
+        sexo: document.getElementById('sexo').value
+      };
+
+      if (typeof nuevaImagenBase64) {
+        inputData.img = nuevaImagenBase64;
+      }
+
+      // Feedback visual
+      const textoOriginal = btnGuardar.innerHTML;
+      btnGuardar.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Guardando...';
+      btnGuardar.disabled = true;
+
+      const mutation = `
+            mutation ActualizarPerfil($id: ID!, $input: UpdateUsuarioInput) {
+                updUsuario(id: $id, input: $input) {
+                    id, nombre_completo, img
+                }
+            }
+        `;
+
+      try {
+        const response = await fetch(GRAPHQL_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            query: mutation,
+            variables: {
+              id: usuario.id,
+              input: inputData
+            }
+          })
+        });
+
+        const json = await response.json();
+
+        if (json.errors) {
+          alert("Error: " + json.errors[0].message);
+        } else {
+          alert("¡Datos actualizados correctamente!");
+
+          // Actualizar localStorage y UI
+          const uNuevo = json.data.updUsuario;
+          usuario.nombre_completo = uNuevo.nombre_completo;
+
+          // Guardar img en LocalStorage para que el navbar la use
+          if (uNuevo.img) usuario.img = uNuevo.img;
+
+          localStorage.setItem('usuario_bigbite', JSON.stringify(usuario));
+
+          // Refrescar navbar si existe la función global
+          if (window.loadNavbar) window.loadNavbar();
+
+          // Refrescar cabecera local
+          document.getElementById('userNameDisplay').textContent = uNuevo.nombre_completo || "Cliente";
+          if (uNuevo.img) document.getElementById('userAvatarDisplay').src = uNuevo.img;
+        }
+
+      } catch (error) {
+        console.error(error);
+        alert("Error de conexión al intentar guardar.");
+      } finally {
+        btnGuardar.innerHTML = textoOriginal;
+        btnGuardar.disabled = false;
+      }
+    }
+
+    // --- INICIALIZACIÓN ---
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Cargar datos
+      cargarDatosUsuario();
+
+      // 2. Botones
+      const btnGuardar = document.querySelector('.btn-card-save');
+      if (btnGuardar) btnGuardar.addEventListener('click', guardarCambios);
+
+      const btnCancelar = document.querySelector('.btn-card-cancel');
+      if (btnCancelar) {
+        btnCancelar.addEventListener('click', () => {
+          if (confirm("¿Descartar cambios?")) location.reload();
+        });
+      }
+
+      // 3. LOGOUT
+      const btnLogoutLateral = document.querySelector('.col-lg-4 .btn-perfil:last-child');
+      if (btnLogoutLateral && btnLogoutLateral.textContent.includes("Cerrar")) {
+        btnLogoutLateral.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (confirm("¿Cerrar sesión?")) {
+            localStorage.clear();
+            window.location.href = 'inicio.html';
+          }
+        });
+      }
     });
   </script>
 </body>

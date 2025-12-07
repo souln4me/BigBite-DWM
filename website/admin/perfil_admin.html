@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big Bite - Mi Perfil</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="icon" type="image/png" sizes="../32x32" href="../img/logo/cropped_circle_image.png">
+    <link rel="stylesheet" href="../css/sidebar.css">
+    <link rel="stylesheet" href="../css/mantenedor_base.css">
+
+    <style>
+        /* ESTILOS FOTO DE PERFIL (120x120) */
+        .profile-pic-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+        }
+
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #ffc107;
+            /* Borde amarillo corporativo */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background-color: #f8f9fa;
+        }
+
+        .profile-pic-edit {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: #212529;
+            /* Oscuro */
+            color: #ffc107;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 2px solid #fff;
+        }
+
+        .profile-pic-edit:hover {
+            transform: scale(1.1);
+            background-color: #ffc107;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="sidebar-placeholder"></div>
+
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="admin-panel">
+
+                <div class="d-flex justify-content-between align-items-center mb-4 animate-right">
+                    <div>
+                        <h1 class="h3 mb-0">
+                            <i class="bi bi-person-gear text-muted me-2"> |</i> Mi Perfil
+                        </h1>
+                        <p class="text-muted mb-0 small" style="margin-left: 60px;">Gestión de tu cuenta y credenciales
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row g-4 animate-up">
+
+                    <div class="col-lg-4">
+                        <div class="card card-dashboard h-100 border-0 shadow-sm">
+                            <div
+                                class="card-body d-flex flex-column align-items-center justify-content-center text-center p-5">
+
+                                <div class="profile-pic-wrapper">
+                                    <img src="https://img.freepik.com/free-icon/user_318-159711.jpg" class="profile-pic"
+                                        id="userAvatarDisplay" alt="Foto de perfil">
+
+                                    <div class="profile-pic-edit" title="Cambiar foto"
+                                        onclick="document.getElementById('inputFoto').click()">
+                                        <i class="bi bi-camera-fill"></i>
+                                    </div>
+                                    <input type="file" id="inputFoto" hidden accept="image/*">
+                                </div>
+
+                                <h4 class="fw-bold mb-1" id="lblNombre">Cargando...</h4>
+                                <span class="badge bg-dark rounded-pill px-3 py-2 mb-4" id="lblRol">...</span>
+
+                                <p class="text-muted small mb-4">
+                                    Mantén tus datos actualizados para asegurar la comunicación con el equipo.
+                                </p>
+
+                                <div class="d-grid w-100 mt-auto">
+                                    <button type="button" class="btn btn-primary rounded-pill py-2 fw-bold shadow-sm"
+                                        onclick="actualizarPerfil()">
+                                        <i class="bi bi-check-circle-fill me-2"></i> Guardar Cambios
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-8">
+                        <div class="card card-dashboard h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <form id="formPerfil">
+
+                                    <h6 class="text-uppercase text-muted small fw-bold mb-3 border-bottom pb-2">
+                                        <i class="bi bi-shield-lock me-2"></i>Datos de Acceso
+                                    </h6>
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-bold">Email Corporativo</label>
+                                            <input type="email" id="myEmail" class="form-control bg-light" readonly
+                                                disabled>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-bold">Nueva Contraseña <span
+                                                    class="text-muted fw-normal">(Opcional)</span></label>
+                                            <div class="input-group">
+                                                <input type="password" id="myPass" class="form-control"
+                                                    placeholder="Dejar vacío para mantener actual">
+                                                <span class="input-group-text toggle-password bg-white"
+                                                    style="cursor: pointer;"><i class="bi bi-eye-slash"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h6 class="text-uppercase text-muted small fw-bold mb-3 border-bottom pb-2">
+                                        <i class="bi bi-person-vcard me-2"></i>Ficha Personal
+                                    </h6>
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-bold">Nombre Completo</label>
+                                            <input type="text" id="myName" class="form-control">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-bold">RUT</label>
+                                            <input type="text" id="myRut" class="form-control">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small fw-bold">Teléfono</label>
+                                            <input type="tel" id="myPhone" class="form-control">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small fw-bold">Fecha Nacimiento</label>
+                                            <input type="date" id="myDob" class="form-control">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small fw-bold">Sexo</label>
+                                            <select id="mySex" class="form-select">
+                                                <option value="" selected>No especificar</option>
+                                                <option value="masculino">Masculino</option>
+                                                <option value="femenino">Femenino</option>
+                                                <option value="otro">Otro</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <h6 class="text-uppercase text-muted small fw-bold mb-3 border-bottom pb-2">
+                                        <i class="bi bi-geo-alt me-2"></i>Ubicación
+                                    </h6>
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label class="form-label small fw-bold">Dirección</label>
+                                            <input type="text" id="myAddress" class="form-control"
+                                                placeholder="Calle, Número, Depto">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small fw-bold">Región</label>
+                                            <select id="userRegion" class="form-select">
+                                                <option value="" selected disabled>Seleccionar...</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small fw-bold">Provincia</label>
+                                            <select id="userProvincia" class="form-select" disabled>
+                                                <option value="" selected disabled>...</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small fw-bold">Comuna</label>
+                                            <select id="userComuna" class="form-select" disabled>
+                                                <option value="" selected disabled>...</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100">
+        <div id="toastExito" class="toast align-items-center text-bg-success border-0 shadow" role="alert">
+            <div class="d-flex">
+                <div class="toast-body"><i class="bi bi-check-circle-fill me-2"></i> Perfil actualizado correctamente
+                </div><button type="button" class="btn-close btn-close-white me-2 m-auto"
+                    data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../JS/config.js"></script>
+    <script src="../js/sidebar-loader.js"></script>
+
+    <script>
+        let nuevaImagenBase64 = null; // Variable para guardar la foto nueva
+
+        // 1. INICIALIZACIÓN
+        function initPage() {
+            const token = localStorage.getItem('token_bigbite');
+            if (!token) { window.location.href = '../login.html'; }
+        }
+        initPage();
+
+        // 2. LÓGICA DE FOTO (FileReader)
+        document.getElementById('inputFoto').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                if (file.size > 2 * 1024 * 1024) { // 2MB
+                    alert("La imagen es muy pesada (Máx 2MB).");
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('userAvatarDisplay').src = e.target.result;
+                    nuevaImagenBase64 = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // 3. LÓGICA DE UBICACIÓN
+        const locationData = { "metropolitana": { "santiago": ["Cerrillos", "Cerro Navia", "Conchalí", "El Bosque", "Estación Central", "Huechuraba", "Independencia", "La Cisterna", "La Florida", "La Granja", "La Pintana", "La Reina", "Las Condes", "Lo Barnechea", "Lo Espejo", "Lo Prado", "Macul", "Maipú", "Ñuñoa", "Pedro Aguirre Cerda", "Peñalolén", "Providencia", "Pudahuel", "Quilicura", "Quinta Normal", "Recoleta", "Renca", "San Joaquín", "San Miguel", "San Ramón", "Santiago", "Vitacura"], "cordillera": ["Puente Alto", "Pirque", "San José de Maipo"], "maipo": ["San Bernardo", "Buin", "Calera de Tango", "Paine"], "talagante": ["Talagante", "El Monte", "Isla de Maipo", "Padre Hurtado", "Peñaflor"], "melipilla": ["Melipilla", "Alhué", "Curacaví", "María Pinto", "San Pedro"], "chacabuco": ["Colina", "Lampa", "Tiltil"] }, "valparaiso": { "valparaiso": ["Valparaíso", "Viña del Mar", "Concón", "Quintero", "Puchuncaví", "Casablanca", "Juan Fernández"], "isla_de_pascua": ["Isla de Pascua"], "los_andes": ["Los Andes", "San Esteban", "Calle Larga", "Rinconada"], "marga_marga": ["Quilpué", "Villa Alemana", "Limache", "Olmué"], "quillota": ["Quillota", "La Calera", "Hijuelas", "La Cruz", "Nogales"], "san_antonio": ["San Antonio", "Algarrobo", "Cartagena", "El Quisco", "El Tabo", "Santo Domingo"], "san_felipe": ["San Felipe", "Llaillay", "Putaendo", "Santa María", "Catemu", "Panquehue"], "petorca": ["La Ligua", "Petorca", "Cabildo", "Zapallar", "Papudo"] } };
+
+        function initLocationLogic() {
+            const regSelect = document.getElementById('userRegion');
+            const provSelect = document.getElementById('userProvincia');
+            const comSelect = document.getElementById('userComuna');
+
+            regSelect.innerHTML = '<option value="" selected disabled>Selecciona tu región...</option>';
+            for (let key in locationData) {
+                let txt = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                regSelect.add(new Option(txt, key));
+            }
+
+            regSelect.addEventListener('change', (e) => {
+                const sel = e.target.value;
+                provSelect.innerHTML = '<option value="" selected disabled>Selecciona tu provincia...</option>';
+                comSelect.innerHTML = '<option value="" selected disabled>Selecciona tu comuna...</option>';
+                provSelect.disabled = true; comSelect.disabled = true;
+                if (locationData[sel]) {
+                    for (let pKey in locationData[sel]) {
+                        let txt = pKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                        provSelect.add(new Option(txt, pKey));
+                    }
+                    provSelect.disabled = false;
+                }
+            });
+            provSelect.addEventListener('change', (e) => {
+                const r = regSelect.value;
+                const p = e.target.value;
+                comSelect.innerHTML = '<option value="" selected disabled>Selecciona tu comuna...</option>';
+                comSelect.disabled = true;
+                if (locationData[r] && locationData[r][p]) {
+                    locationData[r][p].forEach(c => {
+                        comSelect.add(new Option(c, c.toLowerCase().replace(/ /g, '_')));
+                    });
+                    comSelect.disabled = false;
+                }
+            });
+        }
+
+        // 4. CARGAR DATOS
+        document.addEventListener('DOMContentLoaded', async () => {
+            const usuarioLocal = JSON.parse(localStorage.getItem('usuario_bigbite'));
+            const token = localStorage.getItem('token_bigbite');
+
+            initLocationLogic();
+
+            document.querySelector('.toggle-password').addEventListener('click', function () {
+                const input = this.previousElementSibling;
+                const icon = this.querySelector('i');
+                if (input.type === "password") { input.type = "text"; icon.classList.replace("bi-eye-slash", "bi-eye"); }
+                else { input.type = "password"; icon.classList.replace("bi-eye", "bi-eye-slash"); }
+            });
+
+            // Query: PIDE LA IMAGEN
+            const query = `
+                query GetMe($id: ID!) {
+                    getUsuarioByIdRol(id: $id) {
+                        id, nombre_completo, email, telefono, direccion, 
+                        rut, fecha_nacimiento, sexo, region, provincia, comuna,
+                        img, 
+                        rol { nombre }
+                    }
+                }
+            `;
+
+            try {
+                const res = await fetch(GRAPHQL_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ query, variables: { id: usuarioLocal.id } })
+                });
+                const json = await res.json();
+                const u = json.data.getUsuarioByIdRol;
+
+                if (u) {
+                    document.getElementById('lblNombre').textContent = u.nombre_completo;
+                    document.getElementById('lblRol').textContent = u.rol ? u.rol.nombre : 'Sin Rol';
+
+                    // Cargar Foto
+                    if (u.img) document.getElementById('userAvatarDisplay').src = u.img;
+
+                    document.getElementById('myEmail').value = u.email;
+                    document.getElementById('myName').value = u.nombre_completo || '';
+                    document.getElementById('myRut').value = u.rut || '';
+                    document.getElementById('myPhone').value = u.telefono || '';
+                    document.getElementById('myAddress').value = u.direccion || '';
+                    if (u.sexo) document.getElementById('mySex').value = u.sexo.toLowerCase();
+
+                    const dInput = document.getElementById('myDob');
+                    if (u.fecha_nacimiento) {
+                        let v = u.fecha_nacimiento;
+                        if (!isNaN(v) && String(v).length > 8) {
+                            const d = new Date(parseInt(v));
+                            dInput.value = d.toISOString().split('T')[0];
+                        } else if (v.includes('T')) dInput.value = v.split('T')[0];
+                        else dInput.value = v;
+                    }
+
+                    if (u.region) {
+                        const r = document.getElementById('userRegion'); r.value = u.region; r.dispatchEvent(new Event('change'));
+                        setTimeout(() => {
+                            const p = document.getElementById('userProvincia');
+                            if (u.provincia) { p.value = u.provincia; p.dispatchEvent(new Event('change')); }
+                            setTimeout(() => {
+                                if (u.comuna) {
+                                    const valComuna = String(u.comuna).toLowerCase().replace(/ /g, '_');
+                                    document.getElementById('userComuna').value = valComuna;
+                                }
+                            }, 50);
+                        }, 50);
+                    }
+                }
+            } catch (e) { console.error(e); }
+        });
+
+        // 5. GUARDAR
+        async function actualizarPerfil() {
+            const token = localStorage.getItem('token_bigbite');
+            const usuarioLocal = JSON.parse(localStorage.getItem('usuario_bigbite'));
+
+            const nombre = document.getElementById('myName').value;
+            const rut = document.getElementById('myRut').value;
+            const telefono = document.getElementById('myPhone').value;
+            const fechaNac = document.getElementById('myDob').value;
+            const sexo = document.getElementById('mySex').value;
+            const direccion = document.getElementById('myAddress').value;
+            const pass = document.getElementById('myPass').value;
+
+            const region = document.getElementById('userRegion').value;
+            const provincia = document.getElementById('userProvincia').value;
+            const comuna = document.getElementById('userComuna').value;
+
+            const inputData = {
+                nombre_completo: nombre, rut, telefono, fecha_nacimiento: fechaNac,
+                sexo, direccion, region, provincia, comuna
+            };
+            if (pass) inputData.pass = pass;
+
+            // ✨ ENVIAR FOTO SI CAMBIÓ
+            if (nuevaImagenBase64) inputData.img = nuevaImagenBase64;
+
+            const query = `
+                mutation UpdateMe($id: ID!, $input: UpdateUsuarioInput) {
+                    updUsuario(id: $id, input: $input) {
+                        id, nombre_completo, img, rol { nombre }
+                    }
+                }
+            `;
+
+            try {
+                const res = await fetch(GRAPHQL_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ query, variables: { id: usuarioLocal.id, input: inputData } })
+                });
+                const json = await res.json();
+
+                if (json.errors) {
+                    alert("Error: " + json.errors[0].message);
+                } else {
+                    const uNuevo = json.data.updUsuario;
+                    usuarioLocal.nombre_completo = uNuevo.nombre_completo;
+                    if (uNuevo.img) usuarioLocal.img = uNuevo.img;
+                    localStorage.setItem('usuario_bigbite', JSON.stringify(usuarioLocal));
+
+                    // Actualizar nombre visual
+                    document.getElementById('lblNombre').textContent = uNuevo.nombre_completo;
+                    document.getElementById('myPass').value = '';
+
+                    // Recargar Sidebar para ver foto nueva
+                    if (window.loadSidebar) window.loadSidebar();
+
+                    const t = new bootstrap.Toast(document.getElementById('toastExito'));
+                    t.show();
+
+                    // Recargar si la foto cambió para asegurar cache
+                    if (nuevaImagenBase64) location.reload();
+                }
+            } catch (e) { console.error(e); alert("Error de conexión"); }
+        }
+    </script>
+</body>
+
+</html>

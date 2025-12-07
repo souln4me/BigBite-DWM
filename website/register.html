@@ -4,144 +4,303 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Big Bite - Registro</title>
+  <title>Big Bite - Crear Cuenta</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 
   <link rel="icon" type="image/png" sizes="32x32" href="img/logo/cropped_circle_image.png">
 
   <style>
+    /* ========================================= */
+    /* ========= ESTILO GOURMET DARK =========== */
+    /* ========================================= */
+
     body {
-      background-color: #fff4e6;
+      background-image: url('img/local/FondoInicio.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      font-family: 'Poppins', sans-serif;
     }
 
-    /* Estilo principal de la tarjeta de registro */
-    .card {
-      border-radius: 50px;
-      max-width: 1200px;
+    /* Overlay para oscurecer el fondo */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      box-shadow: 0 4px 14px rgb(0, 0, 0, 0.5);
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: -1;
     }
 
-    /* Botón de registro personalizado (color amarillo) */
-    .btn-register {
-      color: black;
-      background-color: #ffc107;
-      border-color: #ffc107;
+    /* TARJETA */
+    .card {
       border-radius: 40px;
-      transition: transform 0.2s;
-      box-shadow: 0 4px 14px rgb(0, 0, 0, 0.15);
+      max-width: 1000px;
+      width: 100%;
+      border: none;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      background-color: #fff;
     }
 
-    /* Efecto hover de elevación para el botón */
-    .btn-register:hover {
-      background-color: #ecb100;
-      border-color: #ecb100;
-      color: black;
-      transform: translateY(-1px);
+    .login-img {
+      object-fit: cover;
+      height: 100%;
+      width: 100%;
     }
 
-    .btn-register:active,
-    btn-register:focus {
-      background-color: #ffc107 !important;
-      color: black !important;
-      transform: translateY(0);
+    .login-form {
+      padding: 3rem 4rem;
+    }
+
+    h2 {
+      font-weight: 800;
+      color: #212529;
+    }
+
+    /* ================================================= */
+    /* ========= FIX: INPUTS Y ESTADOS DE FOCO ========= */
+    /* ================================================= */
+
+    /* 1. Estado NORMAL (Gris Claro) */
+    .form-control {
+      border-radius: 15px;
+      padding: 12px 15px;
+      background-color: #f8f9fa !important;
+
+      border: 1px solid #dee2e6;
+      color: #212529 !important;
+
+      transition: all 0.3s ease;
+    }
+
+    /* 2. Estado FOCO / ESCRIBIENDO (Blanco + Borde Amarillo) */
+    .form-control:focus {
+      background-color: #ffffff !important;
+      border-color: #ffc107 !important;
+      color: #000000 !important;
+      box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.2) !important;
+    }
+
+    /* --- INPUT GROUP (CONTRASEÑA + OJO) --- */
+
+    /* El Input de la contraseña */
+    .input-group .form-control {
+      border-right: none;
+      border-radius: 15px 0 0 15px;
+    }
+
+    /* El Botón del Ojo (Span) */
+    .input-group-text {
+      border-radius: 0 15px 15px 0 !important;
+      background-color: #e9ecef !important;
+
+      border: 1px solid #dee2e6;
+      border-left: none;
+      cursor: pointer;
+      color: #6c757d !important;
+
+      transition: all 0.3s ease;
+    }
+
+    /* Hover en el ojo */
+    .input-group-text:hover {
+      background-color: #dde0e3 !important;
+      color: #000 !important;
+    }
+
+    /* --- SINCRONIZACIÓN AL ESCRIBIR (FOCUS WITHIN) --- */
+
+    .input-group:focus-within .form-control {
       border-color: #ffc107 !important;
     }
 
-    /* Bordes redondeados para botones secundarios */
-    a.btn-outline-secondary {
-      border-radius: 40px;
+    .input-group:focus-within .input-group-text {
+      border-color: #ffc107 !important;
+      background-color: #fff3cd !important;
+      /* Fondo amarillo muy suave */
+      color: #ffc107 !important;
+      /* Icono Amarillo */
     }
 
-    /* Asegura que la columna de la imagen tenga los bordes redondeados a la izquierda */
-    .col-md-6.d-none.d-md-block {
-      border-top-left-radius: 50px;
-      border-bottom-left-radius: 50px;
-      overflow: hidden;
-    }
-
-    /* Estilo del ícono "ojo" para la contraseña */
-    .input-group-text {
-      border-radius: 0 15px 15px 0 !important;
-      cursor: pointer;
-    }
-
-    /* Estilo general de los inputs */
-    .form-control {
+    .input-group:focus-within {
+      box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.2);
       border-radius: 15px;
-      padding: 12px;
-      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
     }
 
-    .already-btn:hover {
-      text-decoration: underline;
+    /* --- ESTADO DE ERROR (ROJO) --- */
+
+    /* Input con error */
+    .form-control.is-invalid {
+      border-color: #ff6b6b !important;
+      background-image: none !important;
+      /* Quitamos icono por defecto */
+      box-shadow: none !important;
+      /* Sin sombra roja si no hay foco */
     }
 
+    /* El ojo se pone rojo si hay error (y NO hay foco) */
+    .form-control.is-invalid+.input-group-text {
+      border-color: #ff6b6b !important;
+      color: #ff6b6b !important;
+      background-color: #ffe5e5 !important;
+    }
+
+    /* Si tienes error pero haces clic para corregir, se pone amarillo */
+    .input-group:focus-within .form-control.is-invalid,
+    .input-group:focus-within .form-control.is-invalid+.input-group-text {
+      border-color: #ffc107 !important;
+      color: #000 !important;
+      box-shadow: none !important;
+    }
+
+    .input-group:focus-within .form-control.is-invalid+.input-group-text {
+      color: #ffc107 !important;
+      background-color: #fff3cd !important;
+    }
+
+    /* Mensajes de Error (Feedback) */
     .invalid-feedback {
-      min-height: 20px;
-      display: block;
+      display: block !important;
       visibility: hidden;
-      opacity: 0;
+      min-height: 22px;
       margin-top: 4px;
-      line-height: 1;
-      transition: opacity 0.25s ease-in-out;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #ff6b6b;
     }
 
-    .is-invalid~.invalid-feedback {
+    .invalid-feedback.show-error {
       visibility: visible;
-      opacity: 1;
+      animation: shake 0.3s ease-in-out;
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-5px);
+      }
+
+      75% {
+        transform: translateX(5px);
+      }
+    }
+
+    /* --- BOTONES Y LINKS --- */
+    .btn-register {
+      background-color: #ffc107;
+      color: #000;
+      font-weight: 700;
+      border-radius: 50px;
+      padding: 12px;
+      border: none;
+      box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+      transition: all 0.3s;
+    }
+
+    .btn-register:hover {
+      background-color: #e0a800;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+    }
+
+    .back-link:hover {
+      text-decoration: underline !important;
+      color: #212529 !important;
+    }
+
+    @media (max-width: 768px) {
+      .login-form {
+        padding: 2rem;
+      }
+
+      .card {
+        border-radius: 20px;
+      }
+    }
+
+    .animate-up {
+      animation: slideUpFade 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      /* Movimiento suave */
+      opacity: 0;
+      /* Empieza invisible */
+    }
+
+    @keyframes slideUpFade {
+      from {
+        opacity: 0;
+        transform: translateY(60px);
+        /* Empieza 60px más abajo */
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        /* Termina en su lugar */
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="container d-flex align-items-center justify-content-center vh-100">
-    <div class="card">
+  <div class="container d-flex align-items-center justify-content-center vh-100 py-4">
+    <div class="card animate-up">
       <div class="row g-0">
 
         <div class="col-md-6 d-none d-md-block">
-          <img src="img/productos/Combo Clásico.jpg" alt="Hamburguesa" class="img-fluid h-100 rounded-start-4"
-            style="object-fit: cover;">
+          <img src="img/productos/Combo Familiar.jpeg" alt="Big Bite" class="login-img">
         </div>
 
-        <div class="col-md-6 p-5">
+        <div class="col-md-6 login-form d-flex flex-column justify-content-center">
           <div class="text-center mb-4">
-            <img src="img/logo/cropped_circle_image.png" alt="Logo Big Bite" width="100">
-            <h2 class="mt-3">Registro de usuario</h2>
+            <a href="inicio.html">
+              <img src="img/logo/cropped_circle_image.png" alt="Logo Big Bite" width="70" class="mb-2">
+            </a>
+            <h2>Crear Cuenta</h2>
+            <p class="text-muted">Únete a la comunidad Big Bite</p>
           </div>
 
-          <div class="mb-3">
-            <label for="email" class="form-label">Correo electrónico:</label>
-            <input type="email" class="form-control" id="email" placeholder="ejemplo@correo.com">
-            <div id="emailError" class="invalid-feedback"></div>
-          </div>
-
-          <div class="mb-5">
-            <label for="password" class="form-label">Contraseña:</label>
-            <div class="input-group">
-              <input type="password" class="form-control" id="pass" placeholder="********">
-              <span class="input-group-text" id="togglePass">
-                <i class="bi bi-eye-slash"></i>
-              </span>
-              <div id="passError" class="invalid-feedback"></div>
+          <form id="formRegistro" novalidate>
+            <div class="mb-1">
+              <label for="email" class="form-label fw-bold small text-muted">CORREO ELECTRÓNICO</label>
+              <input type="email" class="form-control" id="email" placeholder="ejemplo@correo.com" required>
+              <div id="emailError" class="invalid-feedback">Error placeholder</div>
             </div>
+
+            <div class="mb-2">
+              <label for="pass" class="form-label fw-bold small text-muted">CONTRASEÑA</label>
+              <div class="input-group">
+                <input type="password" class="form-control" id="pass" placeholder="Mínimo 8 caracteres">
+                <span class="input-group-text" id="togglePass"><i class="bi-eye-slash"></i></span>
+              </div>
+              <div id="passError" class="invalid-feedback">Error placeholder</div>
+            </div>
+
+            <div class="d-grid mb-4 mt-2">
+              <button type="button" id="btnCrearCuenta" class="btn btn-register">REGISTRARSE</button>
+            </div>
+          </form>
+
+          <div class="text-center border-top pt-4">
+            <p class="text-muted small">¿Ya tienes cuenta?</p>
+            <a href="login.html" class="btn btn-outline-dark rounded-pill px-4 fw-bold">Iniciar Sesión</a>
           </div>
 
-          <div class="d-grid mb-3">
-            <button type="button" id="btnCrearCuenta" class="btn btn-lg btn-register mb-4">Crear cuenta</button>
-          </div>
-
-          <div class="already-btn text-center mb-3">
-            <a href="login.html" class="text-decoration-none text-secondary">¿Ya tienes una cuenta?</a>
-          </div>
-
-          <div class="text-center">
-            <a href="inicio.html" class="btn btn-outline-secondary">
-              <i class="bi bi-house me-2"></i> Volver a Inicio
+          <div class="text-center mt-3">
+            <a href="inicio.html" class="text-decoration-none text-muted small back-link">
+              <i class="bi bi-arrow-left"></i> Volver al inicio
             </a>
           </div>
         </div>
@@ -149,116 +308,102 @@
     </div>
   </div>
 
+  <script src="JS/config.js"></script>
   <script>
-    /**
-     * Función para alternar la visibilidad de la contraseña (mostrar/ocultar)
-     * y cambiar el ícono del ojo correspondiente.
-     */
     function togglePassword(inputId, iconId) {
       const input = document.getElementById(inputId);
-      // Selecciona el ícono <i> dentro del elemento clickable
       const icon = document.getElementById(iconId).querySelector('i');
-
-      // Agrega el evento de clic al contenedor del ícono
       icon.parentElement.addEventListener('click', () => {
-        if (input.type === 'password') {
-          input.type = 'text';
-          icon.classList.replace('bi-eye-slash', 'bi-eye');
-        } else {
-          input.type = 'password';
-          icon.classList.replace('bi-eye', 'bi-eye-slash');
-        }
+        if (input.type === 'password') { input.type = 'text'; icon.classList.replace('bi-eye-slash', 'bi-eye'); }
+        else { input.type = 'password'; icon.classList.replace('bi-eye', 'bi-eye-slash'); }
       });
     }
-
-    // Aplicar la función al campo de contraseña de esta página
     togglePassword('pass', 'togglePass');
 
     document.addEventListener('DOMContentLoaded', () => {
-      // 1. Seleccionar los elementos (incluyendo los nuevos divs de error)
       const btnRegistro = document.getElementById('btnCrearCuenta');
       const emailInput = document.getElementById('email');
       const emailError = document.getElementById('emailError');
       const passInput = document.getElementById('pass');
       const passError = document.getElementById('passError');
 
-      // 2. Agregar el evento de clic al botón
-      btnRegistro.addEventListener('click', () => {
-        // --- INICIO: Reseteo de errores ---
-        // (Importante para que los errores desaparezcan si el usuario corrige)
-        emailInput.classList.remove('is-invalid');
-        emailError.textContent = '';
-        passInput.classList.remove('is-invalid');
-        passError.textContent = '';
-        // --- FIN: Reseteo de errores ---
+      // Funciones Helper de UI
+      const showError = (input, div, msg) => {
+        input.classList.add('is-invalid');
+        div.textContent = msg;
+        div.classList.add('show-error');
+      };
 
-        // 3. Obtener y "limpiar" los valores
+      const clearError = (input, div) => {
+        input.classList.remove('is-invalid');
+        div.classList.remove('show-error');
+        // Esperamos transición para borrar texto
+        setTimeout(() => { if (!div.classList.contains('show-error')) div.textContent = ''; }, 200);
+      };
+
+      // 1. VALIDACIÓN EN TIEMPO REAL
+      emailInput.addEventListener('blur', () => {
+        const val = emailInput.value.trim();
+        if (val && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+          showError(emailInput, emailError, 'Correo inválido (ej: usuario@mail.com)');
+        }
+      });
+      emailInput.addEventListener('input', () => {
+        if (emailInput.classList.contains('is-invalid')) clearError(emailInput, emailError);
+      });
+
+      passInput.addEventListener('input', () => {
+        // Limpiar error al escribir para permitir corregir
+        if (passInput.classList.contains('is-invalid')) clearError(passInput, passError);
+      });
+
+      // 2. ENVÍO
+      btnRegistro.addEventListener('click', async () => {
+        clearError(emailInput, emailError);
+        clearError(passInput, passError);
+
         const email = emailInput.value.trim();
         const password = passInput.value.trim();
-
-        // 4. Validar (con una variable de control)
         let isValid = true;
 
-        if (email === '') {
-          emailInput.classList.add('is-invalid');
-          emailError.textContent = 'Por favor, ingresa un correo electrónico.';
-          isValid = false;
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          emailInput.classList.add('is-invalid');
-          emailError.textContent = 'Por favor, ingresa un correo electrónico válido (ejemplo@dominio.com).';
-          isValid = false;
-        }
+        if (!email) { showError(emailInput, emailError, 'Ingresa un correo.'); isValid = false; }
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError(emailInput, emailError, 'Correo inválido.'); isValid = false; }
 
-        if (password === '') {
-          passInput.classList.add('is-invalid');
-          passError.textContent = 'Por favor, ingresa una contraseña.';
-          isValid = false;
-        } else if (password.length < 8) {
-          passInput.classList.add('is-invalid');
-          passError.textContent = 'La contraseña debe tener al menos 8 caracteres.';
-          isValid = false;
-        } else if (!/[A-Z]/.test(password)) {
-          passInput.classList.add('is-invalid');
-          passError.textContent = 'Debe contener al menos una letra mayúscula.';
-          isValid = false;
-        } else if (!/[0-9]/.test(password)) {
-          passInput.classList.add('is-invalid');
-          passError.textContent = 'Debe contener al menos un número.';
-          isValid = false;
-        }
+        if (!password) { showError(passInput, passError, 'Ingresa una contraseña.'); isValid = false; }
+        else if (password.length < 8) { showError(passInput, passError, 'Mínimo 8 caracteres.'); isValid = false; }
+        else if (!/[A-Z]/.test(password)) { showError(passInput, passError, 'Falta una mayúscula.'); isValid = false; }
+        else if (!/[0-9]/.test(password)) { showError(passInput, passError, 'Falta un número.'); isValid = false; }
 
-        // 5. Si todo está correcto (isValid sigue en true), redirigir
         if (isValid) {
-          window.location.href = 'confirmar_correo.html';
-        }
-      });
-      passInput.addEventListener('input', () => {
-        passInput.classList.remove('is-invalid');
-        passError.textContent = '';
+          btnRegistro.disabled = true; btnRegistro.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Creando...';
 
-        const password = passInput.value.trim();
+          const mutation = `mutation RegistrarCliente($input: UsuarioInput) { addUsuario(input: $input) { id email } }`;
 
-        if (password.length > 0 && password.length < 8) {
-          passInput.classList.add('is-invalid');
-          passError.textContent = 'La contraseña debe tener al menos 8 caracteres.';
-        } else if (password.length >= 8 && !/[A-Z]/.test(password)) {
-          passInput.classList.add('is-invalid');
-          passError.textContent = 'Debe contener al menos una letra mayúscula.';
-        } else if (password.length >= 8 && !/[0-9]/.test(password)) {
-          passInput.classList.add('is-invalid');
-          passError.textContent = 'Debe contener al menos un número.';
-        }
-      });
+          try {
+            const response = await fetch(GRAPHQL_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ query: mutation, variables: { input: { email, pass: password } } })
+            });
+            const json = await response.json();
 
-      emailInput.addEventListener('input', () => {
-        emailInput.classList.remove('is-invalid');
-        emailError.textContent = '';
-
-        const email = emailInput.value.trim();
-
-        if (email.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          emailInput.classList.add('is-invalid');
-          emailError.textContent = 'Correo no válido. Ejemplo: usuario@dominio.com';
+            if (json.errors) {
+              const msg = json.errors[0].message;
+              if (msg.toLowerCase().includes('email') || msg.toLowerCase().includes('registrado')) {
+                showError(emailInput, emailError, msg);
+              } else {
+                showError(passInput, passError, msg);
+              }
+              btnRegistro.disabled = false; btnRegistro.textContent = "REGISTRARSE";
+            } else {
+              localStorage.setItem('email_pendiente', email);
+              window.location.href = 'confirmar_correo.html';
+            }
+          } catch (error) {
+            console.error(error);
+            showError(passInput, passError, 'Error de conexión.');
+            btnRegistro.disabled = false; btnRegistro.textContent = "REGISTRARSE";
+          }
         }
       });
     });

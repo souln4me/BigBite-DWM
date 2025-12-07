@@ -1,5 +1,0 @@
-localStorage.removeItem('primeraVezPerfil');
-
-
-localStorage.setItem('usuarioLogueado', 'true');
-localStorage.removeItem('usuarioLogueado');

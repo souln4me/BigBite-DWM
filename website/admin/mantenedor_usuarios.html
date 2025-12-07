@@ -29,42 +29,39 @@
         <div class="container-fluid">
             <div class="admin-panel">
 
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h1 class="h3 mb-0">Mantenedor de Usuarios</h1>
-                    <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                            data-bs-toggle="dropdown">
-                            <i class="bi bi-person-fill me-1"></i> Administrador
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
-                            <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
-                        </ul>
+                <div class="d-flex justify-content-between align-items-center mb-4 animate-right">
+                    <div>
+                        <h1 class="h3 mb-0">
+                            <i class="bi bi-people text-muted me-2"> |</i> Mantenedor de Usuarios
+                        </h1>
+                        <p class="text-muted mb-0 small" style="margin-left: 60px;">Gestión del personal administrativo
+                        </p>
                     </div>
                 </div>
 
-                <div class="card card-dashboard mb-4">
+                <div class="card card-dashboard mb-4 animate-up">
                     <div class="card-body p-4">
                         <div class="row g-3 align-items-center">
                             <div class="col-md-4">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Buscar usuarios...">
-                                    <button class="btn btn-primary" type="button">
+                                    <span class="input-group-text">
                                         <i class="bi bi-search"></i>
-                                    </button>
+                                    </span>
+                                    <input type="text" class="form-control" placeholder="Buscar usuarios..."
+                                        id="inputBuscar">
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <select class="form-select">
-                                    <option selected value="Todos">Rol: Todos</option>
+                                <select class="form-select" id="filtroRol">
+                                    <option selected value="Todos">Todos los roles</option>
                                     <option value="Dueño">Dueño</option>
                                     <option value="Administrador">Administrador</option>
-                                    <option value="Despacho">Despacho</option>
+                                    <option value="Cajero Virtual">Cajero Virtual</option>
+                                    <option value="Encargado Despachos">Encargado Despachos</option>
                                 </select>
                             </div>
                             <div class="col-md-4 text-end">
-                                <button class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#modalUsuario">
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalUsuario">
                                     <i class="bi bi-plus-lg me-1"></i> Nuevo Usuario
                                 </button>
                             </div>
@@ -72,11 +69,11 @@
                     </div>
                 </div>
 
-                <div class="card card-dashboard">
+                <div class="card card-dashboard animate-up">
                     <div class="card-header">
                         <h5 class="mb-0">Lista de Usuarios</h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body bg-light">
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
                                 <thead class="table-dark">
@@ -86,75 +83,16 @@
                                         <th>Email</th>
                                         <th>Rol</th>
                                         <th>Fecha Registro</th>
-                                        <th>Estado</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>USER-001</td>
-                                        <td>María González</td>
-                                        <td>maria@bigbite.com</td>
-                                        <td><span class="badge role-owner">Dueño</span></td>
-                                        <td>15/01/2024</td>
-                                        <td><span class="badge bg-success">Activo</span></td>
-                                        <td class="table-actions">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-                                                data-bs-target="#modalUsuario">
-                                                <i class="bi bi-pencil-fill me-1"></i> Editar
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#modalEliminarUsuario">
-                                                <i class="bi bi-trash-fill me-1"></i> Eliminar
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>USER-002</td>
-                                        <td>Carlos López</td>
-                                        <td>carlos@bigbite.com</td>
-                                        <td><span class="badge role-admin">Administrador</span></td>
-                                        <td>20/02/2024</td>
-                                        <td><span class="badge bg-success">Activo</span></td>
-                                        <td class="table-actions">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalUsuario">
-                                                <i class="bi bi-pencil-fill me-1"></i> Editar
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarUsuario">
-                                                <i class="bi bi-trash-fill me-1"></i> Eliminar
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>USER-003</td>
-                                        <td>Ana Silva</td>
-                                        <td>ana.silva@email.com</td>
-                                        <td><span class="badge role-admin">Administrador</span></td>
-                                        <td>05/03/2024</td>
-                                        <td><span class="badge bg-success">Activo</span></td>
-                                        <td class="table-actions">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalUsuario">
-                                                <i class="bi bi-pencil-fill me-1"></i> Editar
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarUsuario">
-                                                <i class="bi bi-trash-fill me-1"></i> Eliminar
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>USER-004</td>
-                                        <td>Pedro Martínez</td>
-                                        <td>pedro.m@email.com</td>
-                                        <td><span class="badge role-delivery">Despacho</span></td>
-                                        <td>10/03/2024</td>
-                                        <td><span class="badge bg-warning">Inactivo</span></td>
-                                        <td class="table-actions">
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalUsuario">
-                                                <i class="bi bi-pencil-fill me-1"></i> Editar
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarUsuario">
-                                                <i class="bi bi-trash-fill me-1"></i> Eliminar
-                                            </button>
+                                        <td colspan="7" class="text-center py-5">
+                                            <div class="spinner-border text-warning" role="status">
+                                                <span class="visually-hidden">Cargando...</span>
+                                            </div>
+                                            <p class="mt-2 text-muted small">Cargando personal...</p>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -162,72 +100,123 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-    
+
     <div class="modal fade" id="modalUsuario" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Nuevo Usuario</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <div class="modal-header bg-dark">
+                    <h5 class="modal-title text-white">Nuevo Usuario</h5>
                 </div>
                 <div class="modal-body">
                     <form id="formUsuario" novalidate>
-                        <div class="row g-3">
+                        <h5 class="text-muted mb-3 mt-0">
+                            <i class="bi bi-shield-lock-fill me-2"></i> Datos de Acceso
+                        </h5>
+                        <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label">Nombre Completo *</label>
-                                <input type="text" class="form-control" required placeholder="Ej: Ana Contreras">
-                                <div class="invalid-feedback">Ingrese el nombre completo.</div>
+                                <input type="text" id="userName" class="form-control" required
+                                    placeholder="Ej: Ana Contreras">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Email *</label>
-                                <input type="email" class="form-control" required placeholder="ejemplo@correo.com">
-                                <div class="invalid-feedback">Ingrese un email válido.</div>
+                                <input type="email" id="userEmail" class="form-control" required
+                                    placeholder="ejemplo@bigbite.cl">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Contraseña *</label>
-                                 <div class="input-group">
-                                    <input type="password" id="pass1" class="form-control" required placeholder="••••••••">
-                                    <span class="input-group-text toggle-password" style="cursor: pointer;">
+                                <div class="input-group">
+                                    <input type="password" id="pass1" class="form-control" required
+                                        placeholder="•••••••••">
+                                    <span class="input-group-text toggle-password spanOjo">
                                         <i class="bi bi-eye-slash"></i>
                                     </span>
-                                     <div class="invalid-feedback">Ingrese una contraseña.</div>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Confirmar Contraseña *</label>
-                                 <div class="input-group">
-                                    <input type="password" id="pass2" class="form-control" required placeholder="••••••••">
-                                     <span class="input-group-text toggle-password" style="cursor: pointer;">
+                                <label class="form-label">Confirmar contraseña *</label>
+                                <div class="input-group">
+                                    <input type="password" id="pass2" class="form-control" required
+                                        placeholder="•••••••••">
+                                    <span class="input-group-text toggle-password spanOjo">
                                         <i class="bi bi-eye-slash"></i>
                                     </span>
-                                     <div class="invalid-feedback">Confirme la contraseña.</div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Rol *</label>
-                                <select class="form-select" required>
-                                    <option value="" disabled selected>Seleccionar rol</option> 
-                                    <option>Dueño</option>
-                                    <option>Administrador</option>
-                                    <option>Despacho</option>
+                                <select id="userRol" class="form-select" required>
+                                    <option value="" disabled selected>Seleccionar rol</option>
                                 </select>
-                                <div class="invalid-feedback">Seleccione un rol.</div>
+                            </div>
+                        </div>
+
+                        <h5 class="text-muted mb-3 mt-5">
+                            <i class="bi bi-person-vcard-fill me-2"></i> Ficha Personal (RRHH)
+                        </h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">RUT</label>
+                                <input type="text" id="userRut" class="form-control" placeholder="12.345.678-9">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Teléfono</label>
-                                <input type="tel" class="form-control" placeholder="+56 9 1234 5678">
+                                <input type="tel" id="userPhone" class="form-control" placeholder="9 1111 2222">
                             </div>
-                            <div class="col-12">
-                                <div class="form-check mt-2">
-                                    <input class="form-check-input" type="checkbox" checked id="usuarioActivo">
-                                    <label class="form-check-label" for="usuarioActivo">
-                                        Usuario activo
-                                    </label>
-                                </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha de nacimiento</label>
+                                <input type="date" id="userDob" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Sexo</label>
+                                <select id="userSex" class="form-select">
+                                    <option value="" selected disabled>Seleccionar...</option>
+                                    <option value="masculino">Masculino</option>
+                                    <option value="femenino">Femenino</option>
+                                    <option value="otro">Otro</option>
+                                    <option value="no_especifica">Prefiero no decirlo</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Dirección</label>
+                                <input type="text" id="userAdress" class="form-control"
+                                    placeholder="Calle cualquiera 123">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Región</label>
+                                <select id="userRegion" class="form-select">
+                                    <option value="" selected disabled>Selecciona tu región...</option>
+                                    <option value="arica_y_parinacota">Arica y Parinacota</option>
+                                    <option value="tarapaca">Tarapacá</option>
+                                    <option value="atacama">Atacama</option>
+                                    <option value="coquimbo">Coquimbo</option>
+                                    <option value="valparaiso">Valparaíso</option>
+                                    <option value="metropolitana">Metropolitana de Santiago</option>
+                                    <option value="ohiggins">O'Higgins</option>
+                                    <option value="maule">Maule</option>
+                                    <option value="ñuble">Ñuble</option>
+                                    <option value="biobio">Biobío</option>
+                                    <option value="araucania">Araucanía</option>
+                                    <option value="los_rios">Los Ríos</option>
+                                    <option value="los_lagos">Los Lagos</option>
+                                    <option value="aysen">Aysén</option>
+                                    <option value="magallanes">Magallanes</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Provincia</label>
+                                <select id="userProvincia" class="form-select" disabled>
+                                    <option value="" selected disabled>Selecciona tu provincia...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Comuna</label>
+                                <select id="userComuna" class="form-select" disabled>
+                                    <option value="" selected disabled>Selecciona tu comuna...</option>
+                                </select>
                             </div>
                         </div>
                     </form>
@@ -243,7 +232,7 @@
     </div>
 
     <div class="modal fade" id="modalEliminarUsuario" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered"> 
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Confirmar Eliminación</h5>
@@ -272,7 +261,7 @@
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
             </div>
         </div>
-        <div id="toastEliminadoUsuario" class="toast align-items-center text-bg-danger border-0" role="alert"> 
+        <div id="toastEliminadoUsuario" class="toast align-items-center text-bg-danger border-0" role="alert">
             <div class="d-flex">
                 <div class="toast-body">
                     <i class="bi bi-trash-fill me-2"></i> Usuario eliminado correctamente
@@ -282,39 +271,512 @@
         </div>
     </div>
 
+    <script src="../JS/config.js"></script>
+    <script src="../JS/sidebar-loader.js"></script>
+
     <script>
-        // --- Carga del Sidebar ---
-         fetch('includes/sidebar.html')
-            .then(response => {
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                return response.text();
-            })
-            .then(data => {
-                const sidebarPlaceholder = document.getElementById('sidebar-placeholder');
-                if (sidebarPlaceholder) {
-                    sidebarPlaceholder.innerHTML = data;
-                    // Listeners del sidebar
-                    const toggle = document.getElementById('sidebarToggle');
-                    if (toggle) {
-                        toggle.addEventListener('click', function () {
-                            document.querySelector('.nav-sidebar')?.classList.toggle('active');
-                        });
+        let rolesCache = [];
+        let usuariosDataCache = [];
+        let usuarioAEliminarId = null;
+        let modalUsuarioBS = null;
+        let modalEliminarBS = null;
+        let usuarioEditandoId = null;
+
+        // ==========================================
+        // 1. SEGURIDAD
+        // ==========================================
+        function initPage() {
+            const token = localStorage.getItem('token_bigbite');
+            if (!token) {
+                window.location.href = '../login.html';
+            }
+        }
+        initPage();
+
+        // ==========================================
+        // 2. INICIALIZACIÓN DOM
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            modalUsuarioBS = new bootstrap.Modal(document.getElementById('modalUsuario'));
+            modalEliminarBS = new bootstrap.Modal(document.getElementById('modalEliminarUsuario'));
+
+            cargarRoles();
+            cargarUsuarios();
+            initLocationLogic();
+
+            // Añadir listeners para búsqueda y filtro (aseguramos que los elementos existan)
+            const inputBuscar = document.getElementById('inputBuscar');
+            const btnBuscar = document.getElementById('btnBuscar');
+            const filtroRol = document.getElementById('filtroRol');
+
+            if (inputBuscar) inputBuscar.addEventListener('input', aplicarFiltros);
+            if (btnBuscar) btnBuscar.addEventListener('click', aplicarFiltros);
+            if (filtroRol) filtroRol.addEventListener('change', aplicarFiltros);
+
+            // Toggle Password
+            document.querySelectorAll('.toggle-password').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const input = this.previousElementSibling;
+                    const icon = this.querySelector('i');
+                    if (input.type === "password") {
+                        input.type = "text";
+                        icon.classList.replace("bi-eye-slash", "bi-eye");
+                    } else {
+                        input.type = "password";
+                        icon.classList.replace("bi-eye", "bi-eye-slash");
                     }
-                    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-                    const links = sidebarPlaceholder.querySelectorAll('.nav-sidebar .nav-link');
-                    links.forEach(link => {
-                        const linkPage = link.getAttribute('href')?.split('/').pop();
-                        if (linkPage === currentPage) {
-                            link.classList.add('active');
-                        } else {
-                            link.classList.remove('active');
+                });
+            });
+
+            // Reset Modal al cerrar
+            document.getElementById('modalUsuario').addEventListener('hidden.bs.modal', () => {
+                usuarioEditandoId = null;
+                document.getElementById('formUsuario').reset();
+                document.querySelector('.modal-title').textContent = "Nuevo Empleado";
+
+                // Reset Selects Ubicación
+                const prov = document.getElementById('userProvincia');
+                const com = document.getElementById('userComuna');
+                prov.innerHTML = '<option value="" selected disabled>Selecciona tu provincia...</option>';
+                prov.disabled = true;
+                com.innerHTML = '<option value="" selected disabled>Selecciona tu comuna...</option>';
+                com.disabled = true;
+            });
+
+            // Logout
+            const linksDropdown = document.querySelectorAll('.dropdown-menu .dropdown-item');
+            linksDropdown.forEach(link => {
+                if (link.textContent.includes('Cerrar Sesión')) {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault(); // Evita que el enlace navegue
+
+                        if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
+                            // Borramos las credenciales
+                            localStorage.removeItem('token_bigbite');
+                            localStorage.removeItem('usuario_bigbite');
+
+                            // Redirigimos al login (Subimos un nivel con ../)
+                            window.location.href = '../login.html';
                         }
                     });
                 }
-            })
-            .catch(error => console.error('Error cargando el sidebar:', error));
+            });
+        });
+
+        // ==========================================
+        // 3. LÓGICA UBICACIÓN
+        // ==========================================
+        const locationData = {
+            "metropolitana": {
+                "santiago": ["Cerrillos", "Cerro Navia", "Conchalí", "El Bosque", "Estación Central", "Huechuraba", "Independencia", "La Cisterna", "La Florida", "La Granja", "La Pintana", "La Reina", "Las Condes", "Lo Barnechea", "Lo Espejo", "Lo Prado", "Macul", "Maipú", "Ñuñoa", "Pedro Aguirre Cerda", "Peñalolén", "Providencia", "Pudahuel", "Quilicura", "Quinta Normal", "Recoleta", "Renca", "San Joaquín", "San Miguel", "San Ramón", "Santiago", "Vitacura"],
+                "cordillera": ["Puente Alto", "Pirque", "San José de Maipo"],
+                "maipo": ["San Bernardo", "Buin", "Calera de Tango", "Paine"],
+                "talagante": ["Talagante", "El Monte", "Isla de Maipo", "Padre Hurtado", "Peñaflor"],
+                "melipilla": ["Melipilla", "Alhué", "Curacaví", "María Pinto", "San Pedro"],
+                "chacabuco": ["Colina", "Lampa", "Tiltil"]
+            },
+            "valparaiso": {
+                "valparaiso": ["Valparaíso", "Viña del Mar", "Concón", "Quintero", "Puchuncaví", "Casablanca", "Juan Fernández"],
+                "isla_de_pascua": ["Isla de Pascua"],
+                "los_andes": ["Los Andes", "San Esteban", "Calle Larga", "Rinconada"],
+                "marga_marga": ["Quilpué", "Villa Alemana", "Limache", "Olmué"],
+                "quillota": ["Quillota", "La Calera", "Hijuelas", "La Cruz", "Nogales"],
+                "san_antonio": ["San Antonio", "Algarrobo", "Cartagena", "El Quisco", "El Tabo", "Santo Domingo"],
+                "san_felipe": ["San Felipe", "Llaillay", "Putaendo", "Santa María", "Catemu", "Panquehue"],
+                "petorca": ["La Ligua", "Petorca", "Cabildo", "Zapallar", "Papudo"]
+            }
+        };
+        const stopWords = ['de', 'del', 'la', 'las', 'los', 'y', 'en'];
+
+        function initLocationLogic() {
+            const regionSelect = document.getElementById('userRegion');
+            const provinciaSelect = document.getElementById('userProvincia');
+            const comunaSelect = document.getElementById('userComuna');
+
+            regionSelect.addEventListener('change', (e) => {
+                const selectedRegion = e.target.value;
+                provinciaSelect.innerHTML = '<option value="" selected disabled>Selecciona tu provincia...</option>';
+                comunaSelect.innerHTML = '<option value="" selected disabled>Selecciona tu comuna...</option>';
+                provinciaSelect.disabled = true;
+                comunaSelect.disabled = true;
+
+                if (locationData[selectedRegion]) {
+                    const provincias = locationData[selectedRegion];
+                    for (const provinciaKey in provincias) {
+                        const textWithSpaces = provinciaKey.replace(/_/g, ' ');
+                        const optionText = textWithSpaces.split(' ').map((word, index) => {
+                            const lowerWord = word.toLowerCase();
+                            if (index > 0 && stopWords.includes(lowerWord)) return lowerWord;
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        const option = new Option(optionText, provinciaKey);
+                        provinciaSelect.add(option);
+                    }
+                    provinciaSelect.disabled = false;
+                }
+            });
+
+            provinciaSelect.addEventListener('change', (e) => {
+                const selectedRegion = regionSelect.value;
+                const selectedProvincia = e.target.value;
+                comunaSelect.innerHTML = '<option value="" selected disabled>Selecciona tu comuna...</option>';
+                comunaSelect.disabled = true;
+
+                if (locationData[selectedRegion] && locationData[selectedRegion][selectedProvincia]) {
+                    const comunas = locationData[selectedRegion][selectedProvincia];
+                    comunas.forEach(comuna => {
+                        const optionValue = comuna.toLowerCase().replace(/ /g, '_');
+                        const option = new Option(comuna, optionValue);
+                        comunaSelect.add(option);
+                    });
+                    comunaSelect.disabled = false;
+                }
+            });
+        }
+
+        // ==========================================
+        // 4. CARGA DATOS
+        // ==========================================
+
+        async function cargarRoles() {
+            const query = `query { getRoles { id, nombre } }`;
+            try {
+                const res = await fetch(GRAPHQL_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query })
+                });
+                const json = await res.json();
+                const todosRoles = json.data.getRoles || [];
+                rolesCache = todosRoles.filter(r => r.nombre !== 'Cliente');
+
+                const select = document.getElementById('userRol');
+                if (select) {
+                    select.innerHTML = '<option value="" disabled selected>Seleccionar rol</option>';
+                    rolesCache.forEach(rol => {
+                        select.innerHTML += `<option value="${rol.id}">${rol.nombre}</option>`;
+                    });
+                }
+            } catch (e) { console.error("Error roles:", e); }
+        }
+
+        async function cargarUsuarios() {
+            const token = localStorage.getItem('token_bigbite');
+            const query = `
+            query {
+                getUsuariosRol {
+                    id, nombre_completo, email, fecha_registro, rol { id, nombre },
+                    rut, telefono, fecha_nacimiento, sexo, direccion, region, provincia, comuna
+                }
+            }
+        `;
+            try {
+                const res = await fetch(GRAPHQL_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ query })
+                });
+                const json = await res.json();
+                const usuarios = json.data.getUsuariosRol || [];
+
+                // Guardamos en cache para poder filtrar
+                usuariosDataCache = usuarios;
+
+                // Render inicial
+                renderizarTabla(usuarios);
+            } catch (e) { console.error("Error usuarios:", e); }
+        }
+
+        function renderizarTabla(usuarios) {
+            const tbody = document.querySelector('tbody');
+            tbody.innerHTML = '';
+
+            if (!usuarios || usuarios.length === 0) {
+                tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="text-center py-4 text-muted">No se encontraron usuarios</td>
+                </tr>`;
+                return;
+            }
+
+            usuarios.forEach(u => {
+                const rolNombre = u.rol ? u.rol.nombre : 'Sin Rol';
+                if (rolNombre === 'Cliente') return;
+
+                let badgeClass = 'bg-secondary';
+                if (rolNombre === 'Dueño') badgeClass = 'role-owner';
+                else if (rolNombre === 'Administrador') badgeClass = 'role-admin';
+                else if (rolNombre === 'Cajero Virtual') badgeClass = 'role-vcashier';
+                else if (rolNombre === 'Encargado Despachos') badgeClass = 'role-delivery';
+
+                // Fecha: si viene como timestamp
+                let fecha = '';
+                if (u.fecha_registro) {
+                    // intenta parsear número primero, si no, deja Date intentar
+                    const num = parseInt(u.fecha_registro);
+                    if (!isNaN(num) && String(u.fecha_registro).length > 8) {
+                        fecha = new Date(num).toLocaleDateString('es-CL');
+                    } else {
+                        // fallback
+                        const d = new Date(u.fecha_registro);
+                        fecha = !isNaN(d.getTime()) ? d.toLocaleDateString('es-CL') : '';
+                    }
+                }
+
+                const uSafe = { ...u };
+                const dataStr = encodeURIComponent(JSON.stringify(uSafe));
+
+                const tr = `
+                <tr>
+                    <td>#${String(u.id || '').slice(-4).toUpperCase()}</td>
+                    <td class="fw-bold">${u.nombre_completo || 'Sin nombre'}</td>
+                    <td>${u.email || ''}</td>
+                    <td><span class="badge ${badgeClass}">${rolNombre}</span></td>
+                    <td>${fecha}</td>
+                    <td class="table-actions">
+                        <button class="btn btn-sm btn-outline-primary" onclick="abrirModalEditar('${dataStr}')">
+                            <i class="bi bi-pencil-fill me-1"></i> Editar
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="confirmarEliminar('${u.id}')">
+                            <i class="bi bi-trash-fill"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+                tbody.innerHTML += tr;
+            });
+        }
+
+        // ==========================================
+        // 5. CREAR / EDITAR
+        // (funciones abrirModalEditar y guardarUsuario se mantienen iguales)
+        // ==========================================
+
+        window.abrirModalEditar = function (dataStr) {
+            const u = JSON.parse(decodeURIComponent(dataStr));
+            usuarioEditandoId = u.id;
+
+            // Llenar Datos Básicos
+            document.getElementById('userName').value = u.nombre_completo || '';
+            document.getElementById('userEmail').value = u.email || '';
+            document.getElementById('pass1').value = '';
+            document.getElementById('pass2').value = '';
+            if (u.rol) document.getElementById('userRol').value = u.rol.id;
+
+            // Llenar Datos Personales
+            document.getElementById('userRut').value = u.rut || '';
+            document.getElementById('userPhone').value = u.telefono || '';
+            document.getElementById('userSex').value = u.sexo || '';
+            document.getElementById('userAdress').value = u.direccion || '';
+
+            // Fecha (mismo manejo que antes)
+            const fechaInput = document.getElementById('userDob');
+            fechaInput.value = ""; // Limpiar por defecto
+
+            if (u.fecha_nacimiento) {
+                let valor = u.fecha_nacimiento;
+                let dateObj = null;
+
+                if (!isNaN(valor) && String(valor).length > 8) {
+                    dateObj = new Date(parseInt(valor));
+                } else if (String(valor).indexOf('/') > -1) {
+                    const partes = String(valor).split('/');
+                    if (partes.length === 3) {
+                        fechaInput.value = `${partes[2]}-${partes[1]}-${partes[0]}`;
+                        return;
+                    }
+                } else {
+                    dateObj = new Date(valor);
+                }
+
+                if (dateObj && !isNaN(dateObj.getTime())) {
+                    const year = dateObj.getFullYear();
+                    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+                    const day = String(dateObj.getDate()).padStart(2, '0');
+                    fechaInput.value = `${year}-${month}-${day}`;
+                }
+            }
+
+            // Lógica de Ubicación (Cascada)
+            const regSelect = document.getElementById('userRegion');
+            const provSelect = document.getElementById('userProvincia');
+            const comSelect = document.getElementById('userComuna');
+
+            if (u.region) {
+                regSelect.value = u.region;
+                regSelect.dispatchEvent(new Event('change'));
+                setTimeout(() => {
+                    if (u.provincia) {
+                        provSelect.value = u.provincia;
+                        provSelect.dispatchEvent(new Event('change'));
+                        setTimeout(() => {
+                            if (u.comuna) comSelect.value = u.comuna;
+                        }, 10);
+                    }
+                }, 10);
+            }
+
+            document.querySelector('.modal-title').textContent = "Editar Usuario";
+            modalUsuarioBS.show();
+        }
+
+        window.guardarUsuario = async function () {
+            const token = localStorage.getItem('token_bigbite');
+
+            const nombre = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+            const pass1 = document.getElementById('pass1').value;
+            const pass2 = document.getElementById('pass2').value;
+            const rolId = document.getElementById('userRol').value;
+
+            const rut = document.getElementById('userRut').value;
+            const telefono = document.getElementById('userPhone').value;
+            const fechaNac = document.getElementById('userDob').value;
+            const sexo = document.getElementById('userSex').value;
+            const direccion = document.getElementById('userAdress').value;
+            const region = document.getElementById('userRegion').value;
+            const provincia = document.getElementById('userProvincia').value;
+            const comuna = document.getElementById('userComuna').value;
+
+            if (!nombre || !email || !rolId) {
+                alert("Nombre, Email y Rol son obligatorios.");
+                return;
+            }
+            if (!usuarioEditandoId && !pass1) {
+                alert("La contraseña es obligatoria para nuevos empleados.");
+                return;
+            }
+            if (pass1 && pass1 !== pass2) {
+                alert("Las contraseñas no coinciden.");
+                return;
+            }
+
+            const inputData = {
+                nombre_completo: nombre,
+                email: email,
+                rolId: rolId,
+                rut: rut,
+                telefono: telefono,
+                fecha_nacimiento: fechaNac,
+                sexo: sexo,
+                direccion: direccion,
+                region: region,
+                provincia: provincia,
+                comuna: comuna
+            };
+            if (pass1) inputData.pass = pass1;
+
+            let query = '';
+            let variables = {};
+
+            if (usuarioEditandoId) {
+                query = `mutation EditarUser($id: ID!, $input: UpdateUsuarioInput) { updUsuario(id: $id, input: $input) { id } }`;
+                variables = { id: usuarioEditandoId, input: inputData };
+            } else {
+                query = `mutation CrearUser($input: UsuarioInput) { addUsuario(input: $input) { id } }`;
+                variables = { input: inputData };
+            }
+
+            try {
+                const res = await fetch(GRAPHQL_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ query, variables })
+                });
+                const json = await res.json();
+
+                if (json.errors) {
+                    alert("Error: " + json.errors[0].message);
+                } else {
+                    modalUsuarioBS.hide();
+                    await cargarUsuarios();
+                    const toast = new bootstrap.Toast(document.getElementById('toastExitoUsuario'));
+                    toast.show();
+                }
+            } catch (e) { console.error(e); alert("Error de conexión"); }
+        }
+
+        // ==========================================
+        // 6. ELIMINAR
+        // ==========================================
+        window.confirmarEliminar = function (id) {
+            usuarioAEliminarId = id;
+            modalEliminarBS.show();
+        }
+
+        window.eliminarUsuario = async function () {
+            if (!usuarioAEliminarId) return;
+            const token = localStorage.getItem('token_bigbite');
+            const miUsuario = JSON.parse(localStorage.getItem('usuario_bigbite'));
+
+            if (miUsuario.id === usuarioAEliminarId) {
+                alert("No puedes eliminar tu propia cuenta.");
+                return;
+            }
+
+            const query = `mutation { delUsuario(id: "${usuarioAEliminarId}") { status } }`;
+
+            try {
+                const res = await fetch(GRAPHQL_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ query })
+                });
+                const json = await res.json();
+
+                if (json.errors) {
+                    alert("Error: " + json.errors[0].message);
+                } else {
+                    modalEliminarBS.hide();
+                    await cargarUsuarios();
+                    const toast = new bootstrap.Toast(document.getElementById('toastEliminadoUsuario'));
+                    toast.show();
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        /* ===============================================
+           FILTRO + BUSCADOR DE USUARIOS
+        ================================================= */
+
+        // Función principal que filtra y vuelve a renderizar
+        function aplicarFiltros() {
+            const input = document.getElementById('inputBuscar');
+            const texto = (input ? input.value : '').toLowerCase().trim();
+            const filtroRol = document.getElementById("filtroRol") ? document.getElementById("filtroRol").value : 'Todos';
+
+            if (!Array.isArray(usuariosDataCache)) {
+                renderizarTabla([]);
+                return;
+            }
+
+            // Filtrar según texto + rol
+            const filtrados = usuariosDataCache.filter(u => {
+                const nombre = (u.nombre_completo || '').toString().toLowerCase();
+                const email = (u.email || '').toString().toLowerCase();
+                const rolName = u.rol ? u.rol.nombre : '';
+
+                const coincideTexto = !texto || nombre.includes(texto) || email.includes(texto) || (u.id && String(u.id).toLowerCase().includes(texto));
+                const coincideRol = (filtroRol === "Todos") || (rolName === filtroRol);
+
+                return coincideTexto && coincideRol;
+            });
+
+            // Volver a pintar tabla
+            renderizarTabla(filtrados);
+        }
 
     </script>
+
 </body>
 
 </html>
